@@ -8,6 +8,8 @@ import Analytics from './Analytics';
 import About from './About';
 import Growth from './Growth';
 import Dashboard from './Dashboard';
+import Dashboard1 from './dashboard/Dashboard1';
+import Dashboard2 from './dashboard/Dashboard2';
 
 export default function AppRoutes() {
     return (
@@ -15,11 +17,10 @@ export default function AppRoutes() {
             <Navbar />
             <Routes>
                 <Route path="/" element={<Landing />} />
-                <Route path="/detailed" element={<Detailed />} />
-                <Route path="/analytics" element={<Analytics />} />
-                <Route path="/about" element={<About />} />
-                <Route path="/growth" element={<Growth />} />
-                <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/dashboard" element={<Dashboard />}>
+                    <Route path="dashboard1" element={<Dashboard1 />} />
+                    <Route path="dashboard2" element={<Dashboard2 />} />
+                </Route>
             </Routes>
             <Footer />
         </>

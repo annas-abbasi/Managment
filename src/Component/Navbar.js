@@ -1,35 +1,32 @@
 // import React from 'react'
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 export default function Navbar() {
     const [scrolled, setScrolled] = useState(false);
 
     const handleScroll = () => {
-        const offset = window.scrollY;
-        if (offset > 50) {
-            setScrolled(true);
+        const hScreen = window.scrollY;
+        if (hScreen > 70) {
+            setScrolled(true)
         } else {
-            setScrolled(false);
+            setScrolled(false)
         }
-    };
+    }
 
     useEffect(() => {
-        window.addEventListener('scroll', handleScroll);
+        window.addEventListener("scroll", handleScroll)
         return () => {
-            window.removeEventListener('scroll', handleScroll);
-        };
-    }, []);
+            window.removeEventListener("scroll", handleScroll)
+        }
+    }, [])
+
     return (
         <>
             {/* <!-- Main navigation container --> */}
-            {/* <nav
-                className="flex-no-wrap relative flex w-full items-center justify-between bg-zinc-50 py-2 shadow-dark-mild dark:bg-neutral-700 lg:flex-wrap lg:justify-start lg:py-4"> */}
             <div className='h-20'>
-                {/* <nav
-                    className="flex-no-wrap fixed z-10 flex w-full items-center justify-between bg-opacity-95 backdrop-blur-md' : 'bg-transparent bg-slate-100 border-b border-gray-300 py-2 shadow-dark-mild lg:flex-wrap lg:justify-start lg:py-4"> */}
                 <nav
-                    className={`fixed w-full top-0 left-0 p-4 transition-all duration-300 z-50 ${scrolled ? 'bg-slate-100 bg-opacity-80 backdrop-blur-md' : 'bg-transparent'}`}
-                >
+                    className={`flex-no-wrap fixed z-10 flex w-full items-center justify-between bg-opacity-80 border-b transition-all backdrop-blur-md py-2 lg:flex-wrap lg:justify-start lg:py-4 ${scrolled ? "border-blue-200 bg-gray-800" : "border-transparent bg-white"}`}>
                     <div className="flex w-full flex-wrap items-center justify-between px-3">
                         {/* <!-- Hamburger button for mobile view --> */}
                         <button
@@ -61,7 +58,7 @@ export default function Navbar() {
                             id="navbarSupportedContent1"
                             data-twe-collapse-item>
                             {/* <!-- Logo --> */}
-                            <a
+                            <Link to={'/'}
                                 className="mb-4 me-16 ms-2 mt-3 flex items-center text-neutral-900 hover:text-neutral-900 focus:text-neutral-900 dark:text-neutral-200 dark:hover:text-neutral-400 dark:focus:text-neutral-400 lg:mb-0 lg:mt-0"
                                 href="/">
                                 <img
@@ -70,24 +67,23 @@ export default function Navbar() {
                                     loading="lazy"
                                     className='w-12 h-12'
                                 />
-                            </a>
+                            </Link>
                             {/* <!-- Left navigation links --> */}
                             <ul
                                 className="list-style-none me-auto space-x-6 flex flex-col ps-0 lg:flex-row"
                                 data-twe-navbar-nav-ref>
                                 <li className="mb-4 lg:mb-0 lg:pe-2" data-twe-nav-item-ref>
                                     {/* <!-- Dashboard link --> */}
-                                    <a
-                                        className="transition duration-200 ease-in-out focus:text-black/80 active:text-black/80 motion-reduce:transition-none text-gray-700 hover:text-blue-600 font-semibold lg:px-2"
+                                    <Link to={'/dashboard'}
+                                        className={`transition duration-200 ease-in-out focus:text-black/80 active:text-black/80 motion-reduce:transition-none hover:text-blue-600 font-semibold lg:px-2 ${scrolled ? 'text-white' : 'text-gray-700'}`}
                                         href="/"
                                         data-twe-nav-link-ref
-                                    >Dashboard</a
-                                    >
+                                    >Dashboard </Link>
                                 </li>
                                 {/* <!-- Team link --> */}
                                 <li className="mb-4 lg:mb-0 lg:pe-2" data-twe-nav-item-ref>
                                     <a
-                                        className="transition duration-200 ease-in-out focus:text-black/80 active:text-black/80 motion-reduce:transition-none text-gray-700 hover:text-blue-600 font-semibold lg:px-2"
+                                        className={`transition duration-200 ease-in-out focus:text-black/80 active:text-black/80 motion-reduce:transition-none hover:text-blue-600 font-semibold lg:px-2 ${scrolled ? 'text-white' : 'text-gray-700'}`}
                                         href="/"
                                         data-twe-nav-link-ref
                                     >Team</a
@@ -96,7 +92,7 @@ export default function Navbar() {
                                 {/* <!-- Projects link --> */}
                                 <li className="mb-4 lg:mb-0 lg:pe-2" data-twe-nav-item-ref>
                                     <a
-                                        className="transition duration-200 ease-in-out focus:text-black/80 active:text-black/80 motion-reduce:transition-none text-gray-700 hover:text-blue-600 font-semibold lg:px-2"
+                                        className={`transition duration-200 ease-in-out focus:text-black/80 active:text-black/80 motion-reduce:transition-none hover:text-blue-600 font-semibold lg:px-2 ${scrolled ? 'text-white' : 'text-gray-700'}`}
                                         href="/"
                                         data-twe-nav-link-ref
                                     >Projects</a
@@ -107,9 +103,9 @@ export default function Navbar() {
                         </div>
 
                         {/* <!-- Right elements --> */}
-                        <div className="relative flex items-center">
+                        <div className="relative flex items-center space-x-2">
                             {/* <!-- Icon --> */}
-                            <a className="me-4 text-neutral-600 dark:text-white" href="/">
+                            <a className={`me-4 ${scrolled ? 'text-white' : 'text-gray-600'} transition-all`} href="/">
                                 <span className="[&>svg]:w-5">
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
@@ -123,12 +119,12 @@ export default function Navbar() {
 
                             {/* <!-- First dropdown container --> */}
                             <div
-                                className="relative"
+                                className="relative "
                                 data-twe-dropdown-ref
                                 data-twe-dropdown-alignment="end">
                                 {/* <!-- First dropdown trigger --> */}
                                 <a
-                                    className="me-4 flex items-center text-neutral-600 dark:text-white"
+                                    className={`me-4 flex items-center transition-all ${scrolled ? 'text-white' : 'text-gray-600'}`}
                                     href="/"
                                     id="dropdownMenuButton1"
                                     role="button"
@@ -148,40 +144,19 @@ export default function Navbar() {
                                     </span>
                                     {/* <!-- Notification counter --> */}
                                     <span
-                                        className="absolute -mt-4 ms-2.5 rounded-full bg-danger px-[0.35em] py-[0.15em] text-[0.6rem] font-bold leading-none text-white"
+                                        className="absolute -mt-4 ms-2.5 rounded-full bg-danger px-[0.35em] py-[0.15em] text-[0.6rem] font-bold leading-none text-gray-500"
                                     >1</span
                                     >
                                 </a>
                                 {/* <!-- First dropdown menu --> */}
                                 <ul
-                                    className="absolute z-[1000] float-left m-0 hidden min-w-max list-none overflow-hidden rounded-lg border-none bg-white bg-clip-padding text-left text-base shadow-lg data-[twe-dropdown-show]:block dark:bg-surface-dark"
+                                    className="absolute -right-10 top-8 z-[1000] min-w-max list-none overflow-hidden rounded-md bg-white text-base shadow-lg px-1 py-2 flex flex-col w-32 border border-gray-400 gap-1"
                                     aria-labelledby="dropdownMenuButton1"
                                     data-twe-dropdown-menu-ref>
                                     {/* <!-- First dropdown menu items --> */}
-                                    <li>
-                                        <a
-                                            className="block w-full whitespace-nowrap bg-white px-4 py-2 text-sm font-normal text-neutral-700 hover:bg-zinc-200/60 focus:bg-zinc-200/60 focus:outline-none active:bg-zinc-200/60 active:no-underline dark:bg-surface-dark dark:text-white dark:hover:bg-neutral-800/25 dark:focus:bg-neutral-800/25 dark:active:bg-neutral-800/25"
-                                            href="/"
-                                            data-twe-dropdown-item-ref
-                                        >Action</a
-                                        >
-                                    </li>
-                                    <li>
-                                        <a
-                                            className="block w-full whitespace-nowrap bg-white px-4 py-2 text-sm font-normal text-neutral-700 hover:bg-zinc-200/60 focus:bg-zinc-200/60 focus:outline-none active:bg-zinc-200/60 active:no-underline dark:bg-surface-dark dark:text-white dark:hover:bg-neutral-800/25 dark:focus:bg-neutral-800/25 dark:active:bg-neutral-800/25"
-                                            href="/"
-                                            data-twe-dropdown-item-ref
-                                        >Another action</a
-                                        >
-                                    </li>
-                                    <li>
-                                        <a
-                                            className="block w-full whitespace-nowrap bg-white px-4 py-2 text-sm font-normal text-neutral-700 hover:bg-zinc-200/60 focus:bg-zinc-200/60 focus:outline-none active:bg-zinc-200/60 active:no-underline dark:bg-surface-dark dark:text-white dark:hover:bg-neutral-800/25 dark:focus:bg-neutral-800/25 dark:active:bg-neutral-800/25"
-                                            href="/"
-                                            data-twe-dropdown-item-ref
-                                        >Something else here</a
-                                        >
-                                    </li>
+
+                                    <Link className='px-2 py-2 rounded-md hover:bg-slate-100'>SignIn</Link>
+                                    <Link className='border-gray-300 px-2 py-2 rounded-md hover:bg-slate-100'>Logout</Link>
                                 </ul>
                             </div>
 
@@ -192,7 +167,7 @@ export default function Navbar() {
                                 data-twe-dropdown-alignment="end">
                                 {/* <!-- Second dropdown trigger --> */}
                                 <a
-                                    className="flex items-center whitespace-nowrap transition duration-150 ease-in-out motion-reduce:transition-none"
+                                    className="flex items-center whitespace-nowrap transition duration-150 ease-in-out motion-reduce:transition-none mr-4"
                                     href="/"
                                     id="dropdownMenuButton2"
                                     role="button"

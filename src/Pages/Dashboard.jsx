@@ -1,115 +1,141 @@
 import React from 'react'
+import Analytics from './Analytics'
+import { Link, Outlet, Route, Routes } from 'react-router-dom'
+import Landing from './Landing'
 
 export default function Dashboard() {
     return (
         <>
-            <div class="w-screen bg-gray-100">
-                <div class="h-screen w-64 pb-10">
-                    <div class="flex h-full flex-grow flex-col overflow-y-auto rounded-br-lg rounded-tr-lg bg-white pt-5 shadow-md">
-                        <div class="flex mt-10 items-center px-4">
-                            <img class="h-12 w-auto max-w-full align-middle" src="/images/R-Wx_NHvZBci3KLrgXhp1.png" alt="" />
-                            <div class="flex ml-3 flex-col">
-                                <h3 class="font-medium">Sarah Carter</h3>
-                                <p class="text-xs text-gray-500">Sr. Engineer</p>
-                            </div>
-                        </div>
 
-                        <span class="ml-3 mt-10 mb-2 block text-xs font-semibold text-gray-500">Analytics</span>
-
-                        <div class="flex mt-3 flex-1 flex-col">
-                            <div class="">
-                                <nav class="flex-1">
-                                    <a href="/" title="" class="flex cursor-pointer items-center border-l-4 border-l-rose-600 py-2 px-4 text-sm font-medium text-rose-600 outline-none transition-all duration-100 ease-in-out focus:border-l-4">
-                                        <svg class="mr-4 h-5 w-5 align-middle" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" class=""></path>
-                                        </svg>
-                                        Dashboard
-                                    </a>
-
-
-
-                                    <a href="/" class="flex cursor-pointer items-center border-l-rose-600 py-2 px-4 text-sm font-medium text-gray-600 outline-none transition-all duration-100 ease-in-out hover:border-l-4 hover:border-l-rose-600 hover:text-rose-600 focus:border-l-4">
-                                        <svg class="mr-4 h-5 w-5 align-middle" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
-                                        </svg>
-
-                                        Messages
-                                        <span class="ml-auto rounded-full bg-rose-600 px-2 text-xs text-white">6</span>
-                                    </a>
-
-                                    <div class="relative transition">
-                                        <input class="peer hidden" type="checkbox" id="menu-1" checked />
-                                        <button class="flex peer relative w-full items-center border-l-rose-600 py-3 px-4 text-sm font-medium text-gray-600 outline-none transition-all duration-100 ease-in-out hover:border-l-4 hover:text-rose-600 focus:border-l-4">
-                                            <span class="flex mr-5 w-5"
-                                            ><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg
-                                                ></span>
-                                            Analytics
-                                            <label for="menu-1" class="absolute inset-0 h-full w-full cursor-pointer"></label>
-                                        </button>
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="absolute right-0 top-4 ml-auto mr-5 h-4 text-gray-600 transition peer-checked:rotate-180 peer-hover:text-rose-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
-                                        </svg>
-                                        <ul class="duration-400 flex m-2 max-h-0 flex-col overflow-hidden rounded-xl bg-gray-100 font-medium transition-all duration-300 peer-checked:max-h-96">
-                                            <li class="flex m-2 cursor-pointer border-l-rose-600 py-3 pl-5 text-sm text-gray-600 transition-all duration-100 ease-in-out hover:border-l-4 hover:text-rose-600">
-                                                <span class="mr-5"
-                                                ><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" /></svg
-                                                    ></span>
-                                                Revenue
-                                            </li>
-                                            <li class="flex m-2 cursor-pointer border-l-rose-600 py-3 pl-5 text-sm text-gray-600 transition-all duration-100 ease-in-out hover:border-l-4 hover:text-rose-600">
-                                                <span class="mr-5"
-                                                ><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg
-                                                    ></span>
-                                                Refunds
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </nav>
-
-                                <span class="ml-3 mt-10 mb-2 block text-xs font-semibold text-gray-500">Product Mangement</span>
-
-                                <nav class="flex-1">
-                                    <a href="/" class="flex cursor-pointer items-center border-l-rose-600 py-2 px-4 text-sm font-medium text-gray-600 outline-none transition-all duration-100 ease-in-out hover:border-l-4 hover:border-l-rose-600 hover:text-rose-600 focus:border-l-4">
-                                        <svg class="mr-4 h-5 w-5 align-middle" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" class=""></path>
-                                        </svg>
-                                        Products
-                                    </a>
-
-                                    <a href="/" class="flex cursor-pointer items-center border-l-rose-600 py-2 px-4 text-sm font-medium text-gray-600 outline-none transition-all duration-100 ease-in-out hover:border-l-4 hover:border-l-rose-600 hover:text-rose-600 focus:border-l-4">
-                                        <svg class="mr-4 h-5 w-5 align-middle" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
-                                        </svg>
-                                        Orders
-                                    </a>
-                                    <a href="/" class="flex cursor-pointer items-center border-l-rose-600 py-2 px-4 text-sm font-medium text-gray-600 outline-none transition-all duration-100 ease-in-out hover:border-l-4 hover:border-l-rose-600 hover:text-rose-600 focus:border-l-4">
-                                        <svg class="mr-4 h-5 w-5 align-middle" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
-                                        </svg>
-
-                                        Suppliers
-                                    </a>
-                                </nav>
-
-                                <span class="ml-3 mt-10 mb-2 block text-xs font-semibold text-gray-500">Content Management</span>
-
-                                <nav class="flex-1">
-                                    <a href="/" class="flex cursor-pointer items-center border-l-rose-600 py-2 px-4 text-sm font-medium text-gray-600 outline-none transition-all duration-100 ease-in-out hover:border-l-4 hover:border-l-rose-600 hover:text-rose-600 focus:border-l-4">
-                                        <svg class="mr-4 h-5 w-5 align-middle" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
-                                        </svg>
-                                        Blogs
-                                    </a>
-                                </nav>
-                            </div>
-                        </div>
+            <div className="mx-4 min-h-screen max-w-screen-xl sm:mx-8 xl:mx-auto">
+                <h1 className="border-b py-6 text-4xl font-semibold">Dashboard</h1>
+                <div className="grid grid-cols-8 pt-3 sm:grid-cols-10">
+                    <div className="relative my-4 w-56 sm:hidden">
+                        <input className="peer hidden" type="checkbox" name="select-1" id="select-1" />
+                        <label for="select-1" className="flex w-full cursor-pointer select-none rounded-lg border p-2 px-3 text-sm text-gray-700 ring-blue-700 peer-checked:ring">Notifications </label>
+                        <svg xmlns="http://www.w3.org/2000/svg" className="pointer-events-none absolute right-0 top-3 ml-auto mr-5 h-4 text-slate-700 transition peer-checked:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                        </svg>
+                        <ul className="max-h-0 select-none flex-col overflow-hidden rounded-b-lg shadow-md transition-all duration-300 peer-checked:max-h-56 peer-checked:py-3">
+                            <li className="cursor-pointer px-3 py-2 text-sm text-slate-600 hover:bg-blue-700 hover:text-white">Notifications</li>
+                            <li className="cursor-pointer px-3 py-2 text-sm text-slate-600 hover:bg-blue-700 hover:text-white">Team</li>
+                            <li className="cursor-pointer px-3 py-2 text-sm text-slate-600 hover:bg-blue-700 hover:text-white">Others</li>
+                        </ul>
                     </div>
-                </div>
 
+                    <div className="col-span-2 hidden sm:block">
+                        <ul className='flex items-start flex-col gap-2'>
+                            <Link to={"/dashboard/dashboard1"} className="mt-5 w-full cursor-pointer border-l-2 border-transparent px-2 py-2 font-semibold transition hover:border-l-blue-700 focus:text-blue-700 focus:border-l-blue-700 hover:text-blue-700">Teams</Link>
+                            <Link to={"/dashboard/dashboard2"} className="w-full mt-5 cursor-pointer border-l-2 border-transparent px-2 py-2 font-semibold transition hover:border-l-blue-700 focus:text-blue-700 focus:border-l-blue-700 hover:text-blue-700">Accounts</Link>
+                            <Link to={"/dashboard/dashboard1"} className="w-full mt-5 cursor-pointer border-l-2 border-transparent px-2 py-2 font-semibold transition hover:border-l-blue-700 focus:text-blue-700 focus:border-l-blue-700 hover:text-blue-700">Users</Link>
+                            <Link to={"/dashboard/dashboard2"} className="w-full mt-5 cursor-pointer border-l-2 border-transparent px-2 py-2 font-semibold transition hover:border-l-blue-700 focus:text-blue-700 focus:border-l-blue-700 hover:text-blue-700">Profile</Link>
+                            <Link to={"/dashboard/dashboard1"} className="w-full mt-5 cursor-pointer border-l-2 border-transparent px-2 py-2 font-semibold transition hover:border-l-blue-700 focus:text-blue-700 focus:border-l-blue-700 hover:text-blue-700">Billing</Link>
+                            <Link to={"/dashboard/dashboard2"} className="w-full mt-5 cursor-pointer border-l-2 border-transparent px-2 py-2 font-semibold text-black transition focus:border-l-blue-700 focus:text-blue-700 hover:text-blue-700">Notifications</Link>
+                            <Link to={"/dashboard/dashboard1"} className="w-full mt-5 cursor-pointer border-l-2 border-transparent px-2 py-2 font-semibold transition hover:border-l-blue-700 hover:text-blue-700 focus:text-blue-700 focus:border-l-blue-700">Integrations</Link>
+                        </ul>
+                    </div>
+
+                    <div className='w-full col-span-8'>
+                        {/* <Analytics /> */}
+                        <RouterItem />
+                    </div>
+
+                    {/* <div className="col-span-8 overflow-hidden rounded-xl bg-gray-50 px-8 shadow">
+                        <div className="border-b pt-4 pb-8">
+                            <h1 className="py-2 text-2xl font-semibold">Notification settings</h1>
+                            <p className="font- text-slate-600">Lorem ipsum dolor, sit amet consectetur adipisicing elit.</p>
+                        </div>
+                        <div className="grid border-b py-6 sm:grid-cols-2">
+                            <div className="">
+                                <h2 className="text-lg font-semibold leading-4 text-slate-700">Comments</h2>
+                                <p className="font- text-slate-600">Lorem ipsum dolor, Alias eligendi laboriosam magni reiciendis neque.</p>
+                            </div>
+                            <div className="mt-4 flex items-center sm:justify-end">
+                                <div className="flex flex-col gap-3">
+                                    <label for="push" className="relative inline-flex cursor-pointer items-center">
+                                        <input type="checkbox" value="" id="push" className="peer sr-only" checked />
+                                        <div className="peer h-6 w-11 rounded-full bg-gray-200 after:absolute after:top-[2px] after:left-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-blue-600 peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:border-gray-600 dark:bg-gray-700 dark:peer-focus:ring-blue-800"></div>
+                                        <span className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">Push</span>
+                                    </label>
+                                    <label for="email" className="relative inline-flex cursor-pointer items-center">
+                                        <input type="checkbox" value="" id="email" className="peer sr-only" checked />
+                                        <div className="peer h-6 w-11 rounded-full bg-gray-200 after:absolute after:top-[2px] after:left-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-blue-600 peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:border-gray-600 dark:bg-gray-700 dark:peer-focus:ring-blue-800"></div>
+                                        <span className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">Email</span>
+                                    </label>
+                                    <label for="sms" className="relative inline-flex cursor-pointer items-center">
+                                        <input type="checkbox" value="" id="sms" className="peer sr-only" />
+                                        <div className="peer h-6 w-11 rounded-full bg-gray-200 after:absolute after:top-[2px] after:left-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-blue-600 peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:border-gray-600 dark:bg-gray-700 dark:peer-focus:ring-blue-800"></div>
+                                        <span className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">SMS</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="grid border-b py-6 sm:grid-cols-2">
+                            <div className="">
+                                <h2 className="text-lg font-semibold leading-4 text-slate-700">Reminders</h2>
+                                <p className="font- text-slate-600">Lorem ipsum dolor, Alias eligendi laboriosam magni reiciendis neque.</p>
+                            </div>
+                            <div className="mt-4 flex items-center sm:justify-end">
+                                <div className="flex flex-col gap-3">
+                                    <label for="push" className="relative inline-flex cursor-pointer items-center">
+                                        <input type="checkbox" value="" id="push" className="peer sr-only" />
+                                        <div className="peer h-6 w-11 rounded-full bg-gray-200 after:absolute after:top-[2px] after:left-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-blue-600 peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:border-gray-600 dark:bg-gray-700 dark:peer-focus:ring-blue-800"></div>
+                                        <span className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">Push</span>
+                                    </label>
+                                    <label for="email" className="relative inline-flex cursor-pointer items-center">
+                                        <input type="checkbox" value="" id="email" className="peer sr-only" checked />
+                                        <div className="peer h-6 w-11 rounded-full bg-gray-200 after:absolute after:top-[2px] after:left-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-blue-600 peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:border-gray-600 dark:bg-gray-700 dark:peer-focus:ring-blue-800"></div>
+                                        <span className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">Email</span>
+                                    </label>
+                                    <label for="sms" className="relative inline-flex cursor-pointer items-center">
+                                        <input type="checkbox" value="" id="sms" className="peer sr-only" />
+                                        <div className="peer h-6 w-11 rounded-full bg-gray-200 after:absolute after:top-[2px] after:left-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-blue-600 peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:border-gray-600 dark:bg-gray-700 dark:peer-focus:ring-blue-800"></div>
+                                        <span className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">SMS</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="grid border-b py-6 sm:grid-cols-2">
+                            <div className="">
+                                <h2 className="text-lg font-semibold leading-4 text-slate-700">Updates</h2>
+                                <p className="font- text-slate-600">Lorem ipsum dolor, Alias eligendi laboriosam magni reiciendis neque.</p>
+                            </div>
+                            <div className="mt-4 flex items-center sm:justify-end">
+                                <div className="flex flex-col gap-3">
+                                    <label for="push" className="relative inline-flex cursor-pointer items-center">
+                                        <input type="checkbox" value="" id="push" className="peer sr-only" />
+                                        <div className="peer h-6 w-11 rounded-full bg-gray-200 after:absolute after:top-[2px] after:left-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-blue-600 peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:border-gray-600 dark:bg-gray-700 dark:peer-focus:ring-blue-800"></div>
+                                        <span className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">Push</span>
+                                    </label>
+                                    <label for="email" className="relative inline-flex cursor-pointer items-center">
+                                        <input type="checkbox" value="" id="email" className="peer sr-only" />
+                                        <div className="peer h-6 w-11 rounded-full bg-gray-200 after:absolute after:top-[2px] after:left-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-blue-600 peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:border-gray-600 dark:bg-gray-700 dark:peer-focus:ring-blue-800"></div>
+                                        <span className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">Email</span>
+                                    </label>
+                                    <label for="sms" className="relative inline-flex cursor-pointer items-center">
+                                        <input type="checkbox" value="" id="sms" className="peer sr-only" />
+                                        <div className="peer h-6 w-11 rounded-full bg-gray-200 after:absolute after:top-[2px] after:left-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-blue-600 peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:border-gray-600 dark:bg-gray-700 dark:peer-focus:ring-blue-800"></div>
+                                        <span className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">SMS</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div> */}
+                </div>
             </div>
         </>
     )
+}
+
+
+export const RouterItem = () => {
+    return (
+        <>
+            <Routes>
+                <Route path='/' element={<Landing />} />
+            </Routes>
+            <Outlet />
+        </>
+    );
 }
