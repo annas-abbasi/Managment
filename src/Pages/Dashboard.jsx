@@ -1,13 +1,13 @@
 import React from 'react'
 import Analytics from './Analytics'
 import { Link, Outlet, Route, Routes } from 'react-router-dom'
-import Landing from './Landing'
+import Dashboard1 from './dashboard/Dashboard1'
 
 export default function Dashboard() {
     return (
         <>
 
-            <div className="mx-4 min-h-screen max-w-screen-xl sm:mx-8 xl:mx-auto">
+            <div className="mx-4 min-h-screen px-10 sm:mx-8 xl:mx-auto">
                 <h1 className="border-b py-6 text-4xl font-semibold">Dashboard</h1>
                 <div className="grid grid-cols-8 pt-3 sm:grid-cols-10">
                     <div className="relative my-4 w-56 sm:hidden">
@@ -133,7 +133,7 @@ export const RouterItem = () => {
     return (
         <>
             <Routes>
-                <Route path='/' element={<Landing />} />
+                <Route path='/' element={<Dashboard1 />} />
             </Routes>
             <Outlet />
         </>
