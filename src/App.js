@@ -1,25 +1,30 @@
-import logo from './logo.svg';
+// import { Route } from 'react-router-dom';
 import './App.css';
+// import MaxContent from './Component/MaxContent';
+// import Navbar from './Component/Navbar';
+// import About from './Pages/About';
+// import Analytics from './Pages/Analytics';
+// import Dashboard from './Pages/Dashboard';
+// import Detailed from './Pages/Detailed';
+// import Footer from './Pages/Footer';
+// import Growth from './Pages/Growth';
+// import Landing from './Pages/Landing';
+import AppRoutes from './Pages/Routes';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <AppRoutes />
+      {/* <Navbar />
+      <Landing />
+      <Detailed />
+      <Analytics />
+      <About />
+      <Growth />
+      <Footer />
+      <Dashboard /> */}
+    </>
   );
-}
+};
 
 export default App;
