@@ -1,12 +1,20 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Analytics from './Analytics'
-import { Link, Outlet, Route, Routes } from 'react-router-dom'
-import Dashboard1 from './dashboard/Dashboard1'
+import { Link, Outlet, Route, Routes, useLocation } from 'react-router-dom'
+import Dashboard1 from './dashboard/Members'
+import Assignee from './dashboard/Assignee';
+import { Members } from './dashboard/IndexDashboard';
 
 export default function Dashboard() {
+    const location = useLocation();
+    const [activeLink, setActiveLink] = useState('/dashboard');
+
+    useEffect(() => {
+        setActiveLink(location.pathname);
+    }, [location.pathname])
+
     return (
         <>
-
             <div className="mx-4 min-h-screen px-10 sm:mx-8 xl:mx-auto">
                 <h1 className="border-b py-6 text-4xl font-semibold">Dashboard</h1>
                 <div className="grid grid-cols-8 pt-3 sm:grid-cols-10">
@@ -25,13 +33,18 @@ export default function Dashboard() {
 
                     <div className="col-span-2 hidden sm:block">
                         <ul className='flex items-start flex-col gap-2'>
-                            <Link to={"/dashboard/dashboard1"} className="mt-5 w-full cursor-pointer border-l-2 border-transparent px-2 py-2 font-semibold transition hover:border-l-blue-700 focus:text-blue-700 focus:border-l-blue-700 hover:text-blue-700">Teams</Link>
-                            <Link to={"/dashboard/dashboard2"} className="w-full mt-5 cursor-pointer border-l-2 border-transparent px-2 py-2 font-semibold transition hover:border-l-blue-700 focus:text-blue-700 focus:border-l-blue-700 hover:text-blue-700">Accounts</Link>
-                            <Link to={"/dashboard/dashboard1"} className="w-full mt-5 cursor-pointer border-l-2 border-transparent px-2 py-2 font-semibold transition hover:border-l-blue-700 focus:text-blue-700 focus:border-l-blue-700 hover:text-blue-700">Users</Link>
-                            <Link to={"/dashboard/dashboard2"} className="w-full mt-5 cursor-pointer border-l-2 border-transparent px-2 py-2 font-semibold transition hover:border-l-blue-700 focus:text-blue-700 focus:border-l-blue-700 hover:text-blue-700">Profile</Link>
-                            <Link to={"/dashboard/dashboard1"} className="w-full mt-5 cursor-pointer border-l-2 border-transparent px-2 py-2 font-semibold transition hover:border-l-blue-700 focus:text-blue-700 focus:border-l-blue-700 hover:text-blue-700">Billing</Link>
-                            <Link to={"/dashboard/dashboard2"} className="w-full mt-5 cursor-pointer border-l-2 border-transparent px-2 py-2 font-semibold text-black transition focus:border-l-blue-700 focus:text-blue-700 hover:text-blue-700">Notifications</Link>
-                            <Link to={"/dashboard/dashboard1"} className="w-full mt-5 cursor-pointer border-l-2 border-transparent px-2 py-2 font-semibold transition hover:border-l-blue-700 hover:text-blue-700 focus:text-blue-700 focus:border-l-blue-700">Integrations</Link>
+                            <Link to="/dashboard/Members" className={`mt-5 w-full cursor-pointer border-l-2 px-2 py-2 font-semibold transition ${activeLink === '/dashboard' || activeLink === '/dashboard/Members' ? 'border-l-blue-700 text-blue-700' : 'border-transparent hover:border-l-blue-700 hover:text-blue-700'}`}>
+                                Members
+                            </Link>
+                            <Link to="/dashboard/Assignee" className={`w-full mt-5 cursor-pointer border-l-2 px-2 py-2 font-semibold transition ${activeLink === '/dashboard/Assignee' ? 'focus:border-l-blue-700 text-blue-700' : 'border-transparent hover:border-l-blue-700 hover:text-blue-700'}`}>
+                                Assignee
+                            </Link>
+                            <Link to="/dashboard/Time" className={`w-full mt-5 cursor-pointer border-l-2 px-2 py-2 font-semibold transition ${activeLink === '/dashboard/Time' ? 'border-l-blue-700 text-blue-700' : 'border-transparent hover:border-l-blue-700 hover:text-blue-700'}`}>
+                                Time
+                            </Link>
+                            <Link to="/dashboard/Profile" className={`w-full mt-5 cursor-pointer border-l-2 px-2 py-2 font-semibold transition ${activeLink === '/dashboard/Profile' ? 'border-l-blue-700 text-blue-700' : 'border-transparent hover:border-l-blue-700 hover:text-blue-700'}`}>
+                                Profile
+                            </Link>
                         </ul>
                     </div>
 
@@ -133,7 +146,7 @@ export const RouterItem = () => {
     return (
         <>
             <Routes>
-                <Route path='/' element={<Dashboard1 />} />
+                <Route path='/' element={<Members />} />
             </Routes>
             <Outlet />
         </>

@@ -3,13 +3,10 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from '../Component/Navbar'; // Make sure to import your Navbar
 import Footer from './Footer'; // Make sure to import your Footer
 import Landing from './Landing';
-import Detailed from './Detailed';
-import Analytics from './Analytics';
-import About from './About';
-import Growth from './Growth';
 import Dashboard from './Dashboard';
-import Dashboard1 from './dashboard/Dashboard1';
-import Dashboard2 from './dashboard/Dashboard2';
+import { Members, Profile, Time, Assignee } from './dashboard/IndexDashboard';
+import Signup from './Signup';
+import Login from './Login';
 
 export default function AppRoutes() {
     return (
@@ -18,9 +15,13 @@ export default function AppRoutes() {
             <Routes>
                 <Route path="/" element={<Landing />} />
                 <Route path="/dashboard" element={<Dashboard />}>
-                    <Route path="dashboard1" element={<Dashboard1 />} />
-                    <Route path="dashboard2" element={<Dashboard2 />} />
+                    <Route path="Assignee" element={<Assignee />} />
+                    <Route path="Members" element={<Members />} />
+                    <Route path="Profile" element={<Profile />} />
+                    <Route path="Time" element={<Time />} />
                 </Route>
+                <Route path="/Signup" element={<Signup />} />
+                <Route path="/Login" element={<Login />} />
             </Routes>
             <Footer />
         </>

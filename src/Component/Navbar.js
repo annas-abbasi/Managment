@@ -155,8 +155,8 @@ export default function Navbar() {
                                     data-twe-dropdown-menu-ref>
                                     {/* <!-- First dropdown menu items --> */}
 
-                                    <Link className='px-2 py-2 rounded-md hover:bg-slate-100'>SignIn</Link>
-                                    <Link className='border-gray-300 px-2 py-2 rounded-md hover:bg-slate-100'>Logout</Link>
+                                    <Link to={"/Signup"} className='px-2 py-2 rounded-md hover:bg-slate-100'>Login</Link>
+                                    <Link className='border-gray-300 px-2 py-2 rounded-md hover:bg-slate-100'>or Logout?</Link>
                                 </ul>
                             </div>
 
