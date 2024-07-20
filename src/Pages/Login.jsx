@@ -10,7 +10,6 @@ export default function Login() {
         setShown(!shown);
     };
 
-
     const [loginData, setLoginData] = useState({});
     const [redirect, setRedirect] = useState(false);
     const { setUser } = useContext(AuthContext);
