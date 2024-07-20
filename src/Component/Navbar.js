@@ -1,9 +1,12 @@
 // import React from 'react'
-import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useContext, useEffect, useState } from 'react';
+import { Link, Navigate } from 'react-router-dom';
+import { UserContext } from '../UserContext';
+import axios from 'axios';
 
 export default function Navbar() {
     const [scrolled, setScrolled] = useState(false);
+    // const { user } = useContext(UserContext);
 
     const handleScroll = () => {
         const hScreen = window.scrollY;
@@ -20,6 +23,30 @@ export default function Navbar() {
             window.removeEventListener("scroll", handleScroll)
         }
     }, [])
+
+    // LOGOUT FUNCTIONALITY
+
+    const { user, setUser } = useContext(UserContext);
+    const [redirect, setRedirect] = useState(false);
+
+    const serverApi = process.env.REACT_APP_BACKEND_SERVER_PATH
+    console.log(`${serverApi}/logout`)
+
+    const userLogout = async (e) => {
+        e.preventDefault();
+        try {
+            await axios.post(`${serverApi}/logout`)
+            localStorage.removeItem('Token');
+            setUser(null);
+            setRedirect(true);
+        } catch (error) {
+            console.log('Error from the userLogout React', error)
+        }
+    }
+    if (redirect) {
+        return <Navigate to={'/'} />
+    }
+    // LOGOUT FUNCTIONALITY
 
     return (
         <>
@@ -154,9 +181,11 @@ export default function Navbar() {
                                     aria-labelledby="dropdownMenuButton1"
                                     data-twe-dropdown-menu-ref>
                                     {/* <!-- First dropdown menu items --> */}
-
-                                    <Link to={"/Signup"} className='px-2 py-2 rounded-md hover:bg-slate-100'>Login</Link>
-                                    <Link className='border-gray-300 px-2 py-2 rounded-md hover:bg-slate-100'>or Logout?</Link>
+                                    {user ? (
+                                        <Link className='border-gray-300 px-2 py-2 rounded-md hover:bg-slate-100' onClick={userLogout}>Logout?</Link>
+                                    ) : (
+                                        <Link to={"/Signup"} className='px-2 py-2 rounded-md hover:bg-slate-100'>Signup</Link>
+                                    )}
                                 </ul>
                             </div>
 
@@ -179,6 +208,12 @@ export default function Navbar() {
                                         className="rounded-full h-10 w-10"
                                         alt=""
                                         loading="lazy" />
+                                    {user && (
+                                        <p className={`ml-1 font-semibold text-gray-700 ${scrolled ? 'text-white' : 'text-gray-700'}`}>
+                                            {user.charAt(0).toUpperCase() + user.slice(1, 3)}
+                                            {/* {user} */}
+                                        </p>
+                                    )}
                                 </a>
                                 {/* <!-- Second dropdown menu --> */}
                                 <ul

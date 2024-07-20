@@ -1,11 +1,46 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom'
+import axios from 'axios';
 
 export default function Signup() {
     const [shown, setShown] = useState(false);
     const handleShown = () => {
         setShown(!shown)
     }
+
+    // SIGN UP FUNCTIONALITY
+    const [name, setName] = useState('');
+    const [errorMessage, setErrorMessage] = useState('');
+    const [redirect, setRedirect] = useState(false);
+
+    const handleValue = (e) => {
+        setName({ ...name, [e.target.name]: e.target.value })
+    }
+
+    const serverApi = process.env.REACT_APP_BACKEND_SERVER_PATH;
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            const res = await axios.post(`${serverApi}/register`, { ...name });
+            const data = await res.data;
+            console.log(data);
+            await setRedirect(true);
+        } catch (error) {
+            console.log('Error in the HandleSubmit Registration', error);
+            if (error.response && error.response.data && error.response.data.message) {
+                setErrorMessage(error.response.data.message);
+            } else {
+                setErrorMessage("Registration failed. Please try again later.");
+            }
+        }
+    }
+
+    if (redirect) {
+        return <Navigate to={'/Login'} />
+    }
+    // SIGN UP FUNCTIONALITY
+
     return (
         <>
             <div className="flex py-36 min-h-screen w-screen w-full items-center justify-center text-gray-600 bg-gray-50">
@@ -22,22 +57,22 @@ export default function Signup() {
                         <div className="flex-auto p-6">
                             {/* <!-- Logo --> */}
                             <div className="mb-10 flex flex-shrink-0 flex-grow-0 items-center justify-center overflow-hidden">
-                                <a href="#" className="flex cursor-pointer items-center gap-2 text-indigo-500 no-underline hover:text-indigo-500">
+                                <p className="flex cursor-pointer items-center gap-2 text-indigo-500 no-underline hover:text-indigo-500">
                                     <span className="flex-shrink-0 text-3xl font-black lowercase tracking-tight opacity-100">LOGOHERE.</span>
-                                </a>
+                                </p>
                             </div>
                             {/* <!-- /Logo --> */}
                             <h4 className="mb-2 font-medium text-gray-700 xl:text-xl">Welcome to NameHERE!</h4>
                             <p className="mb-6 text-gray-500">Please sign-in to access your account</p>
 
-                            <form id="" className="mb-4" action="#" method="POST">
+                            <form id="" className="mb-4" action="#" method="POST" onSubmit={handleSubmit}>
                                 <div className="mb-4">
                                     <label for="name" className="mb-2 inline-block text-xs font-medium uppercase text-gray-700">Name</label>
-                                    <input type="text" className="block w-full cursor-text appearance-none rounded-md border border-gray-400 bg--100 py-2 px-3 text-sm outline-none focus:border-indigo-500 focus:bg-white focus:text-gray-600 focus:shadow" id="name" name="name-username" placeholder="Enter your name or username" autofocus="" />
+                                    <input type="text" className="block w-full cursor-text appearance-none rounded-md border border-gray-400 bg--100 py-2 px-3 text-sm outline-none focus:border-indigo-500 focus:bg-white focus:text-gray-600 focus:shadow" id="name" name="name" placeholder="Enter your name or username" autofocus="" onChange={handleValue} />
                                 </div>
                                 <div className="mb-4">
                                     <label for="email" className="mb-2 inline-block text-xs font-medium uppercase text-gray-700">Email</label>
-                                    <input type="text" className="block w-full cursor-text appearance-none rounded-md border border-gray-400 bg--100 py-2 px-3 text-sm outline-none focus:border-indigo-500 focus:bg-white focus:text-gray-600 focus:shadow" id="email" name="email-username" placeholder="Enter your email or username" autofocus="" />
+                                    <input type="text" className="block w-full cursor-text appearance-none rounded-md border border-gray-400 bg--100 py-2 px-3 text-sm outline-none focus:border-indigo-500 focus:bg-white focus:text-gray-600 focus:shadow" id="email" name="email" placeholder="Enter your email or username" autofocus="" onChange={handleValue} />
                                 </div>
                                 <div className="mb-4">
                                     <div className="flex justify-between">
@@ -47,7 +82,7 @@ export default function Signup() {
                                         </p>
                                     </div>
                                     <div className="relative flex w-full flex-wrap items-stretch">
-                                        <input type={shown ? "text" : "password"} id="password" className="relative block flex-auto cursor-text appearance-none rounded-md border border-gray-400 bg--100 py-2 px-3 text-sm outline-none focus:border-indigo-500 focus:bg-white focus:text-gray-600 focus:shadow" name="password" placeholder="············" />
+                                        <input type={shown ? "text" : "password"} id="password" className="relative block flex-auto cursor-text appearance-none rounded-md border border-gray-400 bg--100 py-2 px-3 text-sm outline-none focus:border-indigo-500 focus:bg-white focus:text-gray-600 focus:shadow" name="password" placeholder="············" onChange={handleValue} />
                                     </div>
                                 </div>
                                 <div className="mb-4">
@@ -59,6 +94,8 @@ export default function Signup() {
                                 Already have an account?
                                 <Link to={"/Login"} className="cursor-pointer text-indigo-500 no-underline hover:text-indigo-500"> &nbsp; Login Here</Link>
                             </p>
+
+                            {errorMessage && <div className="text-red-500">{errorMessage}</div>}
                         </div>
                     </div>
                     {/* <!-- /Register --> */}
