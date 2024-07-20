@@ -22,7 +22,7 @@ export default function Login() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const res = await axios.post(`https://managment-weld.vercel.app/#/login`, { ...loginData }, { withCredentials: true });
+            const res = await axios.post(`${serverApi}/login`, { ...loginData }, { withCredentials: true });
             if (res.data.error) {
                 throw new Error(`Server error! ${res.data.error}`);
             }

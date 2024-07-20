@@ -10,7 +10,7 @@ app.use(express.json())
 app.use(cookieParser());
 
 app.use(cors({
-    origin: ['http://localhost:3000', 'https://managment-weld.vercel.app/'],
+    origin: ['https://managment-weld.vercel.app/', 'http://localhost:3000',],
     credentials: true,
 }));
 
