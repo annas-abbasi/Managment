@@ -40,8 +40,6 @@ export default function Login() {
         return <Navigate to="/dashboard" />;
     }
 
-
-
     // const [loginData, setLoginData] = useState({});
     // const [redirect, setRedirect] = useState(false);
     // const [errorMessage, setErrorMessage] = useState('');

@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { useState, createContext, useEffect } from 'react';
 
 export const UserContext = createContext({});
-const serverApi = process.env.REACT_APP_BACKEND_SERVER_PATH
+const serverApi = process.env.REACT_APP_BACKEND_SERVER_PATH;
 
 export const UserContextProvider = ({ children }) => {
     const [user, setUser] = useState(null);
