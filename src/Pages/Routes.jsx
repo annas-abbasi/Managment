@@ -7,8 +7,8 @@ import Dashboard from './Dashboard';
 import { Members, Profile, Time, Assignee } from './dashboard/IndexDashboard';
 import Signup from './Signup';
 import Login from './Login';
-import ProtectedRoute from '../ProtectedRoute'; // Import the ProtectedRoute component
-import { AuthProvider } from '../AuthContext'; // Import the AuthProvider
+import ProtectedRoute from '../ProtectedRoute';
+import { AuthProvider } from '../AuthContext';
 
 export default function AppRoutes() {
     return (

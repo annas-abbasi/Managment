@@ -3,6 +3,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Link, Navigate } from 'react-router-dom';
 import { UserContext } from '../UserContext';
 import axios from 'axios';
+import { AuthContext } from '../AuthContext';
 
 export default function Navbar() {
     const [scrolled, setScrolled] = useState(false);
@@ -26,7 +27,8 @@ export default function Navbar() {
 
     // LOGOUT FUNCTIONALITY
 
-    const { user, setUser } = useContext(UserContext);
+    // const { user, setUser } = useContext(UserContext);
+    const { user, setUser } = useContext(AuthContext);
     const [redirect, setRedirect] = useState(false);
 
     const serverApi = process.env.REACT_APP_BACKEND_SERVER_PATH
@@ -208,12 +210,15 @@ export default function Navbar() {
                                         className="rounded-full h-10 w-10"
                                         alt=""
                                         loading="lazy" />
-                                    {user && (
+                                    {/* {user && (
                                         <p className={`ml-1 font-semibold text-gray-700 ${scrolled ? 'text-white' : 'text-gray-700'}`}>
                                             {user.charAt(0).toUpperCase() + user.slice(1, 3)}
-                                            {/* {user} */}
+                                            {user}
                                         </p>
-                                    )}
+                                        )} */}
+                                    {user && typeof user === 'string' && (<p className={`ml-1 font-semibold text-gray-700 ${scrolled ? 'text-white' : 'text-gray-700'}`}>
+                                        {user.charAt(0).toUpperCase() + user.slice(1, 3)}
+                                    </p>)}
                                 </a>
                                 {/* <!-- Second dropdown menu --> */}
                                 <ul

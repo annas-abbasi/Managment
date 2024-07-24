@@ -33,7 +33,7 @@ export default function Assignee() {
             });
             setTimeout(() => {
                 setSuccessMessage('');
-            }, 3000); // Clear the message after 3 seconds
+            }, 3000);
         } catch (error) {
             console.error('Error creating task:', error);
         }
