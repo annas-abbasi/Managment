@@ -14,10 +14,11 @@ export const UserContextProvider = ({ children }) => {
                 try {
                     const res = await axios.get(`${serverApi}/profile`, {
                         headers: {
-                            Authorization: token,
+                            'Authorization': `Bearer ${token}`
                         },
                     });
-                    // const { user } = res.data;
+                    const { user } = res.data;
+                    console.log(user)
                     // setUser(user);
                     const named = res.data.user.userName;
                     setUser(named);

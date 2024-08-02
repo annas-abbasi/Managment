@@ -1,19 +1,23 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import { AuthContext } from './AuthContext';
+import Spinner from './Component/Spinner';
 
 const ProtectedRoute = ({ children }) => {
     const { user } = useContext(AuthContext);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        setLoading(false);
+        const checkUser = setTimeout(() => {
+            setLoading(false);
+        }, 500);
+
+        return () => clearTimeout(checkUser);
     }, [user]);
 
     if (loading) {
-        return <div>Loading...</div>;
+        return <Spinner />;
     }
-
     if (!user) {
         return <Navigate to="/login" />;
     }
@@ -23,21 +27,3 @@ const ProtectedRoute = ({ children }) => {
 
 export default ProtectedRoute;
 
-
-
-
-// import React, { useContext } from 'react';
-// import { Navigate } from 'react-router-dom';
-// import { AuthContext } from './AuthContext';
-
-// const ProtectedRoute = ({ children }) => {
-//     const { user } = useContext(AuthContext);
-
-//     if (!user) {
-//         return <Navigate to="/login" />;
-//     }
-
-//     return children;
-// };
-
-// export default ProtectedRoute;
