@@ -6,7 +6,7 @@ const registerUser = require('./Routes/user')
 const connectDB = require('./DB/connect')
 const cookieParser = require('cookie-parser');
 
-app.use(express.json())
+app.use(express.json());
 app.use(cookieParser());
 
 app.use(cors({
@@ -15,10 +15,6 @@ app.use(cors({
 }));
 
 app.use(registerUser)
-
-app.get('/test', (req, res) => {
-    res.send('Hello Server from the address')
-})
 
 const port = process.env.PORT || 3007;
 

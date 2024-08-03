@@ -64,54 +64,41 @@ export default function Assignee() {
                 <form onSubmit={handleSubmit} className='grid grid-cols-2 gap-y-16'>
                     <div className='space-y-1'>
                         <p className='text-lg font-semibold'>Name:</p>
-                        <input
-                            type="text"
+                        <input type="text"
                             name="name"
                             placeholder='Name of Person to Assign Task'
                             className='border w-11/12 rounded-md py-2 px-4'
                             value={formData.name}
-                            onChange={handleChange}
-                        />
+                            onChange={handleChange} />
                     </div>
                     <div className='space-y-1'>
                         <p className='text-lg font-semibold'>Title:</p>
-                        <input
-                            type="text"
+                        <input type="text"
                             name="title"
                             placeholder='Assign Task Title'
                             className='border w-11/12 rounded-md py-2 px-4'
                             value={formData.title}
-                            onChange={handleChange}
-                        />
+                            onChange={handleChange} />
                     </div>
                     <div className='space-y-1'>
                         <p className='text-lg font-semibold'>Task:</p>
-                        <input
-                            type="text"
+                        <input type="text"
                             name="task"
                             placeholder='Assign Task'
                             className='border w-11/12 rounded-md py-2 px-4'
                             value={formData.task}
-                            onChange={handleChange}
-                        />
+                            onChange={handleChange} />
                     </div>
                     <div className='space-y-1'>
                         <p className='text-lg font-semibold'>Time:</p>
-                        <input
-                            type="text"
+                        <input type="text"
                             name="time"
                             placeholder='Assign the Time Limit (HH:MM:SS)'
                             className='border w-11/12 rounded-md py-2 px-4'
                             value={formData.time}
-                            onChange={handleChange}
-                        />
+                            onChange={handleChange} />
                     </div>
-                    <button
-                        className='py-2 px-4 mt-2 text-white text-base font-semibold bg-blue-600 rounded-md max-w-36 hover:text-blue-600 hover:bg-slate-50 hover:border-blue-600 border transition-all'
-                        type="submit"
-                    >
-                        Send
-                    </button>
+                    <button className='py-2 px-4 mt-2 text-white text-base font-semibold bg-blue-600 rounded-md max-w-36 hover:text-blue-600 hover:bg-slate-50 hover:border-blue-600 border transition-all' type="submit">Send</button>
                 </form>
             </main>
         </>

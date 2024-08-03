@@ -1,14 +1,14 @@
 import React from 'react';
-import { Routes, Route } from 'react-router-dom';
-import Navbar from '../Component/Navbar';
+import Login from './Login';
 import Footer from './Footer';
+import Signup from './Signup';
 import Landing from './Landing';
 import Dashboard from './Dashboard';
-import { Members, Profile, Time, Assignee } from './dashboard/IndexDashboard';
-import Signup from './Signup';
-import Login from './Login';
+import Navbar from '../Component/Navbar';
 import ProtectedRoute from '../ProtectedRoute';
 import { AuthProvider } from '../AuthContext';
+import { Routes, Route } from 'react-router-dom';
+import { Members, Profile, Time, Assignee } from './dashboard/IndexDashboard';
 
 export default function AppRoutes() {
     return (
@@ -18,15 +18,13 @@ export default function AppRoutes() {
                 <Route path="/" element={<Landing />} />
                 <Route
                     path="/dashboard/*"
-                    element={
-                        <ProtectedRoute>
-                            <>
-                                <Dashboard />
-                                <Footer />
-                            </>
-                        </ProtectedRoute>
-                    }
-                >
+                    element={<ProtectedRoute>
+                        <>
+                            <Dashboard />
+                            <Footer />
+                        </>
+                    </ProtectedRoute>
+                    }>
                     <Route path="Assignee" element={<Assignee />} />
                     <Route path="Members" element={<Members />} />
                     <Route path="Profile" element={<Profile />} />
@@ -39,6 +37,3 @@ export default function AppRoutes() {
         </AuthProvider>
     );
 }
-
-
-

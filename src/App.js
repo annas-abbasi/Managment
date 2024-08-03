@@ -1,6 +1,6 @@
 // import { Route } from 'react-router-dom';
 import './App.css';
-// import StopWatch from './Component/StopWatch';
+import StopWatch from './Component/StopWatch';
 // import MaxContent from './Component/MaxContent';
 // import Navbar from './Component/Navbar';
 // import About from './Pages/About';

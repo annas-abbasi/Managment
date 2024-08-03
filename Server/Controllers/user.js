@@ -73,11 +73,6 @@ const ProfileUser = async (req, res) => {
         res.status(200).json({ user: jwtVerify });
     } catch (error) {
         console.log('Error in ProfileUser:', error);
-        // if (error.name === 'JsonWebTokenError') {
-        //     res.status(401).json({ error: 'Invalid token' });
-        // } else {
-        //     res.status(500).json({ error: 'Server Error' });
-        // }
     }
 };
 
@@ -91,38 +86,22 @@ const LogoutUser = async (req, res) => {
     }
 }
 
-// const createTask = async (req, res) => {
+// const getRegisterUser = async (req, res) => {
 //     try {
-//         const { name, title, task, time } = req.body;
-//         const newTask = new Task({ name, title, task, time });
-//         await newTask.save();
-//         res.status(201).json(newTask);
+//         const getTask = await userSchema.find();
+//         res.status(200).json(getTask);
 //     } catch (error) {
-//         res.status(400).json({ message: error.message });
+//         res.status(500).json({ message: error.message });
 //     }
-// };
-
-
-const getRegisterUser = async (req, res) => {
-    try {
-        const getTask = await userSchema.find();
-        res.status(200).json(getTask);
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
-}
-// Testing
+// }
 
 const createTask = async (req, res) => {
     try {
         const { name, title, task, time } = req.body;
-
-        // Check if user exists
         const user = await userSchema.findOne({ name });
         if (!user) {
             return res.status(400).json({ message: 'User not found' });
         }
-
         const newTask = new Task({ name, title, task, time });
         await newTask.save();
         res.status(201).json({ newTask });
@@ -132,14 +111,31 @@ const createTask = async (req, res) => {
 };
 
 
+// TESTING START FROM HERE.........
+const endTask = async (req, res) => {
+    try {
+        const { taskId, time } = req.body;
+        const task = await Task.findById(taskId);
+        if (!task) {
+            return res.status(404).json({ message: 'Task not found' });
+        }
+        task.time = time;
+        task.ended = true;
+        await task.save();
+        res.status(200).json(task);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
 
+const getRegisterUser = async (req, res) => {
+    try {
+        const ended = req.query.ended === 'true';
+        const getTask = await userSchema.find(ended ? { ended: true } : {});
+        res.status(200).json(getTask);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
 
-
-
-
-
-
-
-
-
-module.exports = { LoginUser, RegisterUser, ProfileUser, LogoutUser, createTask, getAllTasks, getRegisterUser }
+module.exports = { LoginUser, RegisterUser, ProfileUser, LogoutUser, createTask, getAllTasks, getRegisterUser, endTask }

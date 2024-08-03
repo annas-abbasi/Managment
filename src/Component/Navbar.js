@@ -1,13 +1,10 @@
-// import React from 'react'
 import React, { useContext, useEffect, useState } from 'react';
 import { Link, Navigate } from 'react-router-dom';
-// import { UserContext } from '../UserContext';
 import axios from 'axios';
 import { AuthContext } from '../AuthContext';
 
 export default function Navbar() {
     const [scrolled, setScrolled] = useState(false);
-    // const { user } = useContext(UserContext);
 
     const handleScroll = () => {
         const hScreen = window.scrollY;
@@ -25,13 +22,10 @@ export default function Navbar() {
         }
     }, [])
 
-    // LOGOUT FUNCTIONALITY
-    // const { user, setUser } = useContext(UserContext);
     const { user, setUser } = useContext(AuthContext);
     const [redirect, setRedirect] = useState(false);
 
     const serverApi = process.env.REACT_APP_BACKEND_SERVER_PATH
-
     const userLogout = async (e) => {
         e.preventDefault();
         try {
@@ -49,7 +43,6 @@ export default function Navbar() {
             <Navigate to={'/'} />
         }
     }, [redirect])
-    // LOGOUT FUNCTIONALITY
 
     return (
         <>
