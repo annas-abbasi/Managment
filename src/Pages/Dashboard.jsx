@@ -12,11 +12,11 @@ export default function Dashboard() {
 
     return (
         <>
-            <div className="mx-4 min-h-screen px-10 sm:mx-8 xl:mx-auto">
-                <h1 className="border-b py-6 text-4xl font-semibold">Dashboard</h1>
-                <div className="grid grid-cols-8 pt-3 sm:grid-cols-10">
+            <div className="mx-4 min-h-screen sm:mx-8 xl:mx-auto">
+                <h1 className=" py-6 text-4xl px-10 font-semibold bg-gray-50">Dashboard</h1>
+                <div className="grid grid-cols-8 sm:grid-cols-10">
 
-                    <div className="relative my-4 w-56 sm:hidden">
+                    <div className="relative w-56 sm:hidden">
                         <input className="peer hidden" type="checkbox" name="select-1" id="select-1" />
 
                         <label for="select-1" className="flex w-full cursor-pointer select-none rounded-lg border p-2 px-3 text-sm text-gray-700 ring-blue-700 peer-checked:ring">Notifications </label>
@@ -32,7 +32,7 @@ export default function Dashboard() {
                         </ul>
                     </div>
 
-                    <div className="col-span-2 hidden sm:block">
+                    <div className="min-h-screen col-span-2 hidden sm:block border-r px-4 bg-gray-50">
                         <ul className='flex items-start flex-col gap-2'>
                             <Link to="/dashboard/Members" className={`mt-5 w-full cursor-pointer border-l-2 px-2 py-2 font-semibold transition ${activeLink === '/dashboard' || activeLink === '/dashboard/Members' ? 'border-l-blue-700 text-blue-700' : 'border-transparent hover:border-l-blue-700 hover:text-blue-700'}`}>All Task</Link>
 
@@ -44,7 +44,7 @@ export default function Dashboard() {
                         </ul>
                     </div>
 
-                    <div className='w-full col-span-8'>
+                    <div className='w-full col-span-8 pt-3 pl-4 pr-10 border-t '>
                         <RouterItem />
                     </div>
                 </div>

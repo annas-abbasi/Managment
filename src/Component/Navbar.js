@@ -47,7 +47,7 @@ export default function Navbar() {
     return (
         <>
             <div className='h-20'>
-                <nav className={`flex-no-wrap fixed z-10 flex w-full items-center justify-between bg-opacity-80 border-b transition-all backdrop-blur-md py-2 lg:flex-wrap lg:justify-start lg:py-4 ${scrolled ? "border-blue-200 bg-zinc-800" : "border-transparent bg-white"}`}>
+                <nav className={`flex-no-wrap fixed z-10 flex w-full items-center justify-between bg-opacity-80 border-b transition-all backdrop-blur-md py-2 lg:flex-wrap lg:justify-start lg:py-4 ${scrolled ? "border-zinc-200 bg-gray-50" : "border-zinc-400 bg-zinc-900"}`}>
                     <div className="flex w-full flex-wrap items-center justify-between px-3">
                         {/* <!-- Hamburger button for mobile view --> */}
                         <button className="block border-0 bg-transparent px-2 text-black/50 hover:no-underline hover:shadow-none focus:no-underline focus:shadow-none focus:outline-none focus:ring-0 dark:text-neutral-200 lg:hidden">
@@ -71,16 +71,16 @@ export default function Navbar() {
                             </Link>
 
                             <ul className="list-style-none me-auto space-x-6 flex flex-col ps-0 lg:flex-row">
-                                <Link to={'/dashboard'} className={`transition duration-200 ease-in-out motion-reduce:transition-none hover:text-blue-600 font-semibold lg:px-2 ${scrolled ? 'text-white' : 'text-gray-700'} mb-4 lg:mb-0 lg:pe-2`} href="/">Dashboard </Link>
+                                <Link to={'/dashboard'} className={`transition duration-200 ease-in-out motion-reduce:transition-none hover:text-blue-600 font-semibold lg:px-2 ${scrolled ? 'text-gray-700' : 'text-white'} mb-4 lg:mb-0 lg:pe-2`} href="/">Dashboard </Link>
 
-                                <Link className={`transition duration-200 ease-in-out motion-reduce:transition-none hover:text-blue-600 font-semibold lg:px-2 ${scrolled ? 'text-white' : 'text-gray-700'} mb-4 lg:mb-0 lg:pe-2`} href="/">Team</Link>
+                                <Link className={`transition duration-200 ease-in-out motion-reduce:transition-none hover:text-blue-600 font-semibold lg:px-2 ${scrolled ? 'text-gray-700' : 'text-white'} mb-4 lg:mb-0 lg:pe-2`} href="/">Team</Link>
 
-                                <Link className={`transition duration-200 ease-in-out motion-reduce:transition-none hover:text-blue-600 font-semibold lg:px-2 ${scrolled ? 'text-white' : 'text-gray-700'} mb-4 lg:mb-0 lg:pe-2`} href="/" >Projects</Link>
+                                <Link className={`transition duration-200 ease-in-out motion-reduce:transition-none hover:text-blue-600 font-semibold lg:px-2 ${scrolled ? 'text-gray-700' : 'text-white'} mb-4 lg:mb-0 lg:pe-2`} href="/" >Projects</Link>
                             </ul>
                         </div>
 
                         <div className="relative flex items-center space-x-2">
-                            <Link className={`me-4 ${scrolled ? 'text-white' : 'text-gray-600'} transition-all`} href="/">
+                            <Link className={`me-4 ${scrolled ? 'text-gray-700' : 'text-white'} transition-all`} href="/">
                                 <span className="[&>svg]:w-5">
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
@@ -93,7 +93,7 @@ export default function Navbar() {
                             </Link>
 
                             <div className="relative">
-                                <Link className={`me-4 flex items-center transition-all ${scrolled ? 'text-white' : 'text-gray-600'}`} href="/">
+                                <Link className={`me-4 flex items-center transition-all ${scrolled ? 'text-gray-60' : 'text-white'}`} href="/">
                                     <span className="[&>svg]:w-5">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
                                             <path fillRule="evenodd"
