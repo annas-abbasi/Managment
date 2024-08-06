@@ -115,10 +115,10 @@ export default function Navbar() {
                             <div className="relative">
                                 <Link className="flex items-center whitespace-nowrap transition duration-150 ease-in-out motion-reduce:transition-none mr-4" href="/">
                                     {/* <!-- User avatar --> */}
-                                    <img src="https://tecdn.b-cdn.net/img/new/avatars/2.jpg" className="rounded-full h-10 w-10" alt="User Pic" />
+                                    <img src="https://tecdn.b-cdn.net/img/new/avatars/2.jpg" className="rounded-full h-10 w-10 " alt="User Pic" />
                                     {user && typeof user === 'string' &&
                                         (
-                                            <p className={`ml-1 font-semibold text-gray-700 ${scrolled ? 'text-white' : 'text-gray-700'}`}>
+                                            <p className={`ml-1 font-semibold text-gray-700 ${scrolled ? 'text-gray-700' : 'text-white'}`}>
                                                 {user.charAt(0).toUpperCase() + user.slice(1, 3)}
                                             </p>
                                         )}

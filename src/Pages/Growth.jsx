@@ -6,7 +6,7 @@ export default function Growth() {
             <section className="py-6 text-blue-900 sm:py-16">
                 <div className="mx-auto max-w-screen-lg px-4 sm:px-6 lg:px-8">
                     <div className="relative flex flex-col lg:flex-row">
-                        
+
                         <div className="pointer-events-none absolute -bottom-10 left-12 hidden h-24 w-24 rounded-full opacity-60 lg:block">
                             <svg id='patternId' width='100%' height='100%' xmlns='http://www.w3.org/2000/svg'><defs><pattern id='b' patternUnits='userSpaceOnUse' width='40' height='40' patternTransform='scale(0.5) rotate(0)'><rect x='0' y='0' width='100%' height='100%' fill='none' /><path d='M11 6a5 5 0 01-5 5 5 5 0 01-5-5 5 5 0 015-5 5 5 0 015 5' strokeWidth='1' stroke='none' fill='currentColor' /></pattern></defs><rect width='800%' height='800%' transform='translate(0,0)' fill='url(#b)' /></svg>
                         </div>
@@ -64,7 +64,6 @@ export default function Growth() {
                     </div>
                 </div>
             </section>
-
         </>
     )
 }

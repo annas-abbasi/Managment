@@ -25,15 +25,6 @@ const RegisterUser = async (req, res) => {
     }
 }
 
-const getAllTasks = async (req, res) => {
-    try {
-        const tasks = await Task.find();
-        res.status(200).json(tasks);
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
-};
-
 const LoginUser = async (req, res) => {
     try {
         const { email, password } = req.body;
@@ -86,15 +77,6 @@ const LogoutUser = async (req, res) => {
     }
 }
 
-// const getRegisterUser = async (req, res) => {
-//     try {
-//         const getTask = await userSchema.find();
-//         res.status(200).json(getTask);
-//     } catch (error) {
-//         res.status(500).json({ message: error.message });
-//     }
-// }
-
 const createTask = async (req, res) => {
     try {
         const { name, title, task, time } = req.body;
@@ -110,8 +92,15 @@ const createTask = async (req, res) => {
     }
 };
 
+const getAllTasks = async (req, res) => {
+    try {
+        const tasks = await Task.find();
+        res.status(200).json(tasks);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
 
-// TESTING START FROM HERE.........
 const endTask = async (req, res) => {
     try {
         const { taskId, time } = req.body;
@@ -138,4 +127,62 @@ const getRegisterUser = async (req, res) => {
     }
 };
 
-module.exports = { LoginUser, RegisterUser, ProfileUser, LogoutUser, createTask, getAllTasks, getRegisterUser, endTask }
+const updateTaskApproval = async (req, res) => {
+    try {
+        const { taskId, status } = req.body;
+        const task = await Task.findById(taskId);
+        if (!task) {
+            return res.status(404).json({ message: 'Task not found' });
+        }
+        task.status = status;  // Update the status field
+        await task.save();     // Save the task with the new status
+        res.status(200).json({ message: 'Task status updated' });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+
+
+module.exports = { LoginUser, RegisterUser, ProfileUser, LogoutUser, createTask, getAllTasks, getRegisterUser, endTask, updateTaskApproval }
+
+
+
+// const getRegisterUser = async (req, res) => {
+//     try {
+//         const getTask = await userSchema.find();
+//         res.status(200).json(getTask);
+//     } catch (error) {
+//         res.status(500).json({ message: error.message });
+//     }
+
+// const updateTaskApproval = async (req, res) => {
+//     try {
+//         const { taskId, status } = req.body;
+//         const task = await Task.findById(taskId);
+//         if (!task) {
+//             return res.status(404).json({ message: 'Task not found' });
+//         }
+//         task.status = status;  // Update the status field
+//         await task.save();
+//         res.status(200).json({ message: 'Task status updated' });
+//     } catch (error) {
+//         res.status(500).json({ message: error.message });
+//     }
+// };
+
+// const updateTaskApproval = async (req, res) => {
+//     try {
+//         const { taskId, status } = req.body;
+//         const task = await Task.findById(taskId);
+//         if (!task) {
+//             return res.status(404).json({ message: 'Task not found' });
+//         }
+//         task.status = status;  // assuming you have a status field in your task schema
+//         await task.save();
+//         res.status(200).json({ message: 'Task status updated' });
+//     } catch (error) {
+//         res.status(500).json({ message: error.message });
+//     }
+// };
+// }

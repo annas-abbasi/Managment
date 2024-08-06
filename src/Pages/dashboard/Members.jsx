@@ -1,16 +1,34 @@
+
+// THIS IS ALL WORKING SAVING THE CHECK OR CROSS BUTTON RESPONSE TO THE DB ALSO NOT SHOWING THE ANOTHER ONE AFTER THE CLICK BUT IT VANISHES THE DATA...
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 export default function Member() {
   const [endedTasks, setEndedTasks] = useState([]);
   const [tasks, setTasks] = useState([]);
+  const [crossvisibility, setCrossVisibility] = useState({});
+  const [checkVisibility, setCheckVisibility] = useState({});
+
+  const handleCross = (index) => {
+    setCrossVisibility((i) => ({ ...i, [index]: true }))
+    setCheckVisibility((i) => ({ ...i, [index]: false }))
+  }
+
+  const handleCheck = (index) => {
+    setCheckVisibility((i) => ({ ...i, [index]: true }))
+    setCrossVisibility((i) => ({ ...i, [index]: false }))
+  }
 
   const serverApi = process.env.REACT_APP_BACKEND_SERVER_PATH;
+  // THIS ONE IS MINE ALL WORKING 
   useEffect(() => {
     const fetchTasks = async () => {
       try {
+        // const response = await axios.get(`${serverApi}/tasks`);
+        // setTasks(response.data);
         const response = await axios.get(`${serverApi}/tasks`);
-        setTasks(response.data);
+        const activeTasks = response.data.filter(task => !['approved', 'not-approved'].includes(task.status));
+        setTasks(activeTasks);
       } catch (error) {
         console.error('Error fetching tasks:', error);
       }
@@ -25,6 +43,9 @@ export default function Member() {
     };
     fetchEndedTasks();
   }, []);
+
+
+
 
   const getTaskDetails = (taskId) => {
     return tasks.find(task => task._id === taskId);
@@ -58,7 +79,7 @@ export default function Member() {
             </thead>
 
             <tbody className="lg:border-gray-300">
-              {endedTasks.map(({ taskId, time }) => {
+              {endedTasks.map(({ taskId, time }, index) => {
                 const task = getTaskDetails(taskId);
                 if (!task) return null;
                 return (
@@ -76,17 +97,25 @@ export default function Member() {
                       {formatTime(time)}
                     </td>
 
-
+                    {/* THIS ONE IS MINE I HAVE CREATED THIS AND THIS ONE IS ALL WORKING */}
                     <td className="whitespace-no-wrap hidden py-4 text-sm font-normal text-gray-500 sm:px-6 lg:table-cell">
                       <div className='flex items-center gap-2'>
-                        <div className='border w-fit ml-2 px-4 py-1 rounded-full border-red-700 bg-red-100 text-red-900 cursor-pointer hover:opacity-50 transition-all'><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
-                          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
-                        </svg>
-                        </div>
-                        <div className='border w-fit ml-2 px-4 py-1 rounded-full border-green-700 bg-green-100 text-green-900 cursor-pointer hover:opacity-50 transition-all'><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-5">
-                          <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
-                        </svg>
-                        </div>
+                        {(crossvisibility[index] || crossvisibility[index] === undefined) &&
+                          <div onClick={() => handleCross(index, taskId)} className={`border flex items-center justify-center w-fit ml-2 px-4 py-1 rounded-full border-red-700 bg-red-100 text-red-900 cursor-pointer hover:opacity-50 transition-all ${crossvisibility[index] ? '!m-auto' : ''}`}>
+
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                            </svg>
+                          </div>
+                        }
+                        {(checkVisibility[index] || checkVisibility[index] === undefined) &&
+                          <div onClick={() => handleCheck(index, taskId)} className={`border w-fit ml-2 px-4 py-1 rounded-full border-green-700 bg-green-100 text-green-900 cursor-pointer hover:opacity-50 transition-all ${checkVisibility[index] ? '!m-auto' : ''}`}>
+
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-5">
+                              <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+                            </svg>
+                          </div>
+                        }
                       </div>
                     </td>
                   </tr>

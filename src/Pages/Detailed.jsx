@@ -26,7 +26,6 @@ export default function Detailed() {
 
                 </div>
             </div>
-
         </>
     )
 }
