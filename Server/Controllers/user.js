@@ -108,14 +108,15 @@ const endTask = async (req, res) => {
         if (!task) {
             return res.status(404).json({ message: 'Task not found' });
         }
-        task.time = time;
-        task.ended = true;
+        task.time = time;  // Save the formatted time
+        task.status = 'ended';  // Update the task status if needed
         await task.save();
         res.status(200).json(task);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
 };
+
 
 const getRegisterUser = async (req, res) => {
     try {
@@ -127,16 +128,16 @@ const getRegisterUser = async (req, res) => {
     }
 };
 
-const updateTaskApproval = async (req, res) => {
+const updateTaskStatus = async (req, res) => {
     try {
         const { taskId, status } = req.body;
         const task = await Task.findById(taskId);
         if (!task) {
             return res.status(404).json({ message: 'Task not found' });
         }
-        task.status = status;  // Update the status field
-        await task.save();     // Save the task with the new status
-        res.status(200).json({ message: 'Task status updated' });
+        task.status = status;
+        await task.save();
+        res.status(200).json(task);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -144,45 +145,5 @@ const updateTaskApproval = async (req, res) => {
 
 
 
-module.exports = { LoginUser, RegisterUser, ProfileUser, LogoutUser, createTask, getAllTasks, getRegisterUser, endTask, updateTaskApproval }
 
-
-
-// const getRegisterUser = async (req, res) => {
-//     try {
-//         const getTask = await userSchema.find();
-//         res.status(200).json(getTask);
-//     } catch (error) {
-//         res.status(500).json({ message: error.message });
-//     }
-
-// const updateTaskApproval = async (req, res) => {
-//     try {
-//         const { taskId, status } = req.body;
-//         const task = await Task.findById(taskId);
-//         if (!task) {
-//             return res.status(404).json({ message: 'Task not found' });
-//         }
-//         task.status = status;  // Update the status field
-//         await task.save();
-//         res.status(200).json({ message: 'Task status updated' });
-//     } catch (error) {
-//         res.status(500).json({ message: error.message });
-//     }
-// };
-
-// const updateTaskApproval = async (req, res) => {
-//     try {
-//         const { taskId, status } = req.body;
-//         const task = await Task.findById(taskId);
-//         if (!task) {
-//             return res.status(404).json({ message: 'Task not found' });
-//         }
-//         task.status = status;  // assuming you have a status field in your task schema
-//         await task.save();
-//         res.status(200).json({ message: 'Task status updated' });
-//     } catch (error) {
-//         res.status(500).json({ message: error.message });
-//     }
-// };
-// }
+module.exports = { LoginUser, RegisterUser, ProfileUser, LogoutUser, createTask, getAllTasks, getRegisterUser, endTask, updateTaskStatus }

@@ -61,15 +61,25 @@ export default function TaskReview() {
     });
   };
 
-  const handleEnd = (taskId) => {
+  const handleEnd = async (taskId) => {
     clearInterval(intervalRefs.current[taskId]);
     intervalRefs.current[taskId] = null;
     const taskTime = timers[taskId].time;
+    const formattedTime = formatTime(taskTime);
 
     // Save the ended task in localStorage
     const endedTasks = JSON.parse(localStorage.getItem('endedTasks')) || [];
     endedTasks.push({ taskId, time: taskTime });
     localStorage.setItem('endedTasks', JSON.stringify(endedTasks));
+
+    try {
+      await axios.post(`${serverApi}/end-task`, {
+        taskId,
+        time: formattedTime,
+      });
+    } catch (error) {
+      console.error('Error ending task:', error);
+    }
 
     setTimers(prevTimers => {
       const newTimers = {
@@ -80,6 +90,7 @@ export default function TaskReview() {
       return newTimers;
     });
   };
+
 
   const formatTime = (seconds) => {
     const hrs = Math.floor(seconds / 3600);
