@@ -100,6 +100,40 @@ const getAllTasks = async (req, res) => {
     }
 };
 
+// const endTask = async (req, res) => {
+//     try {
+//         const { taskId, time } = req.body;
+//         const task = await Task.findById(taskId);
+//         if (!task) {
+//             return res.status(404).json({ message: 'Task not found' });
+//         }
+//         task.time = time;  // Save the formatted time
+//         task.status = 'ended';  // Update the task status if needed
+//         await task.save();
+//         res.status(200).json(task);
+//     } catch (error) {
+//         res.status(500).json({ message: error.message });
+//     }
+// };
+
+// THIS IS WORKING FINE IT SHOWS ME DATA TIME FROM DB ONCE I END TASK 
+// const endTask = async (req, res) => {
+//     try {
+//       const { taskId, time } = req.body;
+//       const task = await Task.findById(taskId);
+//       if (!task) {
+//         return res.status(404).json({ message: 'Task not found' });
+//       }
+//       task.time = time;
+//       task.status = 'ended';
+//       await task.save();
+//       res.status(200).json(task);
+//     } catch (error) {
+//       res.status(500).json({ message: 'Server error: ' + error.message });
+//     }
+//   };
+
+
 const endTask = async (req, res) => {
     try {
         const { taskId, time } = req.body;
@@ -115,6 +149,8 @@ const endTask = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
+
+
 
 const getRegisterUser = async (req, res) => {
     try {

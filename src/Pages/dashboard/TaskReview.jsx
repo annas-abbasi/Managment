@@ -7,12 +7,40 @@ export default function TaskReview() {
   const intervalRefs = useRef({});
 
   const serverApi = process.env.REACT_APP_BACKEND_SERVER_PATH;
+
+  // THIS IS WORKING ONCE I END TASK THEN IT SHOW ME TIME FROM THE DB
+  // useEffect(() => {
+  //   const fetchTasks = async () => {
+  //     try {
+  //       const response = await axios.get(`${serverApi}/tasks`);
+  //       const tasksData = response.data;
+  //       console.log('This is from the TaskReview:', tasksData)
+  //       setTasks(tasksData);
+
+  //       const savedTimers = JSON.parse(localStorage.getItem('timers')) || {};
+
+  //       const initialTimers = tasksData.reduce((acc, task) => {
+  //         acc[task._id] = {
+  //           time: savedTimers[task._id]?.time || 0,
+  //           intervalId: null,
+  //           ended: savedTimers[task._id]?.ended || false
+  //         };
+  //         return acc;
+  //       }, {});
+  //       setTimers(initialTimers);
+  //     } catch (error) {
+  //       console.error('Error fetching tasks:', error);
+  //     }
+  //   };
+  //   fetchTasks();
+  // }, [serverApi]);
+
+
   useEffect(() => {
     const fetchTasks = async () => {
       try {
         const response = await axios.get(`${serverApi}/tasks`);
         const tasksData = response.data;
-        console.log('This is from the TaskReview:', tasksData)
         setTasks(tasksData);
 
         const savedTimers = JSON.parse(localStorage.getItem('timers')) || {};
@@ -21,7 +49,7 @@ export default function TaskReview() {
           acc[task._id] = {
             time: savedTimers[task._id]?.time || 0,
             intervalId: null,
-            ended: savedTimers[task._id]?.ended || false
+            ended: task.status === 'ended' // Use task status from DB
           };
           return acc;
         }, {});
@@ -32,6 +60,7 @@ export default function TaskReview() {
     };
     fetchTasks();
   }, [serverApi]);
+
 
   const handleStart = (taskId) => {
     if (!timers[taskId].ended && !intervalRefs.current[taskId]) {
@@ -62,6 +91,78 @@ export default function TaskReview() {
     });
   };
 
+  // const handleEnd = async (taskId) => {
+  //   clearInterval(intervalRefs.current[taskId]);
+  //   intervalRefs.current[taskId] = null;
+  //   const taskTime = timers[taskId].time;
+  //   const formattedTime = formatTime(taskTime);
+
+  //   // Save the ended task in localStorage
+  //   const endedTasks = JSON.parse(localStorage.getItem('endedTasks')) || [];
+  //   endedTasks.push({ taskId, time: taskTime });
+  //   localStorage.setItem('endedTasks', JSON.stringify(endedTasks));
+
+  //   try {
+  //     await axios.post(`${serverApi}/end-task`, {
+  //       taskId,
+  //       time: formattedTime,
+  //     });
+  //   } catch (error) {
+  //     console.error('Error ending task:', error);
+  //   }
+
+  //   setTimers(prevTimers => {
+  //     const newTimers = {
+  //       ...prevTimers,
+  //       [taskId]: { ...prevTimers[taskId], intervalId: null, ended: true }
+  //     };
+  //     localStorage.setItem('timers', JSON.stringify(newTimers));
+  //     return newTimers;
+  //   });
+  // };
+
+  {/* THIS IS ALL WORKING SHOWING ME THE TIME FROM DB WHEN I ONCE END THE TASK */ }
+
+  // const handleEnd = async (taskId) => {
+  //   clearInterval(intervalRefs.current[taskId]);
+  //   intervalRefs.current[taskId] = null;
+  //   const taskTime = timers[taskId].time;
+  //   const formattedTime = formatTime(taskTime);
+
+  //   // Save the ended task in localStorage
+  //   const endedTasks = JSON.parse(localStorage.getItem('endedTasks')) || [];
+  //   endedTasks.push({ taskId, time: taskTime });
+  //   localStorage.setItem('endedTasks', JSON.stringify(endedTasks));
+
+  //   try {
+  //     const response = await axios.post(`${serverApi}/end-task`, {
+  //       taskId,
+  //       time: formattedTime,
+  //     });
+  //     const updatedTask = response.data;
+
+  //     // Update the tasks state with the new time
+  //     setTasks(prevTasks =>
+  //       prevTasks.map(task =>
+  //         task._id === taskId ? { ...task, time: updatedTask.time, status: 'ended' } : task
+  //       )
+  //     );
+  //   } catch (error) {
+  //     console.error('Error ending task:', error);
+  //   }
+
+  //   setTimers(prevTimers => {
+  //     const newTimers = {
+  //       ...prevTimers,
+  //       [taskId]: { ...prevTimers[taskId], intervalId: null, ended: true }
+  //     };
+  //     localStorage.setItem('timers', JSON.stringify(newTimers));
+  //     return newTimers;
+  //   });
+  // };
+
+
+
   const handleEnd = async (taskId) => {
     clearInterval(intervalRefs.current[taskId]);
     intervalRefs.current[taskId] = null;
@@ -74,10 +175,18 @@ export default function TaskReview() {
     localStorage.setItem('endedTasks', JSON.stringify(endedTasks));
 
     try {
-      await axios.post(`${serverApi}/end-task`, {
+      const response = await axios.post(`${serverApi}/end-task`, {
         taskId,
         time: formattedTime,
       });
+      const updatedTask = response.data;
+
+      // Update the tasks state with the new time and status
+      setTasks(prevTasks =>
+        prevTasks.map(task =>
+          task._id === taskId ? { ...task, time: updatedTask.time, status: 'ended' } : task
+        )
+      );
     } catch (error) {
       console.error('Error ending task:', error);
     }
@@ -91,6 +200,7 @@ export default function TaskReview() {
       return newTimers;
     });
   };
+
 
 
   const formatTime = (seconds) => {
@@ -118,6 +228,20 @@ export default function TaskReview() {
     };
   }, [timers]);
 
+
+  useEffect(() => {
+    const handleBeforeUnload = () => {
+      localStorage.setItem('timers', JSON.stringify(timers));
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, [timers]);
+
+
   return (
     <>
       <div className="flex flex-col gap-6 mb-16">
@@ -139,7 +263,7 @@ export default function TaskReview() {
             </thead>
 
             <tbody className="lg:border-gray-300">
-              {tasks.map((task) => (
+              {/* {tasks.map((task) => (
                 <tr key={task._id} className='border-b border-gray-100'>
                   <td className="whitespace-no-wrap py-4 text-sm font-bold text-gray-500 sm:px-6 border-r">
                     {task.name}
@@ -165,7 +289,96 @@ export default function TaskReview() {
                       onClick={() => handleEnd(task._id)}>End Task</button>
                   </td>
                 </tr>
+              ))} */}
+
+              {/* THIS IS ALL WORKING SHOWING ME THE TIME FROM DB WHEN I ONCE END THE TASK */}
+              {/* {tasks.map((task) => (
+                <tr key={task._id} className='border-b border-gray-100'>
+                  <td className="whitespace-no-wrap py-4 text-sm font-bold text-gray-500 sm:px-6 border-r">
+                    {task.name}
+                  </td>
+
+                  <td className="whitespace-no-wrap hidden py-4 text-sm font-normal text-gray-500 sm:px-6 lg:table-cell text-justify border-r">{task.title}</td>
+
+                  <td className="whitespace-no-wrap py-4 px-6 text-sm text-gray-600 text-justify border-r">
+                    {task.task}
+                  </td>
+
+                  <td className="whitespace-no-wrap hidden py-4 text-sm font-normal text-gray-500 sm:px-6 lg:table-cell">
+                    {task.status === 'ended' ? task.time : formatTime(timers[task._id]?.time || 0)}
+                  </td>
+
+                  <td className="whitespace-no-wrap py-4 text-sm font-normal text-gray-500 sm:px-6 lg:table-cell flex flex-col gap-3 space-y-2 border w-1/6">
+                    <button className={`py-2 px-4 min-w-10 w-full rounded-md bg-green-600 text-white font-semibold ${timers[task._id]?.ended ? "cursor-not-allowed" : "cursor-pointer hover:bg-white hover:text-green-600 border hover:border-green-600"}`}
+                      onClick={() => handleStart(task._id)}
+                      disabled={timers[task._id]?.ended}>Start</button>
+                    <button className={`py-2 px-4 min-w-10 w-full rounded-md bg-blue-600 text-white font-semibold ${timers[task._id]?.ended ? "cursor-not-allowed" : "cursor-pointer hover:bg-white hover:text-blue-600 border hover:border-blue-600"}`}
+                      onClick={() => handleStop(task._id)}
+                      disabled={timers[task._id]?.ended}>Stop</button>
+                    <button className={`py-2 px-4 min-w-10 w-full rounded-md bg-red-600 text-white font-semibold ${timers[task._id]?.ended ? "cursor-default" : "cursor-pointer hover:bg-white hover:text-red-600 border hover:border-red-600"}`}
+                      onClick={() => handleEnd(task._id)}>End Task</button>
+                  </td>
+                </tr>
+              ))} */}
+
+              {/* {tasks.map((task) => (
+                <tr key={task._id} className='border-b border-gray-100'>
+                  <td className="whitespace-no-wrap py-4 text-sm font-bold text-gray-500 sm:px-6 border-r">
+                    {task.name}
+                  </td>
+
+                  <td className="whitespace-no-wrap hidden py-4 text-sm font-normal text-gray-500 sm:px-6 lg:table-cell text-justify border-r">{task.title}</td>
+
+                  <td className="whitespace-no-wrap py-4 px-6 text-sm text-gray-600 text-justify border-r">
+                    {task.task}
+                  </td>
+
+                  <td className="whitespace-no-wrap hidden py-4 text-sm font-normal text-gray-500 sm:px-6 lg:table-cell">
+                    {task.status === 'ended' ? task.time : formatTime(timers[task._id]?.time || 0)}
+                  </td>
+
+                  <td className="whitespace-no-wrap py-4 text-sm font-normal text-gray-500 sm:px-6 lg:table-cell flex flex-col gap-3 space-y-2 border w-1/6">
+                    <button className={`py-2 px-4 min-w-10 w-full rounded-md bg-green-600 text-white font-semibold ${timers[task._id]?.ended ? "cursor-not-allowed" : "cursor-pointer hover:bg-white hover:text-green-600 border hover:border-green-600"}`}
+                      onClick={() => handleStart(task._id)}
+                      disabled={timers[task._id]?.ended}>Start</button>
+                    <button className={`py-2 px-4 min-w-10 w-full rounded-md bg-blue-600 text-white font-semibold ${timers[task._id]?.ended ? "cursor-not-allowed" : "cursor-pointer hover:bg-white hover:text-blue-600 border hover:border-blue-600"}`}
+                      onClick={() => handleStop(task._id)}
+                      disabled={timers[task._id]?.ended}>Stop</button>
+                    <button className={`py-2 px-4 min-w-10 w-full rounded-md bg-red-600 text-white font-semibold ${timers[task._id]?.ended ? "cursor-default" : "cursor-pointer hover:bg-white hover:text-red-600 border hover:border-red-600"}`}
+                      onClick={() => handleEnd(task._id)}>End Task</button>
+                  </td>
+                </tr>
+              ))} */}
+
+              {tasks.map((task) => (
+                <tr key={task._id} className='border-b border-gray-100'>
+                  <td className="whitespace-no-wrap py-4 text-sm font-bold text-gray-500 sm:px-6 border-r">
+                    {task.name}
+                  </td>
+
+                  <td className="whitespace-no-wrap hidden py-4 text-sm font-normal text-gray-500 sm:px-6 lg:table-cell text-justify border-r">{task.title}</td>
+
+                  <td className="whitespace-no-wrap py-4 px-6 text-sm text-gray-600 text-justify border-r">
+                    {task.task}
+                  </td>
+
+                  <td className="whitespace-no-wrap hidden py-4 text-sm font-normal text-gray-500 sm:px-6 lg:table-cell">
+                    {task.status === 'ended' ? task.time : formatTime(timers[task._id]?.time || 0)}
+                  </td>
+
+                  <td className="whitespace-no-wrap py-4 text-sm font-normal text-gray-500 sm:px-6 lg:table-cell flex flex-col gap-3 space-y-2 border w-1/6">
+                    <button className={`py-2 px-4 min-w-10 w-full rounded-md bg-green-600 text-white font-semibold ${timers[task._id]?.ended ? "cursor-not-allowed" : "cursor-pointer hover:bg-white hover:text-green-600 border hover:border-green-600"}`}
+                      onClick={() => handleStart(task._id)}
+                      disabled={timers[task._id]?.ended}>Start</button>
+                    <button className={`py-2 px-4 min-w-10 w-full rounded-md bg-blue-600 text-white font-semibold ${timers[task._id]?.ended ? "cursor-not-allowed" : "cursor-pointer hover:bg-white hover:text-blue-600 border hover:border-blue-600"}`}
+                      onClick={() => handleStop(task._id)}
+                      disabled={timers[task._id]?.ended}>Stop</button>
+                    <button className={`py-2 px-4 min-w-10 w-full rounded-md bg-red-600 text-white font-semibold ${timers[task._id]?.ended ? "cursor-default" : "cursor-pointer hover:bg-white hover:text-red-600 border hover:border-red-600"}`}
+                      onClick={() => handleEnd(task._id)}>End Task</button>
+                  </td>
+                </tr>
               ))}
+
 
             </tbody>
           </table>
