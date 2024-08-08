@@ -17,8 +17,8 @@ export const AuthProvider = ({ children }) => {
                         },
                         withCredentials: true
                     });
-                    // console.log('User data:', res.data.user);
-                    setUser(res.data.user);
+                    const name = res.data.user
+                    setUser(name.userName);
                 }
             } catch (error) {
                 console.log('Error fetching user', error);

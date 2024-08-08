@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { RegisterUser, LoginUser, ProfileUser, LogoutUser, createTask, getAllTasks, getRegisterUser, endTask, updateTaskApproval, updateTaskStatus } = require('../Controllers/user');
+const { RegisterUser, LoginUser, ProfileUser, LogoutUser, createTask, getAllTasks, getRegisterUser, endTask, updateTaskStatus } = require('../Controllers/user');
 
 router.route('/register').post(RegisterUser);
 router.route('/login').post(LoginUser);
@@ -11,6 +11,7 @@ router.get('/tasks', getAllTasks);
 router.get('/registered-user', getRegisterUser);
 router.put('/end-task', endTask);
 router.post('/end-task', endTask);
+// router.put('/update-task-status', updateTaskApproval);
 router.post('/update-task-status', updateTaskStatus);
 
 module.exports = router; 

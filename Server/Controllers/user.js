@@ -20,8 +20,8 @@ const RegisterUser = async (req, res) => {
         res.status(200).json({ registerPerson });
         console.log({ registerPerson });
     } catch (error) {
-        console.log(error);
-        res.status(500).json({ message: "Internal Server Error" });
+        console.log('This error is from the Controller RegisterUser', error);
+        res.status(500).json({ message: "Please Fill all the required Fields!" });
     }
 }
 
@@ -29,18 +29,17 @@ const LoginUser = async (req, res) => {
     try {
         const { email, password } = req.body;
         if (!email || !password) {
-            return res.status(400).json({ error: 'Email and password are required.' });
+            return res.status(400).json({ error: 'Please Fill all the required fields!' });
         }
         const validUser = await userSchema.findOne({ email });
         if (!validUser) {
-            return res.status(400).json({ error: "Invalid email or password." });
+            return res.status(400).json({ error: "Username not found!" });
         }
         const validPassword = bcrypt.compareSync(password, validUser.password);
         if (!validPassword) {
-            return res.status(400).json({ error: "Invalid email or password." });
+            return res.status(400).json({ error: "Password is incorrect!" });
         }
         const token = await jwt.sign({ userId: validUser._id, userEmail: validUser.email, userName: validUser.name }, 'my_secret_Key', { expiresIn: '7d' });
-        console.log('Generated Token:', token);
         res.cookie('Token', token, {
             httpOnly: true, secure: true,
             sameSite: 'Strict',
@@ -75,7 +74,7 @@ const LogoutUser = async (req, res) => {
         console.log('Error from the Logout Controller', error);
         res.status(500).json({ error: 'Server Error' });
     }
-}
+};
 
 const createTask = async (req, res) => {
     try {
@@ -117,7 +116,6 @@ const endTask = async (req, res) => {
     }
 };
 
-
 const getRegisterUser = async (req, res) => {
     try {
         const ended = req.query.ended === 'true';
@@ -142,8 +140,5 @@ const updateTaskStatus = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
-
-
-
 
 module.exports = { LoginUser, RegisterUser, ProfileUser, LogoutUser, createTask, getAllTasks, getRegisterUser, endTask, updateTaskStatus }

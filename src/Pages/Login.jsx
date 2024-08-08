@@ -9,9 +9,10 @@ export default function Login() {
         setShown(!shown);
     };
 
-    const [loginData, setLoginData] = useState({});
+    const [loginData, setLoginData] = useState('');
     const [redirect, setRedirect] = useState(false);
     const { setUser } = useContext(AuthContext);
+    const [error, setError] = useState('')
 
     const handleChange = (e) => {
         setLoginData({ ...loginData, [e.target.name]: e.target.value });
@@ -31,7 +32,13 @@ export default function Login() {
             setUser(user);
             setRedirect(true);
         } catch (error) {
-            console.log('Error in the HandleSubmit of the Login Frontend', error);
+            const errorMessage = error.response?.data?.error;
+            setError(errorMessage);
+            setTimeout(() => {
+                if (errorMessage) {
+                    setError('')
+                }
+            }, 2000);
         }
     };
 
@@ -63,16 +70,17 @@ export default function Login() {
                             <h4 className="mb-2 font-medium text-gray-700 xl:text-xl">Welcome to NameHERE!</h4>
                             <p className="mb-6 text-gray-500">Please sign-in to access your account</p>
 
+                            {error && <div className='text-red-600'>{error}</div>}
                             <form id="" className="mb-4" action="#" method="POST" onSubmit={handleSubmit}>
 
                                 <div className="mb-4">
-                                    <label for="email" className="mb-2 inline-block text-xs font-medium uppercase text-gray-700">Email</label>
+                                    <label htmlFor="email" className="mb-2 inline-block text-xs font-medium uppercase text-gray-700">Email</label>
                                     <input type="text" className="block w-full cursor-text appearance-none rounded-md border border-gray-400 bg--100 py-2 px-3 text-sm outline-none focus:border-indigo-500 focus:bg-white focus:text-gray-600 focus:shadow" id="email" name="email" placeholder="Enter your email or username" onChange={handleChange} />
                                 </div>
 
                                 <div className="mb-4">
                                     <div className="flex justify-between">
-                                        <label className="mb-2 inline-block text-xs font-medium uppercase text-gray-700" for="password">Password</label>
+                                        <label className="mb-2 inline-block text-xs font-medium uppercase text-gray-700" htmlFor="password">Password</label>
                                         <p className="cursor-pointer text-indigo-500 no-underline hover:text-indigo-500">
                                             <small className=" " onClick={handleShown}>Show Password</small>
                                         </p>
@@ -99,3 +107,5 @@ export default function Login() {
         </>
     )
 }
+
+// CONCERSIONS 

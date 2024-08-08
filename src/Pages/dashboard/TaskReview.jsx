@@ -12,6 +12,7 @@ export default function TaskReview() {
       try {
         const response = await axios.get(`${serverApi}/tasks`);
         const tasksData = response.data;
+        console.log('This is from the TaskReview:', tasksData)
         setTasks(tasksData);
 
         const savedTimers = JSON.parse(localStorage.getItem('timers')) || {};

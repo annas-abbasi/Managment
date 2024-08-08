@@ -22,7 +22,7 @@ export default function Navbar() {
         }
     }, [])
 
-    const { user, setUser } = useContext(AuthContext);
+    const { user, setUser } = useContext(AuthContext); 
     const [redirect, setRedirect] = useState(false);
 
     const serverApi = process.env.REACT_APP_BACKEND_SERVER_PATH

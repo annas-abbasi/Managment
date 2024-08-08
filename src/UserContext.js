@@ -18,11 +18,8 @@ export const UserContextProvider = ({ children }) => {
                         },
                     });
                     const { user } = res.data;
-                    console.log(user)
-                    // setUser(user);
                     const named = res.data.user.userName;
                     setUser(named);
-                    // console.log("This is res.data", res.data.user.userName)
                 } catch (error) {
                     console.error('Error fetching user data:', error);
                 }
