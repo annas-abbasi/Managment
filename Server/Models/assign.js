@@ -20,7 +20,7 @@ const taskSchema = new mongoose.Schema({
     status: {
         type: String,
         default: 'pending',
-        enum: ['pending', 'ended'],
+        enum: ['pending', 'ended', 'Approved', 'Not Approved'],
     }
 }, { timestamps: true });
 

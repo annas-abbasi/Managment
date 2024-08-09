@@ -20,9 +20,9 @@ export default function UserProfile() {
     fetchTasks();
   }, [serverApi]);
 
-  const capatalizefirstLetter = (value) => {
-    return value.split(" ").map((e) => e.charAt(0).toUpperCase() + e.slice(1)).join(" ")
-  }
+  // const capatalizefirstLetter = (value) => {
+  //   return value.split(" ").map((e) => e.charAt(0).toUpperCase() + e.slice(1)).join(" ")
+  // }
 
   return (
     <>
@@ -36,7 +36,7 @@ export default function UserProfile() {
                   <img className="mx-auto h-auto w-full rounded-full" src={user} alt="" />
                 </div>
 
-                <h1 className="my-1 text-center text-xl font-bold leading-8 text-gray-800">{capatalizefirstLetter(e.name)}</h1>
+                <h1 className="my-1 text-center text-xl font-bold leading-8 text-gray-800">{e.name}</h1>
                 <h3 className="font-lg text-semibold text-center leading-6 text-gray-600">{e.email}</h3>
 
                 <ul className="mt-3 divide-y rounded bg-gray-100 py-2 px-3 text-gray-600 shadow-sm hover:text-gray-700 hover:shadow">
@@ -51,7 +51,6 @@ export default function UserProfile() {
                   </li>
                 </ul>
               </div>
-
             </div>
           );
         })}

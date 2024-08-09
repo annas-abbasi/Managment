@@ -22,7 +22,7 @@ export default function Navbar() {
         }
     }, [])
 
-    const { user, setUser } = useContext(AuthContext); 
+    const { user, setUser } = useContext(AuthContext);
     const [redirect, setRedirect] = useState(false);
 
     const serverApi = process.env.REACT_APP_BACKEND_SERVER_PATH
@@ -119,7 +119,7 @@ export default function Navbar() {
                                     {user && typeof user === 'string' &&
                                         (
                                             <p className={`ml-1 font-semibold text-gray-700 ${scrolled ? 'text-gray-700' : 'text-white'}`}>
-                                                {user.charAt(0).toUpperCase() + user.slice(1, 3)}
+                                                {user.charAt(0).toUpperCase() + user.slice(1, 3) + '..'}
                                             </p>
                                         )}
                                 </Link>

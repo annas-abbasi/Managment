@@ -1,17 +1,18 @@
 const express = require('express');
 const router = express.Router();
-const { RegisterUser, LoginUser, ProfileUser, LogoutUser, createTask, getAllTasks, getRegisterUser, endTask, updateTaskStatus } = require('../Controllers/user');
+const { RegisterUser, LoginUser, ProfileUser, LogoutUser, createTask, getAllTasks, getRegisterUser, endTask, updateTask } = require('../Controllers/user');
 
 router.route('/register').post(RegisterUser);
 router.route('/login').post(LoginUser);
 router.route('/profile').get(ProfileUser);
 router.route('/logout').post(LogoutUser);
+
 router.post('/assign-task', createTask);
 router.get('/tasks', getAllTasks);
-router.get('/registered-user', getRegisterUser);
-router.put('/end-task', endTask);
+router.put('/tasks/:id/status', updateTask);
 router.post('/end-task', endTask);
-// router.put('/update-task-status', updateTaskApproval);
-router.post('/update-task-status', updateTaskStatus);
+router.put('/end-task', endTask);
+router.get('/registered-user', getRegisterUser);
+// router.post('/update-task-status', updateTaskStatus);
 
 module.exports = router; 

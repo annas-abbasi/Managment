@@ -100,6 +100,53 @@ const getAllTasks = async (req, res) => {
     }
 };
 
+const endTask = async (req, res) => {
+    try {
+        const { taskId, time } = req.body;
+        const task = await Task.findById(taskId);
+        if (!task) {
+            return res.status(404).json({ message: 'Task not found' });
+        }
+        task.time = time;
+        task.status = 'ended';
+        await task.save();
+        res.status(200).json(task);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+const updateTask = async (req, res) => {
+    const { id } = req.params;
+    const { status } = req.body;
+    try {
+        const task = await Task.findByIdAndUpdate(id, { status }, { new: true });
+        console.log('This is Id:', id)
+        console.log('This is the Status:', status)
+        if (!task) {
+            return res.status(404).json({ message: 'Task not found' });
+        }
+        res.json(task);
+    } catch (error) {
+        console.log('error from the updateTask Controller', error)
+    }
+}
+
+const getRegisterUser = async (req, res) => {
+    try {
+        const ended = req.query.ended === 'true';
+        const getTask = await userSchema.find(ended ? { ended: true } : {});
+        res.status(200).json(getTask);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+
+module.exports = { LoginUser, RegisterUser, ProfileUser, LogoutUser, createTask, getAllTasks, getRegisterUser, endTask, updateTask }
+
+
+
 // const endTask = async (req, res) => {
 //     try {
 //         const { taskId, time } = req.body;
@@ -116,7 +163,7 @@ const getAllTasks = async (req, res) => {
 //     }
 // };
 
-// THIS IS WORKING FINE IT SHOWS ME DATA TIME FROM DB ONCE I END TASK 
+// THIS IS WORKING FINE IT SHOWS ME DATA TIME FROM DB ONCE I END TASK
 // const endTask = async (req, res) => {
 //     try {
 //       const { taskId, time } = req.body;
@@ -133,48 +180,3 @@ const getAllTasks = async (req, res) => {
 //     }
 //   };
 
-
-const endTask = async (req, res) => {
-    try {
-        const { taskId, time } = req.body;
-        const task = await Task.findById(taskId);
-        if (!task) {
-            return res.status(404).json({ message: 'Task not found' });
-        }
-        task.time = time;  // Save the formatted time
-        task.status = 'ended';  // Update the task status if needed
-        await task.save();
-        res.status(200).json(task);
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
-};
-
-
-
-const getRegisterUser = async (req, res) => {
-    try {
-        const ended = req.query.ended === 'true';
-        const getTask = await userSchema.find(ended ? { ended: true } : {});
-        res.status(200).json(getTask);
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
-};
-
-const updateTaskStatus = async (req, res) => {
-    try {
-        const { taskId, status } = req.body;
-        const task = await Task.findById(taskId);
-        if (!task) {
-            return res.status(404).json({ message: 'Task not found' });
-        }
-        task.status = status;
-        await task.save();
-        res.status(200).json(task);
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
-};
-
-module.exports = { LoginUser, RegisterUser, ProfileUser, LogoutUser, createTask, getAllTasks, getRegisterUser, endTask, updateTaskStatus }
