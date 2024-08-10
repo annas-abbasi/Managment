@@ -5,27 +5,57 @@ export default function Member() {
   const [tasks, setTasks] = useState([]);
   const [crossvisibility, setCrossVisibility] = useState({});
   const [checkVisibility, setCheckVisibility] = useState({});
+  const [approvalStatus, setApprovalStatus] = useState('ended');
   const serverApi = process.env.REACT_APP_BACKEND_SERVER_PATH;
 
   const handleCross = async (index, taskId) => {
     setCrossVisibility((i) => ({ ...i, [index]: true }));
     setCheckVisibility((i) => ({ ...i, [index]: false }));
-    await updateStatus(taskId, 'Not Approved')
+    await updateStatus(taskId, 'Not Approved');
+    updateTaskStatus(index, 'Not Approved');
+    // console.log('THis is Anns Abbasi Testing:', updateTaskStatus(index) === 'Not Approved');
   };
 
   const handleCheck = async (index, taskId) => {
     setCheckVisibility((i) => ({ ...i, [index]: true }));
     setCrossVisibility((i) => ({ ...i, [index]: false }));
-    await updateStatus(taskId, 'Approved')
+    await updateStatus(taskId, 'Approved');
+    updateTaskStatus(index, 'Approved');
+    console.log(index, 'Approved');
   };
+
+  const updateTaskStatus = (index, newState) => {
+    setTasks((i) => {
+      const updateValue = [...i];
+      updateValue[index].status = newState;
+      return updateValue;
+    });
+  }
 
   useEffect(() => {
     const fetchTasks = async () => {
       try {
         const response = await axios.get(`${serverApi}/tasks`);
-        console.log(response)
-        // const activeTasks = response.data.filter(task => !['approved', 'not-approved'].includes(task.status));
         setTasks(response.data);
+        // console.log("This is the Tasks", response.data[0].status)
+
+        // Accessing the status of the first task
+        // if (response.data.length > 0) {
+        //   console.log("Status of the first task:", response.data[0].status);
+        // }
+
+        // // Accessing the status of all tasks
+        // response.data.forEach((task, index) => {
+        //   console.log(`Status of task ${index + 1}:`, task.status);
+        // });
+
+        // Collect all statuses
+        // const statuses = response.data.map((task) => task.status);
+        // // Set the collected statuses to the state
+        // setApprovalStatus(statuses);
+        // console.log("Approval Statuses:", statuses);
+
+        // console.log("Status from the function:", response.data.length)
       } catch (error) {
         console.error('Error fetching tasks:', error);
       }
@@ -35,8 +65,9 @@ export default function Member() {
 
   const updateStatus = async (taskVal, newStatus) => {
     try {
-      await axios.put(`${serverApi}/tasks/${taskVal}/status`, { status: newStatus });
-      console.log('This is the TaskVal parameter:', taskVal)
+      const res = await axios.put(`${serverApi}/tasks/${taskVal}/status`, { status: newStatus });
+      // const statusResult = res.data.status;
+      // setApprovalStatus(statusResult);
     } catch (error) {
       console.log('error from the updateStatus Function:', error)
     }
@@ -81,20 +112,56 @@ export default function Member() {
 
                     <td className="whitespace-no-wrap hidden py-4 text-sm font-normal text-gray-500 sm:px-6 lg:table-cell">
                       <div className='flex items-center gap-2'>
-                        {(crossvisibility[index] || crossvisibility[index] === undefined) &&
-                          <div onClick={() => handleCross(index, task._id)} className={`border flex items-center justify-center w-fit ml-2 px-4 py-1 rounded-full border-red-700 bg-red-100 text-red-900 cursor-pointer hover:opacity-50 transition-all ${crossvisibility[index] ? '!m-auto' : ''}`}>
+                        {/* {updateStatus === 'Approved' ||} */}
+                        {/* {task.status === 'Not Approved' || task.status === 'ended' && (
+                          <div> */}
+                        {(approvalStatus[index] && approvalStatus[index] === 'ended') &&
+                          <>
+                            <div>
+                              {(crossvisibility[index] || crossvisibility[index] === undefined) &&
+                                <div onClick={() => handleCross(index, task._id)} className={`border w-fit ml-2 px-4 py-1 rounded-full border-red-700 hover:bg-red-100 text-red-900 cursor-pointer bg-white transition-all ${crossvisibility[index] ? '!m-auto' : ''}`}>
 
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-5">
-                              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
-                            </svg>
+                                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-5">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
+                                  </svg>
+                                </div>
+                              }
+                            </div>
+
+                            <div>
+                              {(checkVisibility[index] || checkVisibility[index] === undefined) &&
+                                <div onClick={() => handleCheck(index, task._id)} className={`border w-fit ml-2 px-4 py-1 rounded-full border-green-700 hover:bg-green-100 text-green-900 cursor-pointer bg-white transition-all ${checkVisibility[index] ? '!m-auto' : ''}`}>
+
+                                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-5">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+                                  </svg>
+                                </div>
+                              }
+                            </div>
+                          </>
+                        }
+                        {approvalStatus[index] === 'Approved' &&
+                          <div>
+                            {(checkVisibility[index] || checkVisibility[index] === undefined) &&
+                              <div onClick={() => handleCheck(index, task._id)} className={`border w-fit ml-2 px-4 py-1 rounded-full border-green-700 hover:bg-green-100 text-green-900 cursor-pointer bg-white transition-all ${checkVisibility[index] ? '!m-auto' : ''}`}>
+
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-5">
+                                  <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+                                </svg>
+                              </div>
+                            }
                           </div>
                         }
-                        {(checkVisibility[index] || checkVisibility[index] === undefined) &&
-                          <div onClick={() => handleCheck(index, task._id)} className={`border w-fit ml-2 px-4 py-1 rounded-full border-green-700 bg-green-100 text-green-900 cursor-pointer hover:opacity-50 transition-all ${checkVisibility[index] ? '!m-auto' : ''}`}>
+                        {approvalStatus[index] === 'Not Approved' &&
+                          <div>
+                            {(crossvisibility[index] || crossvisibility[index] === undefined) &&
+                              <div onClick={() => handleCross(index, task._id)} className={`border w-fit ml-2 px-4 py-1 rounded-full border-red-700 hover:bg-red-100 text-red-900 cursor-pointer bg-white transition-all ${crossvisibility[index] ? '!m-auto' : ''}`}>
 
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-5">
-                              <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
-                            </svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-5">
+                                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
+                                </svg>
+                              </div>
+                            }
                           </div>
                         }
                       </div>

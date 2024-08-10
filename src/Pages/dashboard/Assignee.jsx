@@ -97,7 +97,7 @@ export default function Assignee() {
                             className='border w-11/12 rounded-md py-2 px-4'
                             value={formData.time}
                             onChange={handleChange}
-                            disabled/>
+                            disabled />
                     </div>
                     <button className='py-2 px-4 mt-2 text-white text-base font-semibold bg-blue-600 rounded-md max-w-36 hover:text-blue-600 hover:bg-slate-50 hover:border-blue-600 border transition-all' type="submit">Send</button>
                 </form>

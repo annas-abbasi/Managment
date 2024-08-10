@@ -1,10 +1,33 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { Link, Navigate } from 'react-router-dom';
 import axios from 'axios';
 import { AuthContext } from '../AuthContext';
 
 export default function Navbar() {
     const [scrolled, setScrolled] = useState(false);
+    const [shown, setShown] = useState(false);
+    const tabRef = useRef(null);
+
+    useEffect(() => {
+        const handleEvent = (event) => {
+            if (tabRef.current && !tabRef.current.contains(event.target)) {
+                setShown(false)
+            }
+        };
+        if (shown) {
+            document.addEventListener('mousedown', handleEvent);
+        } else {
+            document.removeEventListener('mousedown', handleEvent);
+        };
+
+        return () => {
+            document.removeEventListener('mousedown', handleEvent);
+        }
+    }, [shown])
+
+    const handleShown = () => {
+        setShown(!shown)
+    }
 
     const handleScroll = () => {
         const hScreen = window.scrollY;
@@ -102,17 +125,18 @@ export default function Navbar() {
                                         </svg>
                                     </span>
                                 </Link>
-
-                                <ul className="absolute -right-10 top-8 z-[1000] min-w-max list-none overflow-hidden rounded-md bg-white text-base shadow-lg px-1 py-2 flex flex-col w-32 border border-gray-400 gap-1">
-                                    {user ? (
-                                        <Link className='border-gray-300 px-2 py-2 rounded-md hover:bg-slate-100' onClick={userLogout}>Logout?</Link>
-                                    ) : (
-                                        <Link to={"/Signup"} className='px-2 py-2 rounded-md hover:bg-slate-100'>Signup</Link>
-                                    )}
-                                </ul>
+                                {shown &&
+                                    <ul ref={tabRef} className="absolute  -right-10 top-8 z-[1000] min-w-max list-none overflow-hidden rounded-md bg-white text-base shadow-lg px-1 py-2 flex flex-col w-32 border border-gray-400 gap-1">
+                                        {user ? (
+                                            <Link className='border-gray-300 px-2 py-2 rounded-md hover:bg-slate-100' onClick={userLogout}>Logout?</Link>
+                                        ) : (
+                                            <Link to={"/Signup"} className='px-2 py-2 rounded-md hover:bg-slate-100'>Signup</Link>
+                                        )}
+                                    </ul>
+                                }
                             </div>
 
-                            <div className="relative">
+                            <div className="relative" onClick={handleShown}>
                                 <Link className="flex items-center whitespace-nowrap transition duration-150 ease-in-out motion-reduce:transition-none mr-4" href="/">
                                     {/* <!-- User avatar --> */}
                                     <img src="https://tecdn.b-cdn.net/img/new/avatars/2.jpg" className="rounded-full h-10 w-10 " alt="User Pic" />

@@ -32,7 +32,7 @@ export default function Dashboard() {
                         </ul>
                     </div>
 
-                    <div className="min-h-screen col-span-2 hidden sm:block border-r px-4 bg-gray-50">
+                    <div className="min-h-screen col-span-2 hidden sm:block px-4 bg-gray-50">
                         <ul className='flex items-start flex-col gap-2'>
                             <Link to="/dashboard/Members" className={`mt-5 w-full cursor-pointer border-l-2 px-2 py-2 font-semibold transition ${activeLink === '/dashboard' || activeLink === '/dashboard/Members' ? 'border-l-blue-700 text-blue-700' : 'border-transparent hover:border-l-blue-700 hover:text-blue-700'}`}>All Task</Link>
 
@@ -41,10 +41,12 @@ export default function Dashboard() {
                             <Link to="/dashboard/Time" className={`w-full mt-5 cursor-pointer border-l-2 px-2 py-2 font-semibold transition ${activeLink === '/dashboard/Time' ? 'border-l-blue-700 text-blue-700' : 'border-transparent hover:border-l-blue-700 hover:text-blue-700'}`}>Task Review</Link>
 
                             <Link to="/dashboard/Profile" className={`w-full mt-5 cursor-pointer border-l-2 px-2 py-2 font-semibold transition ${activeLink === '/dashboard/Profile' ? 'border-l-blue-700 text-blue-700' : 'border-transparent hover:border-l-blue-700 hover:text-blue-700'}`}>Users Profile</Link>
+
+                            <Link to="/dashboard/Account-Details" className={`w-full mt-5 cursor-pointer border-l-2 px-2 py-2 font-semibold transition ${activeLink === '/dashboard/Account-Details' ? 'border-l-blue-700 text-blue-700' : 'border-transparent hover:border-l-blue-700 hover:text-blue-700'}`}>Account Details</Link>
                         </ul>
                     </div>
 
-                    <div className='w-full col-span-8 pt-3 pl-4 pr-10 border-t '>
+                    <div className='w-full col-span-8 pt-5 pl-8 pr-10 border-t border-l rounded-tl-md'>
                         <RouterItem />
                     </div>
                 </div>

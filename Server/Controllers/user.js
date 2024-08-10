@@ -13,7 +13,6 @@ const RegisterUser = async (req, res) => {
         if (existingUser) {
             return res.status(400).json({ message: "Username already exists. Please try a different one OKAY." });
         }
-
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = bcrypt.hashSync(password, salt);
         const registerPerson = await userSchema.create({ name, email, password: hashedPassword });
@@ -144,39 +143,3 @@ const getRegisterUser = async (req, res) => {
 
 
 module.exports = { LoginUser, RegisterUser, ProfileUser, LogoutUser, createTask, getAllTasks, getRegisterUser, endTask, updateTask }
-
-
-
-// const endTask = async (req, res) => {
-//     try {
-//         const { taskId, time } = req.body;
-//         const task = await Task.findById(taskId);
-//         if (!task) {
-//             return res.status(404).json({ message: 'Task not found' });
-//         }
-//         task.time = time;  // Save the formatted time
-//         task.status = 'ended';  // Update the task status if needed
-//         await task.save();
-//         res.status(200).json(task);
-//     } catch (error) {
-//         res.status(500).json({ message: error.message });
-//     }
-// };
-
-// THIS IS WORKING FINE IT SHOWS ME DATA TIME FROM DB ONCE I END TASK
-// const endTask = async (req, res) => {
-//     try {
-//       const { taskId, time } = req.body;
-//       const task = await Task.findById(taskId);
-//       if (!task) {
-//         return res.status(404).json({ message: 'Task not found' });
-//       }
-//       task.time = time;
-//       task.status = 'ended';
-//       await task.save();
-//       res.status(200).json(task);
-//     } catch (error) {
-//       res.status(500).json({ message: 'Server error: ' + error.message });
-//     }
-//   };
-

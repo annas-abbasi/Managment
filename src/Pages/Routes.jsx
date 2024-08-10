@@ -9,6 +9,7 @@ import ProtectedRoute from '../ProtectedRoute';
 import { AuthProvider } from '../AuthContext';
 import { Routes, Route } from 'react-router-dom';
 import { Members, Profile, Time, Assignee } from './dashboard/IndexDashboard';
+import AccountDetails from './dashboard/AccountDetails';
 
 export default function AppRoutes() {
     return (
@@ -29,6 +30,7 @@ export default function AppRoutes() {
                     <Route path="Members" element={<Members />} />
                     <Route path="Profile" element={<Profile />} />
                     <Route path="Time" element={<Time />} />
+                    <Route path="Account-Details" element={<AccountDetails />} />
                 </Route>
                 <Route path="/Signup" element={<Signup />} />
                 <Route path="/Login" element={<Login />} />
