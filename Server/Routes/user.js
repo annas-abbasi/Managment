@@ -13,6 +13,5 @@ router.put('/tasks/:id/status', updateTask);
 router.post('/end-task', endTask);
 router.put('/end-task', endTask);
 router.get('/registered-user', getRegisterUser);
-// router.post('/update-task-status', updateTaskStatus);
 
 module.exports = router; 
