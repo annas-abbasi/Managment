@@ -70,7 +70,7 @@ export default function Login() {
                             <h4 className="mb-2 font-medium text-gray-700 xl:text-xl">Welcome to NameHERE!</h4>
                             <p className="mb-6 text-gray-500">Please sign-in to access your account</p>
 
-                            {error && <div className='text-red-600'>{error}</div>}
+                            {error ? <div className='text-red-600'>{error}</div> : <div> &nbsp;</div>}
                             <form id="" className="mb-4" action="#" method="POST" onSubmit={handleSubmit}>
 
                                 <div className="mb-4">
@@ -89,6 +89,14 @@ export default function Login() {
                                     <div className="relative flex w-full flex-wrap items-stretch">
                                         <input type={shown ? "text" : "password"} id="password" className="relative block flex-auto cursor-text appearance-none rounded-md border border-gray-400 bg--100 py-2 px-3 text-sm outline-none focus:border-indigo-500 focus:bg-white focus:text-gray-600 focus:shadow" name="password" placeholder="············" onChange={handleChange} />
                                     </div>
+                                </div>
+
+                                <p className='mb-1 font-semibold'>Login As?</p>
+                                <div className='flex items-center flex-wrap gap-4 justify-between flex-grow mb-4'>
+
+                                    <button className='rounded-md border bg-zinc-300 text-zinc-700 px-4 flex-grow py-1 border-gray-600 hover:bg-gray-500 hover:text-white focus:bg-gray-500 focus:text-white transition-all'>Sub Admin</button>
+                                    <button className='rounded-md border bg-zinc-300 text-zinc-700 px-4 py-1 flex-grow border-gray-600 hover:bg-gray-500 hover:text-white transition-all focus:bg-gray-500 focus:text-white'>Admin</button>
+                                    <button className='rounded-md border bg-zinc-300 text-zinc-700 hover:bg-gray-500 hover:text-white transition-all px-4 py-1 flex-grow border-gray-600 focus:bg-gray-500 focus:text-white'>User</button>
                                 </div>
 
                                 <div className="mb-4">

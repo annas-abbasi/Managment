@@ -113,8 +113,9 @@ export default function TaskReview() {
   };
 
   useEffect(() => {
+    const currentIntervals = intervalRefs.current;
     return () => {
-      Object.values(intervalRefs.current).forEach(clearInterval);
+      Object.values(currentIntervals).forEach(clearInterval);
     };
   }, []);
 

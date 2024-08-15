@@ -133,8 +133,7 @@ const updateTask = async (req, res) => {
 
 const getRegisterUser = async (req, res) => {
     try {
-        const ended = req.query.ended === 'true';
-        const getTask = await userSchema.find(ended ? { ended: true } : {});
+        const getTask = await userSchema.find();
         res.status(200).json(getTask);
     } catch (error) {
         res.status(500).json({ message: error.message });
