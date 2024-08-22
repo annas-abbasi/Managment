@@ -43,6 +43,7 @@ export default function Dashboard() {
                             <Link to="/dashboard/Profile" className={`w-full mt-5 cursor-pointer border-l-2 px-2 py-2 font-semibold transition ${activeLink === '/dashboard/Profile' ? 'border-l-blue-700 text-blue-700' : 'border-transparent hover:border-l-blue-700 hover:text-blue-700'}`}>Users Profile</Link>
 
                             <Link to="/dashboard/Account-Details" className={`w-full mt-5 cursor-pointer border-l-2 px-2 py-2 font-semibold transition ${activeLink === '/dashboard/Account-Details' ? 'border-l-blue-700 text-blue-700' : 'border-transparent hover:border-l-blue-700 hover:text-blue-700'}`}>Account Details</Link>
+                            <Link to="/dashboard/Edit-Profile" className={`w-full mt-5 cursor-pointer border-l-2 px-2 py-2 font-semibold transition ${activeLink === '/dashboard/Edit-Profile' ? 'border-l-blue-700 text-blue-700' : 'border-transparent hover:border-l-blue-700 hover:text-blue-700'}`}>Edit Profile</Link>
                         </ul>
                     </div>
 

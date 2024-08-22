@@ -2,8 +2,9 @@ const userSchema = require('../Models/user')
 const Task = require('../Models/assign')
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const { errorHandler } = require('../utils/error');
 
-const RegisterUser = async (req, res) => {
+const RegisterUser = async (req, res, next) => {
     try {
         const { name, email, password } = req.body;
         if (!name || !email || !password) {
@@ -11,7 +12,10 @@ const RegisterUser = async (req, res) => {
         }
         const existingUser = await userSchema.findOne({ name });
         if (existingUser) {
-            return res.status(400).json({ message: "Username already exists. Please try a different one OKAY." });
+            // return res.status(400).json({ message: "Username already exists. Please try a different one OKAY." });
+
+            // THIS IS COMING FROM THE UTILS YOU CAN CHECK FOR FURTHER INFO...
+            next(errorHandler(400, 'All fields are required.'))
         }
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = bcrypt.hashSync(password, salt);
@@ -19,8 +23,9 @@ const RegisterUser = async (req, res) => {
         res.status(200).json({ registerPerson });
         console.log({ registerPerson });
     } catch (error) {
-        console.log('This error is from the Controller RegisterUser', error);
-        res.status(500).json({ message: "Please Fill all the required Fields!" });
+        // console.log('This error is from the Controller RegisterUser', error);
+        // res.status(500).json({ message: "Please Fill all the required Fields!" });
+        next(error);
     }
 }
 
@@ -38,6 +43,8 @@ const LoginUser = async (req, res) => {
         if (!validPassword) {
             return res.status(400).json({ error: "Password is incorrect!" });
         }
+
+        // IN THIS TOKEN I ONLY HAVE TO PROVIDE THE _ID NOT THE OTHER INFO OF USE I CAN GET USER DETAILS ONLY WITH _ID... OR I WILL NOT SECURE THE my_secret_key THEN OTHER USERS CAN HIGHJACK USER COOKIE (ON THE BASE OF THE SECRET_KEY THE USER INFO IS CREATED AND ENCRYPTED OF THE BASICS OF THAT KEY)
         const token = await jwt.sign({ userId: validUser._id, userEmail: validUser.email, userName: validUser.name }, 'my_secret_Key', { expiresIn: '7d' });
         res.cookie('Token', token, {
             httpOnly: true, secure: true,

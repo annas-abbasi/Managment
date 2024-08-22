@@ -4,6 +4,13 @@ import user from '../../Images/user.png'
 
 export default function UserProfile() {
   const [tasks, setTasks] = useState([]);
+  const [shown, setShown] = useState(false);
+
+  const handleShown = (e, j) => {
+    // setShown({ ...e }, !shown);
+    setShown((i) => ({ ...i, [e]: !i[e] }));
+    console.log(shown)
+  }
 
   const serverApi = process.env.REACT_APP_BACKEND_SERVER_PATH;
 
@@ -27,10 +34,17 @@ export default function UserProfile() {
   return (
     <>
       <div className='grid grid-cols-3'>
-        {tasks.map((e) => {
+        {tasks.map((e, index) => {
           return (
             <div className="mx-6 mb-10 max-w-sm" key={e._id}>
-              <div className="rounded-lg border bg-white px-4 pt-8 pb-10 shadow-lg">
+              <div className="rounded-lg border bg-white px-4 shadow-lg pb-10">
+                <div className='self-end relative ml-auto cursor-pointer w-fit pb-2 px-2 rounded-full mb-2 mt-2' onClick={() => handleShown(index)}>
+                  . . .
+                  {shown[index] && <article className='absolute min-w-44 bg-white px-2 py-3 rounded-md right-2 z-[5] text-gray-800 font-semibold hover:text-gray-900 hover:border border hover:border-gray-600 transition-all'>
+                    <p className='text-sm min-w-fit'>Promote to Sub-Admin</p>
+                    {/* <p className='text-sm min-w-fit'>Demote to Member</p> */}
+                  </article>}
+                </div>
 
                 <div className="relative mx-auto w-36 rounded-full">
                   <img className="mx-auto h-auto w-full rounded-full" src={user} alt="" />
@@ -50,6 +64,7 @@ export default function UserProfile() {
                     <span className="ml-auto">Joined</span>
                   </li>
                 </ul>
+
               </div>
             </div>
           );

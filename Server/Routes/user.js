@@ -14,4 +14,4 @@ router.post('/end-task', endTask);
 router.put('/end-task', endTask);
 router.get('/registered-user', getRegisterUser);
 
-module.exports = router; 
+module.exports = router;

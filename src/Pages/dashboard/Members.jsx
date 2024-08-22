@@ -6,9 +6,46 @@ export default function Member() {
   const [crossvisibility, setCrossVisibility] = useState({});
   const [checkVisibility, setCheckVisibility] = useState({});
   const [approvalStatus, setApprovalStatus] = useState('ended');
+  const [admin, setIsAdmin] = useState(false);
   const serverApi = process.env.REACT_APP_BACKEND_SERVER_PATH;
 
+  useEffect(() => {
+    const fetchTasks = async () => {
+      try {
+        const response = await axios.get(`${serverApi}/tasks`);
+        setTasks(response.data);
+
+        const statuses = response.data.map((e) => e.status);
+        setApprovalStatus(statuses);
+      } catch (error) {
+        console.error('Error fetching tasks:', error);
+      }
+    };
+
+    // FETCHING USER
+    const fetchUser = async (e) => {
+      try {
+        const response = await axios.get(`${serverApi}/profile`, {
+          headers: { Authorization: `Bearer ${localStorage.getItem('Token')}` }
+        })
+        const user = response.data.user;
+
+        if (user.userEmail === 'abdullah2@gmail.com' && user.userName === 'abdullah hassan') {
+          setIsAdmin(true);
+        }
+
+      } catch (error) {
+        console.log('This Error is from fetchUser:', error)
+      }
+    }
+
+    fetchUser();
+    fetchTasks();
+  }, [serverApi]);
+
+  // console.log('This is the AdminUser:', admin)
   const handleCross = async (index, taskId) => {
+    if (!admin) return;
     setCrossVisibility((i) => ({ ...i, [index]: true }));
     setCheckVisibility((i) => ({ ...i, [index]: false }));
     await updateStatus(taskId, 'Not Approved');
@@ -16,6 +53,7 @@ export default function Member() {
   };
 
   const handleCheck = async (index, taskId) => {
+    if (!admin) return;
     setCheckVisibility((i) => ({ ...i, [index]: true }));
     setCrossVisibility((i) => ({ ...i, [index]: false }));
     await updateStatus(taskId, 'Approved');
@@ -30,21 +68,6 @@ export default function Member() {
       return updateValue;
     });
   }
-
-  useEffect(() => {
-    const fetchTasks = async () => {
-      try {
-        const response = await axios.get(`${serverApi}/tasks`);
-        setTasks(response.data);
-
-        const statuses = response.data.map((e) => e.status);
-        setApprovalStatus(statuses);
-      } catch (error) {
-        console.error('Error fetching tasks:', error);
-      }
-    };
-    fetchTasks();
-  }, [serverApi]);
 
   const updateStatus = async (taskVal, newStatus) => {
     try {
@@ -93,7 +116,7 @@ export default function Member() {
 
                     <td className="whitespace-no-wrap hidden py-4 text-sm font-normal text-gray-500 sm:px-6 lg:table-cell">
                       <div className='flex items-center gap-2'>
-                        {(approvalStatus[index] && approvalStatus[index] === 'ended') &&
+                        {admin && (approvalStatus[index] && approvalStatus[index] === 'ended') &&
                           <>
                             <div>
                               {(crossvisibility[index] || crossvisibility[index] === undefined) &&
@@ -118,6 +141,7 @@ export default function Member() {
                             </div>
                           </>
                         }
+                        {!admin && (approvalStatus[index] && approvalStatus[index] === 'ended') && <p>Pending</p>}
                         {approvalStatus[index] === 'Approved' &&
                           <div>
                             {(checkVisibility[index] || checkVisibility[index] === undefined) &&

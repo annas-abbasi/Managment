@@ -94,8 +94,8 @@ export default function Login() {
                                 <p className='mb-1 font-semibold'>Login As?</p>
                                 <div className='flex items-center flex-wrap gap-4 justify-between flex-grow mb-4'>
 
-                                    <button className='rounded-md border bg-zinc-300 text-zinc-700 px-4 flex-grow py-1 border-gray-600 hover:bg-gray-500 hover:text-white focus:bg-gray-500 focus:text-white transition-all'>Sub Admin</button>
                                     <button className='rounded-md border bg-zinc-300 text-zinc-700 px-4 py-1 flex-grow border-gray-600 hover:bg-gray-500 hover:text-white transition-all focus:bg-gray-500 focus:text-white'>Admin</button>
+                                    <button className='rounded-md border bg-zinc-300 text-zinc-700 px-4 flex-grow py-1 border-gray-600 hover:bg-gray-500 hover:text-white focus:bg-gray-500 focus:text-white transition-all'>Sub Admin</button>
                                     <button className='rounded-md border bg-zinc-300 text-zinc-700 hover:bg-gray-500 hover:text-white transition-all px-4 py-1 flex-grow border-gray-600 focus:bg-gray-500 focus:text-white'>User</button>
                                 </div>
 
