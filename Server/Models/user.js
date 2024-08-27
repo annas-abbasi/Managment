@@ -20,6 +20,10 @@ const userSchema = mongoose.Schema({
         type: String,
         required: [true, 'Please provide a password'],
         minlength: [8, 'Password must be at least 8 characters long'],
+    },
+    profileImage: {
+        type: String,
+        default: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQNvWDvQb_rCtRL-p_w329CtzHmfzfWP0FIw&s'
     }
 }, { timestamps: true });
 

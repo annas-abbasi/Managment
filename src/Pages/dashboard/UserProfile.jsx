@@ -27,10 +27,6 @@ export default function UserProfile() {
     fetchTasks();
   }, [serverApi]);
 
-  // const capatalizefirstLetter = (value) => {
-  //   return value.split(" ").map((e) => e.charAt(0).toUpperCase() + e.slice(1)).join(" ")
-  // }
-
   return (
     <>
       <div className='grid grid-cols-3'>
@@ -73,3 +69,8 @@ export default function UserProfile() {
     </>
   )
 }
+
+
+// const capatalizefirstLetter = (value) => {
+//   return value.split(" ").map((e) => e.charAt(0).toUpperCase() + e.slice(1)).join(" ")
+// }

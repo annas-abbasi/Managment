@@ -2,29 +2,33 @@ const userSchema = require('../Models/user')
 const Task = require('../Models/assign')
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const { errorHandler } = require('../utils/error');
+const errorHandler = require('../utils/error');
 
 const RegisterUser = async (req, res, next) => {
     try {
         const { name, email, password } = req.body;
         if (!name || !email || !password) {
-            throw new Error('Some Field is missing')
+            // throw new Error('Some Field is missing')
+            return next(errorHandler(400, 'Fields are missing!'))
         }
         const existingUser = await userSchema.findOne({ name });
-        if (existingUser) {
-            // return res.status(400).json({ message: "Username already exists. Please try a different one OKAY." });
 
-            // THIS IS COMING FROM THE UTILS YOU CAN CHECK FOR FURTHER INFO...
-            next(errorHandler(400, 'All fields are required.'))
+        if (existingUser) {
+            return next(errorHandler(400, 'Username already exists. Please try a different one.'));
         }
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = bcrypt.hashSync(password, salt);
         const registerPerson = await userSchema.create({ name, email, password: hashedPassword });
-        res.status(200).json({ registerPerson });
+        res.status(200).json({
+            success: true,
+            message: 'User registered successfully!',
+            registerPerson
+        });
         console.log({ registerPerson });
     } catch (error) {
         // console.log('This error is from the Controller RegisterUser', error);
         // res.status(500).json({ message: "Please Fill all the required Fields!" });
+        console.log('RegisterUser Error:', error);
         next(error);
     }
 }
@@ -84,16 +88,25 @@ const LogoutUser = async (req, res) => {
 
 const createTask = async (req, res) => {
     try {
-        const { name, title, task, time } = req.body;
-        const user = await userSchema.findOne({ name });
+        const { names, title, task, time } = req.body;
+
+        const nameArray = names.split(',').map(name => name.trim());
+        let user = await Task.findOne({ names: { $all: nameArray } });
+
         if (!user) {
             return res.status(400).json({ message: 'User not found' });
         }
-        const newTask = new Task({ name, title, task, time });
+        const newTask = new Task({
+            names: nameArray,
+            title,
+            task,
+            time
+        });
         await newTask.save();
-        res.status(201).json({ newTask });
+        res.status(201).json({ message: 'Task created successfully', newTask });
     } catch (error) {
-        res.status(400).json({ message: error.message });
+        res.status(500).json({ message: error.message });
+        console.log({ message: error.message })
     }
 };
 
@@ -147,5 +160,78 @@ const getRegisterUser = async (req, res) => {
     }
 };
 
+// @@@@@@@@@@@@@@@@@@
+const updateProfileImage = async (req, res, next) => {
+    try {
+        const userId = req.user.userId; // Assuming user ID is in the token
+        const filePath = `/uploads/${req.file.filename}`;
 
-module.exports = { LoginUser, RegisterUser, ProfileUser, LogoutUser, createTask, getAllTasks, getRegisterUser, endTask, updateTask }
+        const user = await userSchema.findByIdAndUpdate(userId, { profileImage: filePath }, { new: true });
+
+        res.status(200).json({ success: true, profileImage: user.profileImage });
+    } catch (error) {
+        next(error);
+    }
+};
+
+// Controller function to retrieve the user's profile image
+const getProfileImage = async (req, res, next) => {
+    try {
+        const userId = req.user.userId;
+        const user = await userSchema.findById(userId);
+
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        res.status(200).json({ success: true, profileImage: user.profileImage });
+    } catch (error) {
+        next(error);
+    }
+};
+// @@@@@@@@@@@@@@@@@@
+
+module.exports = { LoginUser, RegisterUser, ProfileUser, LogoutUser, createTask, getAllTasks, getRegisterUser, endTask, updateTask, getProfileImage, updateProfileImage }
+
+
+
+
+// THIS CONTROLLER IS SAVING A TASK WITH MULTIPLE USER AT A TIME BUT SHOWS THEM SEPERATLY.
+// const createTask = async (req, res) => {
+//     try {
+//         const { names, title, task, time } = req.body;
+
+//         const nameArray = names.split(',').map(name => name.trim());
+//         const tasks = [];
+
+//         for (const name of nameArray) {
+//             const user = await userSchema.findOne({ name });
+//             if (!user) {
+//                 return res.status(404).json({ message: `User not found: ${name}` });
+//             }
+//             const newTask = new Task({ name, title, task, time });
+//             await newTask.save();
+//             tasks.push(newTask);
+//         }
+
+//         res.status(201).json({ message: 'Tasks created successfully', tasks });
+//     } catch (error) {
+//         res.status(500).json({ message: error.message });
+//     }
+// };
+
+// THIS IS MY FIRST ONE SIMPLE.
+// const createTask = async (req, res) => {
+//     try {
+//         const { name, title, task, time } = req.body;
+//         const user = await userSchema.findOne({ name });
+//         if (!user) {
+//             return res.status(400).json({ message: 'User not found' });
+//         }
+//         const newTask = new Task({ name, title, task, time });
+//         await newTask.save();
+//         res.status(201).json({ newTask });
+//     } catch (error) {
+//         res.status(400).json({ message: error.message });
+//     }
+// };

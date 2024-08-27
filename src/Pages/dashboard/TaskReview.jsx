@@ -144,7 +144,6 @@ export default function TaskReview() {
     };
   }, [timers]);
 
-
   return (
     <>
       <div className="flex flex-col gap-6 mb-16">
@@ -167,9 +166,11 @@ export default function TaskReview() {
 
             <tbody className="lg:border-gray-300">
               {tasks.map((task) => (
+
                 <tr key={task._id} className='border-b border-gray-100'>
                   <td className="whitespace-no-wrap py-4 text-sm font-semibold text-gray-500 sm:px-6 border-r min-w-32">
                     {task.name}
+                    {task.names.join(' / ')}
                   </td>
 
                   <td className="whitespace-no-wrap hidden py-4 text-sm font-normal text-gray-500 min-w-32 sm:px-6 lg:table-cell text-justify border-r">{task.title}</td>

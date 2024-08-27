@@ -3,6 +3,7 @@ const express = require('express');
 const app = express();
 const cors = require('cors')
 const registerUser = require('./Routes/user')
+const profileRoutes = require('./Routes/user');
 const connectDB = require('./DB/connect')
 const cookieParser = require('cookie-parser');
 
@@ -15,6 +16,7 @@ app.use(cors({
 }));
 
 app.use(registerUser)
+app.use('/api', profileRoutes);
 
 const port = process.env.PORT || 3007;
 
@@ -29,15 +31,27 @@ const Start = async () => {
     }
 }
 
+// app.use((err, req, res, next) => {
+//     const statusCode = err.statusCode || 500;
+//     const message = err.message || 'Internal Server Error'
+//     res.status(statusCode).json({
+//         success: false,
+//         statusCode,
+//         message
+//     })
+//     next();
+// })
+
 app.use((err, req, res, next) => {
     const statusCode = err.statusCode || 500;
-    const message = err.message || 'Internal Server Error'
+    const message = err.message || 'Internal Server Error';
+
+    console.error('ErrorHandler Middleware:', err.stack);
+    console.log('This is Test Error:', err.message)
     res.status(statusCode).json({
         success: false,
-        statusCode,
-        message
-    })
-    next();
-})
+        message,
+    });
+});
 
 Start();

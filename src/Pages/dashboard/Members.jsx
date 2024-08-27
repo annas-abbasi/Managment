@@ -3,9 +3,9 @@ import axios from 'axios';
 
 export default function Member() {
   const [tasks, setTasks] = useState([]);
+  const [approvalStatus, setApprovalStatus] = useState('ended');
   const [crossvisibility, setCrossVisibility] = useState({});
   const [checkVisibility, setCheckVisibility] = useState({});
-  const [approvalStatus, setApprovalStatus] = useState('ended');
   const [admin, setIsAdmin] = useState(false);
   const serverApi = process.env.REACT_APP_BACKEND_SERVER_PATH;
 
@@ -103,6 +103,7 @@ export default function Member() {
                   <tr key={index} className='border-b border-gray-100'>
                     <td className="whitespace-no-wrap py-4 text-sm font-bold text-gray-500 sm:px-6 border-r">
                       {task.name}
+                      {task.names}
                     </td>
                     <td className="whitespace-no-wrap hidden py-4 text-sm font-normal text-gray-500 sm:px-6 lg:table-cell text-justify border-r">
                       {task.title}
