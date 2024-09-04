@@ -4,8 +4,6 @@ import axios from 'axios';
 
 export default function ProjectReview() {
     const [tasks, setTasks] = useState([]);
-    const [approvalStatus, setApprovalStatus] = useState();
-
 
     const serverApi = process.env.REACT_APP_BACKEND_SERVER_PATH;
     useEffect(() => {
@@ -13,14 +11,12 @@ export default function ProjectReview() {
             try {
                 const response = await axios.get(`${serverApi}/tasks`);
                 setTasks(response.data);
-                console.log(response.data);
-                const statuses = response.data.map((e) => e.status);
-                setApprovalStatus(statuses);
             } catch (error) {
                 console.error('Error fetching tasks:', error);
             }
         }
 
+        console.log('This is All Working')
         fetchTasks();
     }, [serverApi]);
 

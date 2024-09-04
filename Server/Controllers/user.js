@@ -92,7 +92,7 @@ const createTask = async (req, res) => {
 
         const nameArray = names.split(',').map(name => name.trim());
         let user = await Task.findOne({ names: { $all: nameArray } });
-
+        const tasks = [];
         if (!user) {
             return res.status(400).json({ message: 'User not found' });
         }
@@ -103,7 +103,12 @@ const createTask = async (req, res) => {
             time
         });
         await newTask.save();
-        res.status(201).json({ message: 'Task created successfully', newTask });
+        // res.status(201).json({ message: 'Task created successfully', newTask });
+        tasks.push(newTask);
+        console.log(tasks)
+        // const newTask = new Task({ name, title, task, time });
+        //             await newTask.save();
+        //             tasks.push(newTask);
     } catch (error) {
         res.status(500).json({ message: error.message });
         console.log({ message: error.message })
@@ -183,7 +188,6 @@ const getProfileImage = async (req, res, next) => {
         if (!user) {
             return res.status(404).json({ error: 'User not found' });
         }
-
         res.status(200).json({ success: true, profileImage: user.profileImage });
     } catch (error) {
         next(error);

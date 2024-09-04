@@ -47,6 +47,8 @@ export default function Dashboard() {
                             <Link to="/dashboard/Edit-Profile" className={`w-full mt-5 cursor-pointer border-l-2 px-2 py-2 font-semibold transition ${activeLink === '/dashboard/Edit-Profile' ? 'border-l-blue-700 text-blue-700' : 'border-transparent hover:border-l-blue-700 hover:text-blue-700'}`}>Edit Profile</Link>
 
                             <Link to="/dashboard/ProjectReview" className={`w-full mt-5 cursor-pointer border-l-2 px-2 py-2 font-semibold transition ${activeLink === '/dashboard/ProjectReview' ? 'border-l-blue-700 text-blue-700' : 'border-transparent hover:border-l-blue-700 hover:text-blue-700'}`}>Project Review</Link>
+
+                            <Link to="/dashboard/Chat" className={`w-full mt-5 cursor-pointer border-l-2 px-2 py-2 font-semibold transition ${activeLink === '/dashboard/Chat' ? 'border-l-blue-700 text-blue-700' : 'border-transparent hover:border-l-blue-700 hover:text-blue-700'}`}>Chat Here</Link>
                         </ul>
                     </div>
 
