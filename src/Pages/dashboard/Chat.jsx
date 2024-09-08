@@ -1,7 +1,6 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Img3 from '../../Images/user.png'
 import ChatUser from './ChatUser'
-// import { AuthContext } from '../../AuthContext';
 
 export default function Chat() {
     const [selectedUser, setSelectedUser] = useState({

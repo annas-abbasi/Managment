@@ -6,6 +6,7 @@ const router = express.Router();
 const { RegisterUser, LoginUser, ProfileUser, LogoutUser, createTask, getAllTasks, getRegisterUser, endTask, updateTask, updateProfileImage, getProfileImage } = require('../Controllers/user');
 const { authenticate } = require('../authMiddleware');
 const { upload } = require('../uploadMiddleware');
+const { sendMessage, getMessages } = require('../Controllers/userMsg');
 
 router.route('/register').post(RegisterUser);
 router.route('/login').post(LoginUser);
@@ -23,5 +24,11 @@ router.post('/update-profile-image', authenticate, upload.single('image'), updat
 
 // Route for getting profile image
 router.get('/profile-image', authenticate, getProfileImage);
+
+// ROUTE FOR MESSAGE CHAT
+router.post('/send-message', sendMessage);
+
+// Route to get messages between two users
+router.get('/messages/:userId1/:userId2', getMessages);
 
 module.exports = router;

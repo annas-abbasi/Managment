@@ -8,13 +8,16 @@ const RegisterUser = async (req, res, next) => {
     try {
         const { name, email, password } = req.body;
         if (!name || !email || !password) {
-            // throw new Error('Some Field is missing')
             return next(errorHandler(400, 'Fields are missing!'))
         }
         const existingUser = await userSchema.findOne({ name });
+        const existingEmail = await userSchema.findOne({ email });
 
         if (existingUser) {
             return next(errorHandler(400, 'Username already exists. Please try a different one.'));
+        }
+        if (existingEmail) {
+            return next(errorHandler(400, 'Email already exists. Please try a different one.'));
         }
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = bcrypt.hashSync(password, salt);
@@ -24,10 +27,7 @@ const RegisterUser = async (req, res, next) => {
             message: 'User registered successfully!',
             registerPerson
         });
-        console.log({ registerPerson });
     } catch (error) {
-        // console.log('This error is from the Controller RegisterUser', error);
-        // res.status(500).json({ message: "Please Fill all the required Fields!" });
         console.log('RegisterUser Error:', error);
         next(error);
     }
@@ -49,7 +49,7 @@ const LoginUser = async (req, res) => {
         }
 
         // IN THIS TOKEN I ONLY HAVE TO PROVIDE THE _ID NOT THE OTHER INFO OF USE I CAN GET USER DETAILS ONLY WITH _ID... OR I WILL NOT SECURE THE my_secret_key THEN OTHER USERS CAN HIGHJACK USER COOKIE (ON THE BASE OF THE SECRET_KEY THE USER INFO IS CREATED AND ENCRYPTED OF THE BASICS OF THAT KEY)
-        const token = await jwt.sign({ userId: validUser._id, userEmail: validUser.email, userName: validUser.name }, 'my_secret_Key', { expiresIn: '7d' });
+        const token = await jwt.sign({ userId: validUser._id, userEmail: validUser.email, }, 'my_secret_Key', { expiresIn: '7d' });
         res.cookie('Token', token, {
             httpOnly: true, secure: true,
             sameSite: 'Strict',

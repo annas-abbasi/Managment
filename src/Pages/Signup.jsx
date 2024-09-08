@@ -23,18 +23,10 @@ export default function Signup() {
             await axios.post(`${serverApi}/register`, { ...name });
             setRedirect(true);
         } catch (error) {
-            // const errorMessage = error.response?.data?.message || "Registration failed. Please try again later.";
-            // const errorMessage = error.response || "Registration failed. Please try again later.";
-            // setErrorMessage(errorMessage);
-            // setErrorMessage('please fill all the required fields');
             const errorMessage = error.response?.data?.message || "Registration failed. Please try again later.";
-
-            // Log the error message to the console (for debugging)
-            console.log('This is From the Frontend:', error.response);
-
             setTimeout(() => {
                 if (errorMessage) {
-                    setErrorMessage('')
+                    setErrorMessage(errorMessage)
                 }
             }, 2000);
         }
