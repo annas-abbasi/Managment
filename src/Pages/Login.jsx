@@ -91,13 +91,12 @@ export default function Login() {
                                     </div>
                                 </div>
 
-                                <p className='mb-1 font-semibold'>Login As?</p>
-                                <div className='flex items-center flex-wrap gap-4 justify-between flex-grow mb-4'>
-
+                                {/* <p className='mb-1 font-semibold'>Login As?</p> */}
+                                {/* <div className='flex items-center flex-wrap gap-4 justify-between flex-grow mb-4'>
                                     <button className='rounded-md border bg-zinc-300 text-zinc-700 px-4 py-1 flex-grow border-gray-600 hover:bg-gray-500 hover:text-white transition-all focus:bg-gray-500 focus:text-white'>Admin</button>
                                     <button className='rounded-md border bg-zinc-300 text-zinc-700 px-4 flex-grow py-1 border-gray-600 hover:bg-gray-500 hover:text-white focus:bg-gray-500 focus:text-white transition-all'>Sub Admin</button>
                                     <button className='rounded-md border bg-zinc-300 text-zinc-700 hover:bg-gray-500 hover:text-white transition-all px-4 py-1 flex-grow border-gray-600 focus:bg-gray-500 focus:text-white'>User</button>
-                                </div>
+                                </div> */}
 
                                 <div className="mb-4">
                                     <button className="grid w-full cursor-pointer select-none rounded-md border border-indigo-500 bg-indigo-500 py-2 px-5 text-center align-middle text-sm text-white shadow hover:border-indigo-600 hover:bg-indigo-600 hover:text-white focus:border-indigo-600 focus:bg-indigo-600 focus:text-white focus:shadow-none" type="submit">Sign in</button>

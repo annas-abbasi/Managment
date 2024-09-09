@@ -49,7 +49,7 @@ const LoginUser = async (req, res) => {
         }
 
         // IN THIS TOKEN I ONLY HAVE TO PROVIDE THE _ID NOT THE OTHER INFO OF USE I CAN GET USER DETAILS ONLY WITH _ID... OR I WILL NOT SECURE THE my_secret_key THEN OTHER USERS CAN HIGHJACK USER COOKIE (ON THE BASE OF THE SECRET_KEY THE USER INFO IS CREATED AND ENCRYPTED OF THE BASICS OF THAT KEY)
-        const token = await jwt.sign({ usrId: validUser._id, usrEmail: validUser.email, userName: validUser.name }, 'my_secret_Key', { expiresIn: '7d' });
+        const token = await jwt.sign({ userId: validUser._id, userEmail: validUser.email, userName: validUser.name }, 'my_secret_Key', { expiresIn: '7d' });
         res.cookie('Token', token, {
             httpOnly: true, secure: true,
             sameSite: 'Strict',

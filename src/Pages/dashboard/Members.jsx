@@ -30,9 +30,10 @@ export default function Member() {
         })
         const user = response.data.user;
 
-        if (user.userEmail === 'abdullah2@gmail.com' && user.userName === 'abdullah hassan') {
+        if (user.userEmail === 'admin@gmail.com' && user.userName === 'admin') {
           setIsAdmin(true);
         }
+        console.log('This is Admin', admin)
 
       } catch (error) {
         console.log('This Error is from fetchUser:', error)
