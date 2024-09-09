@@ -49,7 +49,7 @@ const LoginUser = async (req, res) => {
         }
 
         // IN THIS TOKEN I ONLY HAVE TO PROVIDE THE _ID NOT THE OTHER INFO OF USE I CAN GET USER DETAILS ONLY WITH _ID... OR I WILL NOT SECURE THE my_secret_key THEN OTHER USERS CAN HIGHJACK USER COOKIE (ON THE BASE OF THE SECRET_KEY THE USER INFO IS CREATED AND ENCRYPTED OF THE BASICS OF THAT KEY)
-        const token = await jwt.sign({ userId: validUser._id, userEmail: validUser.email, }, 'my_secret_Key', { expiresIn: '7d' });
+        const token = await jwt.sign({ usrId: validUser._id, usrEmail: validUser.email, userName: validUser.name }, 'my_secret_Key', { expiresIn: '7d' });
         res.cookie('Token', token, {
             httpOnly: true, secure: true,
             sameSite: 'Strict',
@@ -69,7 +69,7 @@ const ProfileUser = async (req, res) => {
         }
         const token = authHeader.split(' ')[1];
         const jwtVerify = await jwt.verify(token, 'my_secret_Key');
-        console.log('Token verified successfully:', jwtVerify);
+        // console.log('Token verified successfully:', jwtVerify);
         res.status(200).json({ user: jwtVerify });
     } catch (error) {
         console.log('Error in ProfileUser:', error);
@@ -86,34 +86,82 @@ const LogoutUser = async (req, res) => {
     }
 };
 
+// const createTask = async (req, res) => {
+//     try {
+//         const { names, title, task, time } = req.body;
+
+//         const nameArray = names.split(',').map(name => name.trim());
+//         let user = await Task.findOne({ names: { $all: nameArray } });
+//         const tasks = [];
+//         if (!user) {
+//             return res.status(400).json({ message: 'User not found' });
+//         }
+//         const newTask = new Task({
+//             names: nameArray,
+//             title,
+//             task,
+//             time
+//         });
+//         await newTask.save();
+//         // res.status(201).json({ message: 'Task created successfully', newTask });
+//         tasks.push(newTask);
+//         console.log(tasks)
+//         // const newTask = new Task({ name, title, task, time });
+//         //             await newTask.save();
+//         //             tasks.push(newTask);
+//     } catch (error) {
+//         res.status(500).json({ message: error.message });
+//         console.log({ message: error.message })
+//     }
+// };
+
+// const createTask = async (req, res) => {
+//     try {
+//         const { names, title, task, time } = req.body;
+
+//         const nameArray = names.split(',').map(name => name.trim());
+//         const tasks = [];
+
+//         for (const name of nameArray) {
+//             const user = await userSchema.findOne({ name });
+//             if (!user) {
+//                 return res.status(404).json({ message: `User not found: ${name}` });
+//             }
+//             const newTask = new Task({ name: nameArray, title, task, time });
+//             await newTask.save();
+//             tasks.push(newTask);
+//         }
+
+//         res.status(201).json({ message: 'Tasks created successfully', tasks });
+//     } catch (error) {
+//         res.status(500).json({ message: error.message });
+//     }
+// };
+
 const createTask = async (req, res) => {
     try {
         const { names, title, task, time } = req.body;
 
         const nameArray = names.split(',').map(name => name.trim());
-        let user = await Task.findOne({ names: { $all: nameArray } });
         const tasks = [];
-        if (!user) {
-            return res.status(400).json({ message: 'User not found' });
+
+        for (const name of nameArray) {
+            const user = await userSchema.findOne({ name });
+            if (!user) {
+                return res.status(404).json({ message: `User not found: ${name}` });
+            }
+            // Corrected to use `name` for the current iteration and `names` field for the schema.
+            const newTask = new Task({ names: [name], title, task, time });
+            await newTask.save();
+            tasks.push(newTask);
         }
-        const newTask = new Task({
-            names: nameArray,
-            title,
-            task,
-            time
-        });
-        await newTask.save();
-        // res.status(201).json({ message: 'Task created successfully', newTask });
-        tasks.push(newTask);
-        console.log(tasks)
-        // const newTask = new Task({ name, title, task, time });
-        //             await newTask.save();
-        //             tasks.push(newTask);
+
+        res.status(201).json({ message: 'Tasks created successfully', tasks });
     } catch (error) {
         res.status(500).json({ message: error.message });
-        console.log({ message: error.message })
     }
 };
+
 
 const getAllTasks = async (req, res) => {
     try {

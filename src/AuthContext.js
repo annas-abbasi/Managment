@@ -1,10 +1,12 @@
 import React, { createContext, useState, useEffect } from 'react';
 import axios from 'axios';
+import Spinner from './Component/Spinner';
 
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchUser = async () => {
@@ -17,15 +19,22 @@ export const AuthProvider = ({ children }) => {
                         },
                         withCredentials: true
                     });
-                    const name = res.data.user
+                    const name = res.data.user;
                     setUser(name.userName);
                 }
             } catch (error) {
                 console.log('Error fetching user', error);
+            } finally {
+                setLoading(false); // Stop loading once the user data is fetched
             }
         };
+
         fetchUser();
     }, []);
+
+    if (loading) {
+        return <Spinner />;
+    }
 
     return (
         <AuthContext.Provider value={{ user, setUser }}>
