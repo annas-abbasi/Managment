@@ -49,10 +49,11 @@ export default function Navbar() {
     const [redirect, setRedirect] = useState(false);
 
     const serverApi = process.env.REACT_APP_BACKEND_SERVER_PATH
+    console.log(serverApi)
     const userLogout = async (e) => {
         e.preventDefault();
         try {
-            await axios.post(`${serverApi}/logout`)
+            await axios.post(`${serverApi}/api/logout`)
             localStorage.removeItem('Token');
             setUser(null);
             setRedirect(true);

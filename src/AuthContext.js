@@ -11,7 +11,7 @@ export const AuthProvider = ({ children }) => {
             try {
                 const token = localStorage.getItem('Token');
                 if (token) {
-                    const res = await axios.get(`${process.env.REACT_APP_BACKEND_SERVER_PATH}/profile`, {
+                    const res = await axios.get(`${process.env.REACT_APP_BACKEND_SERVER_PATH}/api/profile`, {
                         headers: {
                             'Authorization': `Bearer ${token}`
                         },

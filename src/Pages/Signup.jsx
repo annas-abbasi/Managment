@@ -20,13 +20,14 @@ export default function Signup() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await axios.post(`${serverApi}/register`, { ...name });
+            await axios.post(`${serverApi}/api/register`, { ...name });
             setRedirect(true);
         } catch (error) {
             const errorMessage = error.response?.data?.message || "Registration failed. Please try again later.";
+            setErrorMessage(errorMessage)
             setTimeout(() => {
                 if (errorMessage) {
-                    setErrorMessage(errorMessage)
+                    setErrorMessage('')
                 }
             }, 2000);
         }

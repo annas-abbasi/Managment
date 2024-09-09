@@ -3,15 +3,11 @@ const router = express.Router();
 // const { upload } = require('../middleware/uploadMiddleware'); // Middleware for handling file uploads
 // const { authenticate } = require('../middleware/authMiddleware'); // Middleware for authentication
 
-const { RegisterUser, LoginUser, ProfileUser, LogoutUser, createTask, getAllTasks, getRegisterUser, endTask, updateTask, updateProfileImage, getProfileImage } = require('../Controllers/user');
+const { createTask, getAllTasks, getRegisterUser, endTask, updateTask, updateProfileImage, getProfileImage } = require('../Controllers/user');
 const { authenticate } = require('../authMiddleware');
 const { upload } = require('../uploadMiddleware');
 const { sendMessage, getMessages } = require('../Controllers/userMsg');
 
-router.route('/register').post(RegisterUser);
-router.route('/login').post(LoginUser);
-router.route('/profile').get(ProfileUser);
-router.route('/logout').post(LogoutUser);
 
 router.post('/assign-task', createTask);
 router.get('/tasks', getAllTasks);
