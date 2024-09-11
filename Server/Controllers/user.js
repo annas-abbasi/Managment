@@ -48,8 +48,7 @@ const LoginUser = async (req, res) => {
             return res.status(400).json({ error: "Password is incorrect!" });
         }
 
-        // IN THIS TOKEN I ONLY HAVE TO PROVIDE THE _ID NOT THE OTHER INFO OF USE I CAN GET USER DETAILS ONLY WITH _ID... OR I WILL NOT SECURE THE my_secret_key THEN OTHER USERS CAN HIGHJACK USER COOKIE (ON THE BASE OF THE SECRET_KEY THE USER INFO IS CREATED AND ENCRYPTED OF THE BASICS OF THAT KEY)
-        const token = await jwt.sign({ userId: validUser._id, userEmail: validUser.email, userName: validUser.name }, 'my_secret_Key', { expiresIn: '7d' });
+        const token = await jwt.sign({ userId: validUser._id, userEmail: validUser.email, userName: validUser.name, profileImage: validUser.profileImage }, 'my_secret_Key', { expiresIn: '7d' });
         res.cookie('Token', token, {
             httpOnly: true, secure: true,
             sameSite: 'Strict',
@@ -69,7 +68,6 @@ const ProfileUser = async (req, res) => {
         }
         const token = authHeader.split(' ')[1];
         const jwtVerify = await jwt.verify(token, 'my_secret_Key');
-        // console.log('Token verified successfully:', jwtVerify);
         res.status(200).json({ user: jwtVerify });
     } catch (error) {
         console.log('Error in ProfileUser:', error);
@@ -86,57 +84,6 @@ const LogoutUser = async (req, res) => {
     }
 };
 
-// const createTask = async (req, res) => {
-//     try {
-//         const { names, title, task, time } = req.body;
-
-//         const nameArray = names.split(',').map(name => name.trim());
-//         let user = await Task.findOne({ names: { $all: nameArray } });
-//         const tasks = [];
-//         if (!user) {
-//             return res.status(400).json({ message: 'User not found' });
-//         }
-//         const newTask = new Task({
-//             names: nameArray,
-//             title,
-//             task,
-//             time
-//         });
-//         await newTask.save();
-//         // res.status(201).json({ message: 'Task created successfully', newTask });
-//         tasks.push(newTask);
-//         console.log(tasks)
-//         // const newTask = new Task({ name, title, task, time });
-//         //             await newTask.save();
-//         //             tasks.push(newTask);
-//     } catch (error) {
-//         res.status(500).json({ message: error.message });
-//         console.log({ message: error.message })
-//     }
-// };
-
-// const createTask = async (req, res) => {
-//     try {
-//         const { names, title, task, time } = req.body;
-
-//         const nameArray = names.split(',').map(name => name.trim());
-//         const tasks = [];
-
-//         for (const name of nameArray) {
-//             const user = await userSchema.findOne({ name });
-//             if (!user) {
-//                 return res.status(404).json({ message: `User not found: ${name}` });
-//             }
-//             const newTask = new Task({ name: nameArray, title, task, time });
-//             await newTask.save();
-//             tasks.push(newTask);
-//         }
-
-//         res.status(201).json({ message: 'Tasks created successfully', tasks });
-//     } catch (error) {
-//         res.status(500).json({ message: error.message });
-//     }
-// };
 
 const createTask = async (req, res) => {
     try {
@@ -150,7 +97,6 @@ const createTask = async (req, res) => {
             if (!user) {
                 return res.status(404).json({ message: `User not found: ${name}` });
             }
-            // Corrected to use `name` for the current iteration and `names` field for the schema.
             const newTask = new Task({ names: [name], title, task, time });
             await newTask.save();
             tasks.push(newTask);
@@ -213,77 +159,60 @@ const getRegisterUser = async (req, res) => {
     }
 };
 
-// @@@@@@@@@@@@@@@@@@
-const updateProfileImage = async (req, res, next) => {
+const deleteTask = async (req, res) => {
+    const taskId = req.params.taskId;
     try {
-        const userId = req.user.userId; // Assuming user ID is in the token
-        const filePath = `/uploads/${req.file.filename}`;
-
-        const user = await userSchema.findByIdAndUpdate(userId, { profileImage: filePath }, { new: true });
-
-        res.status(200).json({ success: true, profileImage: user.profileImage });
-    } catch (error) {
-        next(error);
-    }
-};
-
-// Controller function to retrieve the user's profile image
-const getProfileImage = async (req, res, next) => {
-    try {
-        const userId = req.user.userId;
-        const user = await userSchema.findById(userId);
-
-        if (!user) {
-            return res.status(404).json({ error: 'User not found' });
+        const item = await Task.findByIdAndDelete(taskId)
+        if (!item) {
+            return res.status(404).json({ message: 'Item not found' })
         }
-        res.status(200).json({ success: true, profileImage: user.profileImage });
+        res.status(200).json({ message: 'Item Deleted Succesfully.', item })
+        console.log('This is the deleteId:', item)
     } catch (error) {
-        next(error);
+        console.log('Error From the Delete Task Controller:', error)
+    }
+
+}
+
+// FOR THE IMAGE CHANGE...
+// const updateProfileImage = async (req, res) => {
+//     try {
+//         const userId = req.params.id;
+//         // const profileImage = req.file ? req.file.path : null;
+//         const profileImage = req.file ? `/uploads/${req.file.filename}` : null;
+//         if (!profileImage) {
+//             return res.status(400).json({ message: 'No Image is Uploaded' });
+//         }
+//         const updateUser = await userSchema.findByIdAndUpdate(userId, (profileImage), { new: true })
+//         if (!updateUser) {
+//             return res.status(404).json({ message: 'User not found' })
+//         }
+//         res.status(200).json(updateUser);
+//         console.log('This is UpdateUser:', updateUser)
+//     } catch (error) {
+//         res.status(500).json({ message: error.message })
+//     }
+// }
+
+const updateProfileImage = async (req, res) => {
+    try {
+        const userId = req.params.id;
+        const profileImage = req.file ? `/uploads/${req.file.filename}` : null;
+        profileImage.trim();
+        if (!profileImage) {
+            return res.status(400).json({ message: 'No Image is Uploaded' });
+        }
+        // Update the user with the new profile image
+        const updateUser = await userSchema.findByIdAndUpdate(userId, { profileImage }, { new: true });
+        if (!updateUser) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        res.status(200).json(updateUser);
+        console.log('This is UpdateUser:', updateUser);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
     }
 };
-// @@@@@@@@@@@@@@@@@@
-
-module.exports = { LoginUser, RegisterUser, ProfileUser, LogoutUser, createTask, getAllTasks, getRegisterUser, endTask, updateTask, getProfileImage, updateProfileImage }
 
 
-
-
-// THIS CONTROLLER IS SAVING A TASK WITH MULTIPLE USER AT A TIME BUT SHOWS THEM SEPERATLY.
-// const createTask = async (req, res) => {
-//     try {
-//         const { names, title, task, time } = req.body;
-
-//         const nameArray = names.split(',').map(name => name.trim());
-//         const tasks = [];
-
-//         for (const name of nameArray) {
-//             const user = await userSchema.findOne({ name });
-//             if (!user) {
-//                 return res.status(404).json({ message: `User not found: ${name}` });
-//             }
-//             const newTask = new Task({ name, title, task, time });
-//             await newTask.save();
-//             tasks.push(newTask);
-//         }
-
-//         res.status(201).json({ message: 'Tasks created successfully', tasks });
-//     } catch (error) {
-//         res.status(500).json({ message: error.message });
-//     }
-// };
-
-// THIS IS MY FIRST ONE SIMPLE.
-// const createTask = async (req, res) => {
-//     try {
-//         const { name, title, task, time } = req.body;
-//         const user = await userSchema.findOne({ name });
-//         if (!user) {
-//             return res.status(400).json({ message: 'User not found' });
-//         }
-//         const newTask = new Task({ name, title, task, time });
-//         await newTask.save();
-//         res.status(201).json({ newTask });
-//     } catch (error) {
-//         res.status(400).json({ message: error.message });
-//     }
-// };
+module.exports = { LoginUser, RegisterUser, ProfileUser, LogoutUser, createTask, getAllTasks, getRegisterUser, endTask, updateTask, updateProfileImage, deleteTask, }

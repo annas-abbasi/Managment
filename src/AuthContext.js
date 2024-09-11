@@ -6,6 +6,7 @@ export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
+    const [userId, setUserId] = useState('');
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -21,7 +22,7 @@ export const AuthProvider = ({ children }) => {
                     });
                     const name = res.data.user;
                     setUser(name.userName);
-                    console.log(name)
+                    setUserId(name);
                 }
             } catch (error) {
                 console.log('Error fetching user', error);
@@ -38,7 +39,7 @@ export const AuthProvider = ({ children }) => {
     }
 
     return (
-        <AuthContext.Provider value={{ user, setUser }}>
+        <AuthContext.Provider value={{ user, setUser, userId }}>
             {children}
         </AuthContext.Provider>
     );

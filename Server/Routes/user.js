@@ -1,12 +1,12 @@
 const express = require('express');
 const router = express.Router();
-// const { upload } = require('../middleware/uploadMiddleware'); // Middleware for handling file uploads
-// const { authenticate } = require('../middleware/authMiddleware'); // Middleware for authentication
 
-const { RegisterUser, LoginUser, ProfileUser, LogoutUser, createTask, getAllTasks, getRegisterUser, endTask, updateTask, updateProfileImage, getProfileImage } = require('../Controllers/user');
-const { authenticate } = require('../authMiddleware');
-const { upload } = require('../uploadMiddleware');
+const { RegisterUser, LoginUser, ProfileUser, LogoutUser, createTask, getAllTasks, getRegisterUser, endTask, updateTask, updateProfileImage, deleteTask } = require('../Controllers/user');
 const { sendMessage, getMessages } = require('../Controllers/userMsg');
+
+const multer = require('multer');
+const path = require('path')
+
 
 router.route('/register').post(RegisterUser);
 router.route('/login').post(LoginUser);
@@ -20,15 +20,25 @@ router.post('/end-task', endTask);
 router.put('/end-task', endTask);
 router.get('/registered-user', getRegisterUser);
 
-router.post('/update-profile-image', authenticate, upload.single('image'), updateProfileImage);
-
-// Route for getting profile image
-router.get('/profile-image', authenticate, getProfileImage);
-
 // ROUTE FOR MESSAGE CHAT
 router.post('/send-message', sendMessage);
-
 // Route to get messages between two users
 router.get('/messages/:userId1/:userId2', getMessages);
+router.delete('/delete/:taskId', deleteTask);
+
+
+// USER PROFILE IMAGE
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'uploads/')
+    },
+    filename: (req, file, cb) => {
+        cb(null, `${Date.now()}-${file.originalname}`)
+    }
+})
+
+const upload = multer({ storage });
+
+router.post('/user/:id/profile-image', upload.single("profileImage"), updateProfileImage)
 
 module.exports = router;

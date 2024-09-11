@@ -86,19 +86,26 @@ export default function Assignee() {
                     </div>
                     <div className='space-y-1'>
                         <p className='text-lg font-semibold'>Task:</p>
-                        <input
+                        {/* <input
                             type="text"
                             name="task"
                             placeholder='Assign Task'
                             className='border w-11/12 rounded-md py-2 px-4'
                             value={formData.task}
                             onChange={handleChange}
+                        /> */}
+                        <textarea name="task"
+                            placeholder='Assign Task Description...'
+                            rows={4}
+                            className='border w-11/12 rounded-md py-2 px-4'
+                            value={formData.task}
+                            onChange={handleChange}
                         />
                     </div>
                     <div className='space-y-1'>
-                        <p className='text-lg font-semibold'>Time:</p>
+                        {/* <p className='text-lg font-semibold'>Time:</p> */}
                         <input
-                            type="text"
+                            type="hidden"
                             name="time"
                             placeholder='Assign the Time Limit (HH:MM:SS)'
                             className='border w-11/12 rounded-md py-2 px-4'
@@ -107,12 +114,8 @@ export default function Assignee() {
                             disabled
                         />
                     </div>
-                    <button
-                        className='py-2 px-4 mt-2 text-white text-base font-semibold bg-blue-600 rounded-md max-w-36 hover:text-blue-600 hover:bg-slate-50 hover:border-blue-600 border transition-all'
-                        type="submit"
-                    >
-                        Send
-                    </button>
+                    <button className='py-2 px-4 mt-2 text-white text-base font-semibold bg-blue-600 rounded-md max-w-36 hover:text-blue-600 hover:bg-slate-50 hover:border-blue-600 border transition-all'
+                        type="submit">Send</button>
                 </form>
             </main>
         </>

@@ -6,6 +6,7 @@ import { AuthContext } from '../AuthContext';
 export default function Navbar() {
     const [scrolled, setScrolled] = useState(false);
     const [shown, setShown] = useState(false);
+    const [selectImage, setSelectImage] = useState('');
     const tabRef = useRef(null);
 
     useEffect(() => {
@@ -45,7 +46,7 @@ export default function Navbar() {
         }
     }, [])
 
-    const { user, setUser } = useContext(AuthContext);
+    const { user, setUser, userId } = useContext(AuthContext);
     const [redirect, setRedirect] = useState(false);
 
     const serverApi = process.env.REACT_APP_BACKEND_SERVER_PATH
@@ -66,6 +67,16 @@ export default function Navbar() {
             <Navigate to={'/'} />
         }
     }, [redirect])
+
+    useEffect(() => {
+        if (user && userId.profileImage) {
+            if (userId.profileImage.startsWith('https://')) {
+                setSelectImage(`${userId.profileImage}`)
+            } else {
+                setSelectImage(`${serverApi}${userId.profileImage}`)
+            }
+        }
+    }, [user, userId.profileImage, serverApi]);
 
     return (
         <>
@@ -139,7 +150,9 @@ export default function Navbar() {
                             <div className="relative" onClick={handleShown}>
                                 <Link className="flex items-center whitespace-nowrap transition duration-150 ease-in-out motion-reduce:transition-none mr-4" href="/">
                                     {/* <!-- User avatar --> */}
-                                    <img src="https://tecdn.b-cdn.net/img/new/avatars/2.jpg" className="rounded-full h-10 w-10 " alt="User Pic" />
+
+                                    {/* <img src="https://tecdn.b-cdn.net/img/new/avatars/2.jpg" className="rounded-full h-10 w-10 " alt="User Pic" /> */}
+                                    <img src={selectImage} className="rounded-full h-10 w-10 object-cover" alt="User Pic" />
                                     {user && typeof user === 'string' &&
                                         (
                                             <p className={`ml-1 font-semibold text-gray-700 ${scrolled ? 'text-gray-700' : 'text-white'}`}>

@@ -8,12 +8,12 @@ import { UserContextProvider } from './UserContext';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
-    <UserContextProvider>
-      <HashRouter>
-        <App />
-      </HashRouter>
-    </UserContextProvider>
-  </React.StrictMode>
+  // <React.StrictMode>
+  <UserContextProvider>
+    <HashRouter>
+      <App />
+    </HashRouter>
+  </UserContextProvider>
+  // </React.StrictMode>
 );
 reportWebVitals();
