@@ -7,7 +7,6 @@ export default function UserProfile() {
   const [shown, setShown] = useState(false);
 
   const handleShown = (e, j) => {
-    // setShown({ ...e }, !shown);
     setShown((i) => ({ ...i, [e]: !i[e] }));
     console.log(shown)
   }
@@ -31,6 +30,12 @@ export default function UserProfile() {
     <>
       <div className='grid grid-cols-3'>
         {tasks.map((e, index) => {
+          const formattedDate = new Date(e.JoinedOn).toLocaleDateString('en-US', {
+            year: 'numeric',
+            day: 'numeric',
+            month: 'long',
+          })
+
           return (
             <div className="mx-6 mb-10 max-w-sm" key={e._id}>
               <div className="rounded-lg border bg-white px-4 shadow-lg pb-10">
@@ -57,7 +62,7 @@ export default function UserProfile() {
 
                   <li className="flex items-center py-3 text-sm">
                     <span>Joined On</span>
-                    <span className="ml-auto">Joined</span>
+                    <span className="ml-auto">{formattedDate}</span>
                   </li>
                 </ul>
 

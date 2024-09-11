@@ -12,7 +12,7 @@ export default function Login() {
     const [loginData, setLoginData] = useState('');
     const [redirect, setRedirect] = useState(false);
     const { setUser } = useContext(AuthContext);
-    const [error, setError] = useState('')
+    const [error, setError] = useState('');
 
     const handleChange = (e) => {
         setLoginData({ ...loginData, [e.target.name]: e.target.value });

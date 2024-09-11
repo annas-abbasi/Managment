@@ -6,10 +6,12 @@ const registerUser = require('./Routes/user')
 const profileRoutes = require('./Routes/user');
 const connectDB = require('./DB/connect')
 const cookieParser = require('cookie-parser');
+const path = require('path')
 
 const socketIo = require('socket.io')
 const http = require('http')
 const server = http.createServer(app)
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 const io = socketIo(server, {
     cors: {
