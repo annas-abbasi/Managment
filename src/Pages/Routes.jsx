@@ -8,7 +8,7 @@ import Navbar from '../Component/Navbar';
 import ProtectedRoute from '../ProtectedRoute';
 import { AuthProvider } from '../AuthContext';
 import { Routes, Route } from 'react-router-dom';
-import { Members, Profile, Time, Assignee, AccountDetails, EditProfile, ProjectReview, Chat } from './dashboard/IndexDashboard';
+import { Members, Profile, Time, Assignee, AccountDetails, EditProfile, ProjectReview, Chat, ViewProfile } from './dashboard/IndexDashboard';
 
 export default function AppRoutes() {
     return (
@@ -27,12 +27,15 @@ export default function AppRoutes() {
                     }>
                     <Route path="Assignee" element={<Assignee />} />
                     <Route path="Members" element={<Members />} />
-                    <Route path="Profile" element={<Profile />} />
+                    <Route path="Profile/*" element={<Profile />} >
+                        <Route path="ViewProfile" element={<ViewProfile navigate='/dashboard/Profile' />} />
+                    </Route>
+                    {/* UserProfile */}
                     <Route path="Time" element={<Time />} />
-                    <Route path="Account-Details" element={<AccountDetails />} />
                     <Route path="Edit-Profile" element={<EditProfile />} />
-                    <Route path="ProjectReview" element={<ProjectReview />} />
+                    <Route path="Account-Details" element={<AccountDetails />} />
                     <Route path="Chat" element={<Chat />} />
+                    <Route path="ProjectReview" element={<ProjectReview />} />
                 </Route>
                 <Route path="/Signup" element={<Signup />} />
                 <Route path="/Login" element={<Login />} />

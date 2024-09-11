@@ -16,7 +16,6 @@ export default function ProjectReview() {
                     axios.get(`${serverApi}/tasks`),
                     axios.get(`${serverApi}/registered-user`)
                 ]);
-
                 setTasks(tasksResponse.data);
                 setUsers(usersResponse.data);
 
@@ -52,6 +51,8 @@ export default function ProjectReview() {
                     // const userImage = Object.values(userMap) || 'defaultImageURL';
                     // const userImage = Object.values(userMap).map(url => url.startsWith('https://') ? url : url.startsWith('/') ? url.replace('/', 'http://localhost:3000/') : `https://${url}`) || 'defaultImageURL';
                     // console.log('User Image:', userImage); // Debugging statement
+                    console.log('This is the UserMap:', userMap)
+
                     return (
 
                         <div key={index} className='flex items-center flex-col gap-4 px-4 py-6 bg-white border shadow-md rounded-md'>

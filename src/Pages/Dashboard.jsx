@@ -40,7 +40,9 @@ export default function Dashboard() {
 
                             <Link to="/dashboard/Time" className={`w-full mt-5 cursor-pointer border-l-2 px-2 py-2 font-semibold transition ${activeLink === '/dashboard/Time' ? 'border-l-blue-700 text-blue-700' : 'border-transparent hover:border-l-blue-700 hover:text-blue-700'}`}>Task Review</Link>
 
-                            <Link to="/dashboard/Profile" className={`w-full mt-5 cursor-pointer border-l-2 px-2 py-2 font-semibold transition ${activeLink === '/dashboard/Profile' ? 'border-l-blue-700 text-blue-700' : 'border-transparent hover:border-l-blue-700 hover:text-blue-700'}`}>Users Profile</Link>
+                            <Link to="/dashboard/Profile" className={`w-full mt-5 cursor-pointer border-l-2 px-2 py-2 font-semibold transition ${activeLink === '/dashboard/Profile' || activeLink === '/dashboard/Profile/ViewProfile' ? 'border-l-blue-700 text-blue-700' : 'border-transparent hover:border-l-blue-700 hover:text-blue-700'}`}>Users Profile</Link>
+
+                            {/* <Link to="/dashboard/ViewProfile" className={`w-full mt-5 cursor-pointer border-l-2 px-2 py-2 font-semibold transition ${activeLink === '/dashboard/ViewProfile' ? 'border-l-blue-700 text-blue-700' : 'border-transparent hover:border-l-blue-700 hover:text-blue-700'}`}>View Profile</Link> */}
 
                             <Link to="/dashboard/Account-Details" className={`w-full mt-5 cursor-pointer border-l-2 px-2 py-2 font-semibold transition ${activeLink === '/dashboard/Account-Details' ? 'border-l-blue-700 text-blue-700' : 'border-transparent hover:border-l-blue-700 hover:text-blue-700'}`}>Account Details</Link>
 
