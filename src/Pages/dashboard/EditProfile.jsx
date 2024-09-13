@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import Img1 from '../../Images/user.png'
+// import Img1 from '../../Images/user.png'
 import { AuthContext } from '../../AuthContext';
 
 export default function EditProfile() {

@@ -1,5 +1,6 @@
 const userSchema = require('../Models/user')
 const Task = require('../Models/assign')
+const userDetails = require('../Models/userDetails')
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const errorHandler = require('../utils/error');
@@ -109,11 +110,22 @@ const createTask = async (req, res) => {
 };
 
 
+// const getAllTasks = async (req, res) => {
+//     try {
+//         const tasks = await Task.find().populate('pImage', 'profileImage');
+//         res.status(200).json(tasks);
+//         console.log('The Tasks: ', tasks)
+//     } catch (error) {
+//         res.status(500).json({ message: error.message });
+//     }
+// };
 const getAllTasks = async (req, res) => {
     try {
-        const tasks = await Task.find();
+        const tasks = await Task.find().populate('pImage', 'profileImage name email password');
         res.status(200).json(tasks);
+        console.log('Populated Tasks:', tasks);
     } catch (error) {
+        console.error('Error fetching tasks:', error);
         res.status(500).json({ message: error.message });
     }
 };
@@ -214,5 +226,74 @@ const updateProfileImage = async (req, res) => {
     }
 };
 
+// FOR USER DETAILS
+// const personDetails = async (req, res, next) => {
+//     const { phoneNo, Gender, Linkedin, Upwork, Birthday, Slack } = req.body;
+//     try {
+//         const registerDetails = await userDetails.create({ phoneNo, Gender, Linkedin, Upwork, Birthday, Slack })
+//         if (!phoneNo || !Gender || !Linkedin || !Upwork || !Birthday || !Slack) {
+//             return next(errorHandler(400, 'Fields are missing!'))
+//         }
+//         res.status(200).json({
+//             success: true,
+//             message: 'User Details stored Successfully',
+//             registerDetails
+//         })
+//         console.log(registerDetails);
+//     } catch (error) {
+//         console.log('Error from the userDetails', error)
+//     }
+// }
 
-module.exports = { LoginUser, RegisterUser, ProfileUser, LogoutUser, createTask, getAllTasks, getRegisterUser, endTask, updateTask, updateProfileImage, deleteTask, }
+
+// const userDetails = require('./UserDetails'); // Import the correct model
+
+const personDetails = async (req, res, next) => {
+    const { phoneNo, Gender, Linkedin, Upwork, Birthday, Slack } = req.body;
+    const userId = req.params.userId; // Get user ID from URL params
+
+    try {
+        // Check if all fields are provided
+        if (!phoneNo || !Gender || !Linkedin || !Upwork || !Birthday || !Slack) {
+            return next(errorHandler(400, 'Fields are missing!'))
+        }
+
+        // Find user details by userId and update
+        const registerDetails = await userDetails.findOneAndUpdate(
+            { userId: userId }, // Assuming userDetails model has a userId field
+            { phoneNo, Gender, Linkedin, Upwork, Birthday, Slack },
+            { new: true, upsert: true } // 'new' to return the updated doc, 'upsert' to create if not exists
+        );
+
+        res.status(200).json({
+            success: true,
+            message: 'User Details updated successfully',
+            registerDetails
+        });
+    } catch (error) {
+        console.log('Error from the userDetails', error)
+        next(errorHandler(500, 'Internal Server Error'));
+    }
+}
+
+const getPersonDetails = async (req, res) => {
+    try {
+        const getDetails = await userDetails.find();
+        res.status(200).json(getDetails)
+        console.log(getDetails)
+    } catch (error) {
+        console.log('Error from the getPersonDetails Controller:', error)
+    }
+
+}
+
+module.exports = { LoginUser, RegisterUser, ProfileUser, LogoutUser, createTask, getAllTasks, getRegisterUser, endTask, updateTask, updateProfileImage, deleteTask, personDetails, getPersonDetails }
+
+
+
+
+
+
+// 
+// Controller.js
+
