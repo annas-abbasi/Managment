@@ -23,6 +23,7 @@ export const AuthProvider = ({ children }) => {
                     const name = res.data.user;
                     setUser(name.userName);
                     setUserId(name);
+                    console.log(name)
                 }
             } catch (error) {
                 console.log('Error fetching user', error);

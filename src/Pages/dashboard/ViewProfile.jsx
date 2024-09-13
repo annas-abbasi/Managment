@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 const serverApi = process.env.REACT_APP_BACKEND_SERVER_PATH;
 
 export default function ViewProfile({ navigate }) {
-    const [getData, setGetData] = useState({});
+    const [getData, setGetData] = useState([]);
 
     useEffect(() => {
         const handleGetData = async () => {
@@ -33,7 +33,7 @@ export default function ViewProfile({ navigate }) {
             <section className='w-full'>
                 {getData.map((data, index) => {
                     return (
-                        <div className='w-full grid grid-cols-2 gap-12 mt-8'>
+                        <div key={index} className='w-full grid grid-cols-2 gap-12 mt-8'>
                             <div>
                                 <h2 className='font-semibold text-gray-700 text-xl'>Phone No.</h2>
                                 <p className='text-gray-600'>{data.phoneNo}</p>

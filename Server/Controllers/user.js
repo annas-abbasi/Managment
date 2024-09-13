@@ -4,6 +4,7 @@ const userDetails = require('../Models/userDetails')
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const errorHandler = require('../utils/error');
+const mongoose = require('mongoose');
 
 const RegisterUser = async (req, res, next) => {
     try {
@@ -84,8 +85,6 @@ const LogoutUser = async (req, res) => {
         res.status(500).json({ error: 'Server Error' });
     }
 };
-
-
 const createTask = async (req, res) => {
     try {
         const { names, title, task, time } = req.body;
@@ -108,17 +107,6 @@ const createTask = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
-
-
-// const getAllTasks = async (req, res) => {
-//     try {
-//         const tasks = await Task.find().populate('pImage', 'profileImage');
-//         res.status(200).json(tasks);
-//         console.log('The Tasks: ', tasks)
-//     } catch (error) {
-//         res.status(500).json({ message: error.message });
-//     }
-// };
 const getAllTasks = async (req, res) => {
     try {
         const tasks = await Task.find().populate('pImage', 'profileImage name email password');
@@ -186,26 +174,6 @@ const deleteTask = async (req, res) => {
 
 }
 
-// FOR THE IMAGE CHANGE...
-// const updateProfileImage = async (req, res) => {
-//     try {
-//         const userId = req.params.id;
-//         // const profileImage = req.file ? req.file.path : null;
-//         const profileImage = req.file ? `/uploads/${req.file.filename}` : null;
-//         if (!profileImage) {
-//             return res.status(400).json({ message: 'No Image is Uploaded' });
-//         }
-//         const updateUser = await userSchema.findByIdAndUpdate(userId, (profileImage), { new: true })
-//         if (!updateUser) {
-//             return res.status(404).json({ message: 'User not found' })
-//         }
-//         res.status(200).json(updateUser);
-//         console.log('This is UpdateUser:', updateUser)
-//     } catch (error) {
-//         res.status(500).json({ message: error.message })
-//     }
-// }
-
 const updateProfileImage = async (req, res) => {
     try {
         const userId = req.params.id;
@@ -226,41 +194,29 @@ const updateProfileImage = async (req, res) => {
     }
 };
 
-// FOR USER DETAILS
-// const personDetails = async (req, res, next) => {
-//     const { phoneNo, Gender, Linkedin, Upwork, Birthday, Slack } = req.body;
-//     try {
-//         const registerDetails = await userDetails.create({ phoneNo, Gender, Linkedin, Upwork, Birthday, Slack })
-//         if (!phoneNo || !Gender || !Linkedin || !Upwork || !Birthday || !Slack) {
-//             return next(errorHandler(400, 'Fields are missing!'))
-//         }
-//         res.status(200).json({
-//             success: true,
-//             message: 'User Details stored Successfully',
-//             registerDetails
-//         })
-//         console.log(registerDetails);
-//     } catch (error) {
-//         console.log('Error from the userDetails', error)
-//     }
-// }
+const getPersonDetails = async (req, res) => {
+    try {
+        const getDetails = await userDetails.find();
+        res.status(200).json(getDetails)
+        console.log(getDetails)
+    } catch (error) {
+        console.log('Error from the getPersonDetails Controller:', error)
+    }
 
-
-// const userDetails = require('./UserDetails'); // Import the correct model
+}
 
 const personDetails = async (req, res, next) => {
     const { phoneNo, Gender, Linkedin, Upwork, Birthday, Slack } = req.body;
-    const userId = req.params.userId; // Get user ID from URL params
+    const userId = req.params.userId;
 
     try {
         // Check if all fields are provided
-        if (!phoneNo || !Gender || !Linkedin || !Upwork || !Birthday || !Slack) {
-            return next(errorHandler(400, 'Fields are missing!'))
-        }
+        // if (!phoneNo || !Gender || !Linkedin || !Upwork || !Birthday || !Slack) {
+        //     return next(errorHandler(400, 'Fields are missing!'))
+        // }
 
-        // Find user details by userId and update
         const registerDetails = await userDetails.findOneAndUpdate(
-            { userId: userId }, // Assuming userDetails model has a userId field
+            { userId: userId },
             { phoneNo, Gender, Linkedin, Upwork, Birthday, Slack },
             { new: true, upsert: true } // 'new' to return the updated doc, 'upsert' to create if not exists
         );
@@ -275,19 +231,68 @@ const personDetails = async (req, res, next) => {
         next(errorHandler(500, 'Internal Server Error'));
     }
 }
+// const updateTaskById = async (req, res) => {
+//     const userId = req.params.userId;
+//     const { names, title, task } = req.body;
+//     try {
+//         const updateTask = await Task.findByIdAndUpdate(userId, { names, title, task }, { new: true, runValidators: true });
+//         if (!updateTask) {
+//             return res.status(404).json({ message: 'Task not found' })
+//         }
+//         res.status(200).json({ message: "Task updated successfully:", updateTask })
+//         console.log('This is updatedTask:', updateTask)
+//     } catch (error) {
+//         console.log("This Error is from the UpdateTaskByID:", error)
+//     }
+// }
 
-const getPersonDetails = async (req, res) => {
-    try {
-        const getDetails = await userDetails.find();
-        res.status(200).json(getDetails)
-        console.log(getDetails)
-    } catch (error) {
-        console.log('Error from the getPersonDetails Controller:', error)
+// Final One
+const updateTaskById = async (req, res) => {
+    const userId = req.params.userId;
+    if (!mongoose.isValidObjectId(userId)) {
+        return res.status(400).json({ message: 'Invalid User ID' });
     }
 
+    const { names, title, task } = req.body;
+    try {
+        const updateTask = await Task.findByIdAndUpdate(userId, { names, title, task }, { new: true, runValidators: true });
+        if (!updateTask) {
+            return res.status(404).json({ message: 'Task not found' });
+        }
+        res.status(200).json({ message: "Task updated successfully", updateTask });
+        console.log('This is updatedTask:', updateTask);
+    } catch (error) {
+        console.log("This Error is from the UpdateTaskByID:", error);
+        res.status(500).json({ message: 'Server Error' });
+    }
 }
 
-module.exports = { LoginUser, RegisterUser, ProfileUser, LogoutUser, createTask, getAllTasks, getRegisterUser, endTask, updateTask, updateProfileImage, deleteTask, personDetails, getPersonDetails }
+
+
+
+// const updateTaskById = async (req, res) => {
+//     try {
+//         const { id } = req.params; // Extract task ID from the request parameters
+//         const { title, task, time, status } = req.body; // Destructure the fields you want to update from the request body
+
+//         // Find the task by ID and update it with the new data
+//         const updatedTask = await Task.findByIdAndUpdate(
+//             id, // ID of the task to update
+//             { title, task, time, status }, // Fields to update
+//             { new: true, runValidators: true } // Return the updated task and run schema validation
+//         );
+
+//         if (!updatedTask) {
+//             return res.status(404).json({ message: 'Task not found' });
+//         }
+
+//         res.status(200).json({ message: 'Task updated successfully', updatedTask });
+//     } catch (error) {
+//         res.status(500).json({ message: error.message });
+//     }
+// };
+
+module.exports = { LoginUser, RegisterUser, ProfileUser, LogoutUser, createTask, getAllTasks, getRegisterUser, endTask, updateTask, updateProfileImage, deleteTask, personDetails, getPersonDetails, updateTaskById }
 
 
 

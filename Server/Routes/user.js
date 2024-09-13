@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const { RegisterUser, LoginUser, ProfileUser, LogoutUser, createTask, getAllTasks, getRegisterUser, endTask, updateTask, updateProfileImage, deleteTask, personDetails, getPersonDetails } = require('../Controllers/user');
+const { RegisterUser, LoginUser, ProfileUser, LogoutUser, createTask, getAllTasks, getRegisterUser, endTask, updateTask, updateProfileImage, deleteTask, personDetails, getPersonDetails, updateTaskById } = require('../Controllers/user');
 const { sendMessage, getMessages } = require('../Controllers/userMsg');
 
 const multer = require('multer');
@@ -25,6 +25,8 @@ router.post('/send-message', sendMessage);
 // Route to get messages between two users
 router.get('/messages/:userId1/:userId2', getMessages);
 router.delete('/delete/:taskId', deleteTask);
+
+router.put('/tasks/:userId', updateTaskById);
 
 
 // USER PROFILE IMAGE
