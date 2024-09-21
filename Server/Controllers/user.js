@@ -1,12 +1,14 @@
 const userSchema = require('../Models/user')
 const Task = require('../Models/assign')
+const userDetails = require('../Models/userDetails')
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const errorHandler = require('../utils/error');
+const mongoose = require('mongoose');
 
 const RegisterUser = async (req, res, next) => {
     try {
-        const { name, email, password } = req.body;
+        const { name, email, password, role } = req.body;
         if (!name || !email || !password) {
             return next(errorHandler(400, 'Fields are missing!'))
         }
@@ -21,7 +23,7 @@ const RegisterUser = async (req, res, next) => {
         }
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = bcrypt.hashSync(password, salt);
-        const registerPerson = await userSchema.create({ name, email, password: hashedPassword });
+        const registerPerson = await userSchema.create({ name, email, password: hashedPassword, role });
         res.status(200).json({
             success: true,
             message: 'User registered successfully!',
@@ -35,30 +37,90 @@ const RegisterUser = async (req, res, next) => {
 
 const LoginUser = async (req, res) => {
     try {
-        const { email, password } = req.body;
+        const { email, password, role } = req.body;
+
+        // Check if email and password are provided
         if (!email || !password) {
-            return res.status(400).json({ error: 'Please Fill all the required fields!' });
+            return res.status(400).json({ error: 'Please fill all the required fields!' });
         }
+
+        // Find user by email
         const validUser = await userSchema.findOne({ email });
         if (!validUser) {
             return res.status(400).json({ error: "Username not found!" });
         }
+
+        // Verify password
         const validPassword = bcrypt.compareSync(password, validUser.password);
         if (!validPassword) {
             return res.status(400).json({ error: "Password is incorrect!" });
         }
 
-        const token = await jwt.sign({ userId: validUser._id, userEmail: validUser.email, userName: validUser.name, profileImage: validUser.profileImage }, 'my_secret_Key', { expiresIn: '7d' });
+        // Log roles for debugging
+        console.log('Valid user role:', validUser.role);
+        console.log('Requested role:', role);
+
+        // Check if user's role matches requested role
+
+        if (validUser.role !== role) {
+            validUser.role = role;
+            await validUser.save();
+        }
+        // Generate token and send response
+        const token = await jwt.sign(
+            {
+                userId: validUser._id,
+                userEmail: validUser.email,
+                userName: validUser.name,
+                profileImage: validUser.profileImage,
+                role: validUser.role,
+            },
+            'my_secret_Key',
+            { expiresIn: '7d' }
+        );
+
         res.cookie('Token', token, {
-            httpOnly: true, secure: true,
+            httpOnly: true,
+            secure: true,
             sameSite: 'Strict',
         });
-        res.status(200).json({ token, user: validUser.name });
+        res.status(200).json({ token, user: validUser.name, role: validUser.role });
     } catch (error) {
         console.log('Error in the LoginUser Controller.', error);
         res.status(500).json({ error: 'Server Error' });
     }
 };
+
+
+// const LoginUser = async (req, res) => {
+//     try {
+//         const { email, password, role } = req.body;
+//         if (!email || !password) {
+//             return res.status(400).json({ error: 'Please Fill all the required fields!' });
+//         }
+//         const validUser = await userSchema.findOne({ email });
+//         if (!validUser) {
+//             return res.status(400).json({ error: "Username not found!" });
+//         }
+//         const validPassword = bcrypt.compareSync(password, validUser.password);
+//         if (!validPassword) {
+//             return res.status(400).json({ error: "Password is incorrect!" });
+//         }
+//         if (validUser.role !== role) {
+//             return res.status(400).json({ success: false, message: `User role is ${validUser.role}, cannot log in as ${role}` });
+//         }
+
+//         const token = await jwt.sign({ userId: validUser._id, userEmail: validUser.email, userName: validUser.name, profileImage: validUser.profileImage, role: validUser.role }, 'my_secret_Key', { expiresIn: '7d' });
+//         res.cookie('Token', token, {
+//             httpOnly: true, secure: true,
+//             sameSite: 'Strict',
+//         });
+//         res.status(200).json({ token, user: validUser.name, role: validUser.role });
+//     } catch (error) {
+//         console.log('Error in the LoginUser Controller.', error);
+//         res.status(500).json({ error: 'Server Error' });
+//     }
+// };
 
 const ProfileUser = async (req, res) => {
     try {
@@ -83,11 +145,9 @@ const LogoutUser = async (req, res) => {
         res.status(500).json({ error: 'Server Error' });
     }
 };
-
-
 const createTask = async (req, res) => {
     try {
-        const { names, title, task, time } = req.body;
+        const { names, title, task, time, timelimit, hour, budget } = req.body;
 
         const nameArray = names.split(',').map(name => name.trim());
         const tasks = [];
@@ -97,7 +157,7 @@ const createTask = async (req, res) => {
             if (!user) {
                 return res.status(404).json({ message: `User not found: ${name}` });
             }
-            const newTask = new Task({ names: [name], title, task, time });
+            const newTask = new Task({ names: [name], title, task, time, timelimit, hour, budget });
             await newTask.save();
             tasks.push(newTask);
         }
@@ -107,13 +167,13 @@ const createTask = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
-
-
 const getAllTasks = async (req, res) => {
     try {
-        const tasks = await Task.find();
+        const tasks = await Task.find().populate('pImage', 'profileImage name email password');
         res.status(200).json(tasks);
+        console.log('Populated Tasks:', tasks);
     } catch (error) {
+        console.error('Error fetching tasks:', error);
         res.status(500).json({ message: error.message });
     }
 };
@@ -174,26 +234,6 @@ const deleteTask = async (req, res) => {
 
 }
 
-// FOR THE IMAGE CHANGE...
-// const updateProfileImage = async (req, res) => {
-//     try {
-//         const userId = req.params.id;
-//         // const profileImage = req.file ? req.file.path : null;
-//         const profileImage = req.file ? `/uploads/${req.file.filename}` : null;
-//         if (!profileImage) {
-//             return res.status(400).json({ message: 'No Image is Uploaded' });
-//         }
-//         const updateUser = await userSchema.findByIdAndUpdate(userId, (profileImage), { new: true })
-//         if (!updateUser) {
-//             return res.status(404).json({ message: 'User not found' })
-//         }
-//         res.status(200).json(updateUser);
-//         console.log('This is UpdateUser:', updateUser)
-//     } catch (error) {
-//         res.status(500).json({ message: error.message })
-//     }
-// }
-
 const updateProfileImage = async (req, res) => {
     try {
         const userId = req.params.id;
@@ -214,5 +254,111 @@ const updateProfileImage = async (req, res) => {
     }
 };
 
+const getPersonDetails = async (req, res) => {
+    try {
+        const getDetails = await userDetails.find();
+        res.status(200).json(getDetails)
+        console.log(getDetails)
+    } catch (error) {
+        console.log('Error from the getPersonDetails Controller:', error)
+    }
 
-module.exports = { LoginUser, RegisterUser, ProfileUser, LogoutUser, createTask, getAllTasks, getRegisterUser, endTask, updateTask, updateProfileImage, deleteTask, }
+}
+
+const personDetails = async (req, res, next) => {
+    const { phoneNo, Gender, Linkedin, Upwork, Birthday, Slack } = req.body;
+    const userId = req.params.userId;
+
+    try {
+        // Check if all fields are provided
+        // if (!phoneNo || !Gender || !Linkedin || !Upwork || !Birthday || !Slack) {
+        //     return next(errorHandler(400, 'Fields are missing!'))
+        // }
+
+        const registerDetails = await userDetails.findOneAndUpdate(
+            { userId: userId },
+            { phoneNo, Gender, Linkedin, Upwork, Birthday, Slack },
+            { new: true, upsert: true } // 'new' to return the updated doc, 'upsert' to create if not exists
+        );
+
+        res.status(200).json({
+            success: true,
+            message: 'User Details updated successfully',
+            registerDetails
+        });
+    } catch (error) {
+        console.log('Error from the userDetails', error)
+        next(errorHandler(500, 'Internal Server Error'));
+    }
+}
+// const updateTaskById = async (req, res) => {
+//     const userId = req.params.userId;
+//     const { names, title, task } = req.body;
+//     try {
+//         const updateTask = await Task.findByIdAndUpdate(userId, { names, title, task }, { new: true, runValidators: true });
+//         if (!updateTask) {
+//             return res.status(404).json({ message: 'Task not found' })
+//         }
+//         res.status(200).json({ message: "Task updated successfully:", updateTask })
+//         console.log('This is updatedTask:', updateTask)
+//     } catch (error) {
+//         console.log("This Error is from the UpdateTaskByID:", error)
+//     }
+// }
+
+// Final One
+const updateTaskById = async (req, res) => {
+    const userId = req.params.userId;
+    if (!mongoose.isValidObjectId(userId)) {
+        return res.status(400).json({ message: 'Invalid User ID' });
+    }
+
+    const { names, title, task, time, timelimit, hour, budget } = req.body;
+    try {
+        const updateTask = await Task.findByIdAndUpdate(userId, { names, title, task, time, timelimit, hour, budget }, { new: true, runValidators: true });
+        if (!updateTask) {
+            return res.status(404).json({ message: 'Task not found' });
+        }
+        res.status(200).json({ message: "Task updated successfully", updateTask });
+        console.log('This is updatedTask:', updateTask);
+    } catch (error) {
+        console.log("This Error is from the UpdateTaskByID:", error);
+        res.status(500).json({ message: 'Server Error' });
+    }
+}
+
+
+
+
+// const updateTaskById = async (req, res) => {
+//     try {
+//         const { id } = req.params; // Extract task ID from the request parameters
+//         const { title, task, time, status } = req.body; // Destructure the fields you want to update from the request body
+
+//         // Find the task by ID and update it with the new data
+//         const updatedTask = await Task.findByIdAndUpdate(
+//             id, // ID of the task to update
+//             { title, task, time, status }, // Fields to update
+//             { new: true, runValidators: true } // Return the updated task and run schema validation
+//         );
+
+//         if (!updatedTask) {
+//             return res.status(404).json({ message: 'Task not found' });
+//         }
+
+//         res.status(200).json({ message: 'Task updated successfully', updatedTask });
+//     } catch (error) {
+//         res.status(500).json({ message: error.message });
+//     }
+// };
+
+module.exports = { LoginUser, RegisterUser, ProfileUser, LogoutUser, createTask, getAllTasks, getRegisterUser, endTask, updateTask, updateProfileImage, deleteTask, personDetails, getPersonDetails, updateTaskById }
+
+
+
+
+
+
+// 
+// Controller.js
+

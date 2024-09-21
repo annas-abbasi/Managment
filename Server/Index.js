@@ -1,16 +1,16 @@
 require('dotenv').config();
 const express = require('express');
 const app = express();
-const cors = require('cors')
-const registerUser = require('./Routes/user')
+const cors = require('cors');
+const registerUser = require('./Routes/user');
 const profileRoutes = require('./Routes/user');
-const connectDB = require('./DB/connect')
+const connectDB = require('./DB/connect');
 const cookieParser = require('cookie-parser');
-const path = require('path')
+const path = require('path');
 
-const socketIo = require('socket.io')
-const http = require('http')
-const server = http.createServer(app)
+const socketIo = require('socket.io');
+const http = require('http');
+const server = http.createServer(app);
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 const io = socketIo(server, {

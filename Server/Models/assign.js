@@ -13,6 +13,10 @@ const taskSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    pImage: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+    },
     time: {
         type: String,
         default: '00:00:00',
@@ -21,6 +25,15 @@ const taskSchema = new mongoose.Schema({
         type: String,
         default: 'pending',
         enum: ['pending', 'ended', 'Approved', 'Not Approved'],
+    },
+    timelimit: {
+        type: Number
+    },
+    hour: {
+        type: Number
+    },
+    budget: {
+        type: Number
     }
 }, { timestamps: true });
 

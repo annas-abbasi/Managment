@@ -86,22 +86,22 @@ export default function Member() {
           <p className='text-gray-600 text-sm'>Tasks that have been completed.</p>
         </header>
 
-        <div className="mt-6 overflow-hidden rounded-xl border shadow">
+        <div className="mt-6 overflow-hidden rounded-md border shadow">
           <table className="min-w-full">
-            <thead className="hidden lg:table-header-group border-b border-gray-200 bg-gray-100">
+            <thead className="hidden lg:table-header-group border-b border-gray-200 bg-zinc-600">
               <tr className="py-10">
-                <td className="whitespace-normal py-4 text-base font-medium text-gray-900 sm:px-6">Name</td>
-                <td className="whitespace-normal py-4 text-base font-medium text-gray-600 sm:px-6">Title</td>
-                <td className="whitespace-normal py-4 text-base font-medium text-gray-600 sm:px-6">Task</td>
-                <td className="whitespace-normal py-4 text-base font-medium text-gray-600 sm:px-6">Time</td>
-                <td className="whitespace-normal py-4 text-base font-medium text-gray-600 sm:px-6">Approval</td>
+                <td className="whitespace-normal py-4 text-base font-medium text-white sm:px-6">Name</td>
+                <td className="whitespace-normal py-4 text-base font-medium text-white sm:px-6">Title</td>
+                <td className="whitespace-normal py-4 text-base font-medium text-white sm:px-6">Projects</td>
+                <td className="whitespace-normal py-4 text-base font-medium text-white sm:px-6">Time</td>
+                <td className="whitespace-normal py-4 text-base font-medium text-white sm:px-6">Approval</td>
               </tr>
             </thead>
 
             <tbody className="lg:border-gray-300">
               {tasks.map((task, index) => {
                 return (
-                  <tr key={index} className='border-b border-gray-100'>
+                  <tr key={index} className={`border-b border-gray-100 ${index % 2 === 1 ? "bg-slate-50" : "bg-white"}`}>
                     <td className="whitespace-no-wrap py-4 text-sm font-bold text-gray-500 sm:px-6 border-r">
                       {task.name}
                       {task.names}
@@ -177,7 +177,7 @@ export default function Member() {
             </tbody>
           </table>
         </div>
-      </div>
+      </div >
     </>
   );
 }
