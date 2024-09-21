@@ -63,7 +63,7 @@ export default function Assignee() {
                 )}
                 <form onSubmit={handleSubmit} className='grid grid-cols-2 gap-y-16'>
                     <div className='space-y-1'>
-                        <p className='text-lg font-semibold'>Names:</p>
+                        <p className='text-lg font-semibold'>Project Team:</p>
                         <input
                             type="text"
                             name="names"
@@ -74,7 +74,7 @@ export default function Assignee() {
                         />
                     </div>
                     <div className='space-y-1'>
-                        <p className='text-lg font-semibold'>Title:</p>
+                        <p className='text-lg font-semibold'>Project Title:</p>
                         <input
                             type="text"
                             name="title"
@@ -85,7 +85,7 @@ export default function Assignee() {
                         />
                     </div>
                     <div className='space-y-1'>
-                        <p className='text-lg font-semibold'>Task:</p>
+                        <p className='text-lg font-semibold'>Project Details:</p>
                         {/* <input
                             type="text"
                             name="task"

@@ -26,6 +26,15 @@ const taskSchema = new mongoose.Schema({
         default: 'pending',
         enum: ['pending', 'ended', 'Approved', 'Not Approved'],
     },
+    timelimit: {
+        type: Number
+    },
+    hour: {
+        type: Number
+    },
+    budget: {
+        type: Number
+    }
 }, { timestamps: true });
 
 module.exports = mongoose.model('Task', taskSchema);

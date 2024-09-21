@@ -9,6 +9,7 @@ export default function EditProfile() {
     const [selectImage, setSelectImage] = useState('');
     const [selectedFile, setSelectedFile] = useState(null);
     const serverApi = process.env.REACT_APP_BACKEND_SERVER_PATH
+    console.log("This is the UserId", userId)
 
     const valuee = (value) => {
         return value.split(" ").map((e) => e.charAt(0).toUpperCase() + e.slice(1)).join(" ");

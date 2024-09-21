@@ -28,6 +28,11 @@ const userSchema = mongoose.Schema({
     JoinedOn: {
         type: Date,
         default: Date.now,
+    },
+    role: {
+        type: String,
+        enum: ["user", "admin"],
+        default: "user"
     }
 }, { timestamps: true });
 

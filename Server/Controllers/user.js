@@ -8,7 +8,7 @@ const mongoose = require('mongoose');
 
 const RegisterUser = async (req, res, next) => {
     try {
-        const { name, email, password } = req.body;
+        const { name, email, password, role } = req.body;
         if (!name || !email || !password) {
             return next(errorHandler(400, 'Fields are missing!'))
         }
@@ -23,7 +23,7 @@ const RegisterUser = async (req, res, next) => {
         }
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = bcrypt.hashSync(password, salt);
-        const registerPerson = await userSchema.create({ name, email, password: hashedPassword });
+        const registerPerson = await userSchema.create({ name, email, password: hashedPassword, role });
         res.status(200).json({
             success: true,
             message: 'User registered successfully!',
@@ -37,30 +37,90 @@ const RegisterUser = async (req, res, next) => {
 
 const LoginUser = async (req, res) => {
     try {
-        const { email, password } = req.body;
+        const { email, password, role } = req.body;
+
+        // Check if email and password are provided
         if (!email || !password) {
-            return res.status(400).json({ error: 'Please Fill all the required fields!' });
+            return res.status(400).json({ error: 'Please fill all the required fields!' });
         }
+
+        // Find user by email
         const validUser = await userSchema.findOne({ email });
         if (!validUser) {
             return res.status(400).json({ error: "Username not found!" });
         }
+
+        // Verify password
         const validPassword = bcrypt.compareSync(password, validUser.password);
         if (!validPassword) {
             return res.status(400).json({ error: "Password is incorrect!" });
         }
 
-        const token = await jwt.sign({ userId: validUser._id, userEmail: validUser.email, userName: validUser.name, profileImage: validUser.profileImage }, 'my_secret_Key', { expiresIn: '7d' });
+        // Log roles for debugging
+        console.log('Valid user role:', validUser.role);
+        console.log('Requested role:', role);
+
+        // Check if user's role matches requested role
+
+        if (validUser.role !== role) {
+            validUser.role = role;
+            await validUser.save();
+        }
+        // Generate token and send response
+        const token = await jwt.sign(
+            {
+                userId: validUser._id,
+                userEmail: validUser.email,
+                userName: validUser.name,
+                profileImage: validUser.profileImage,
+                role: validUser.role,
+            },
+            'my_secret_Key',
+            { expiresIn: '7d' }
+        );
+
         res.cookie('Token', token, {
-            httpOnly: true, secure: true,
+            httpOnly: true,
+            secure: true,
             sameSite: 'Strict',
         });
-        res.status(200).json({ token, user: validUser.name });
+        res.status(200).json({ token, user: validUser.name, role: validUser.role });
     } catch (error) {
         console.log('Error in the LoginUser Controller.', error);
         res.status(500).json({ error: 'Server Error' });
     }
 };
+
+
+// const LoginUser = async (req, res) => {
+//     try {
+//         const { email, password, role } = req.body;
+//         if (!email || !password) {
+//             return res.status(400).json({ error: 'Please Fill all the required fields!' });
+//         }
+//         const validUser = await userSchema.findOne({ email });
+//         if (!validUser) {
+//             return res.status(400).json({ error: "Username not found!" });
+//         }
+//         const validPassword = bcrypt.compareSync(password, validUser.password);
+//         if (!validPassword) {
+//             return res.status(400).json({ error: "Password is incorrect!" });
+//         }
+//         if (validUser.role !== role) {
+//             return res.status(400).json({ success: false, message: `User role is ${validUser.role}, cannot log in as ${role}` });
+//         }
+
+//         const token = await jwt.sign({ userId: validUser._id, userEmail: validUser.email, userName: validUser.name, profileImage: validUser.profileImage, role: validUser.role }, 'my_secret_Key', { expiresIn: '7d' });
+//         res.cookie('Token', token, {
+//             httpOnly: true, secure: true,
+//             sameSite: 'Strict',
+//         });
+//         res.status(200).json({ token, user: validUser.name, role: validUser.role });
+//     } catch (error) {
+//         console.log('Error in the LoginUser Controller.', error);
+//         res.status(500).json({ error: 'Server Error' });
+//     }
+// };
 
 const ProfileUser = async (req, res) => {
     try {
@@ -87,7 +147,7 @@ const LogoutUser = async (req, res) => {
 };
 const createTask = async (req, res) => {
     try {
-        const { names, title, task, time } = req.body;
+        const { names, title, task, time, timelimit, hour, budget } = req.body;
 
         const nameArray = names.split(',').map(name => name.trim());
         const tasks = [];
@@ -97,7 +157,7 @@ const createTask = async (req, res) => {
             if (!user) {
                 return res.status(404).json({ message: `User not found: ${name}` });
             }
-            const newTask = new Task({ names: [name], title, task, time });
+            const newTask = new Task({ names: [name], title, task, time, timelimit, hour, budget });
             await newTask.save();
             tasks.push(newTask);
         }
@@ -253,9 +313,9 @@ const updateTaskById = async (req, res) => {
         return res.status(400).json({ message: 'Invalid User ID' });
     }
 
-    const { names, title, task } = req.body;
+    const { names, title, task, time, timelimit, hour, budget } = req.body;
     try {
-        const updateTask = await Task.findByIdAndUpdate(userId, { names, title, task }, { new: true, runValidators: true });
+        const updateTask = await Task.findByIdAndUpdate(userId, { names, title, task, time, timelimit, hour, budget }, { new: true, runValidators: true });
         if (!updateTask) {
             return res.status(404).json({ message: 'Task not found' });
         }

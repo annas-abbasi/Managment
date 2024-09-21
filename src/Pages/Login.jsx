@@ -9,29 +9,38 @@ export default function Login() {
         setShown(!shown);
     };
 
-    const [loginData, setLoginData] = useState('');
+    const [loginData, setLoginData] = useState({ email: '', password: '' });
     const [redirect, setRedirect] = useState(false);
     const { setUser } = useContext(AuthContext);
     const [error, setError] = useState('');
+    const [role, setRole] = useState('user');
 
     const handleChange = (e) => {
         setLoginData({ ...loginData, [e.target.name]: e.target.value });
     };
 
     const serverApi = process.env.REACT_APP_BACKEND_SERVER_PATH;
+    // console.log(serverApi)
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const res = await axios.post(`${serverApi}/login`, { ...loginData }, { withCredentials: true });
+            const res = await axios.post(`${serverApi}/login`, { ...loginData, role }, { withCredentials: true });
             if (res.data.error) {
                 throw new Error(`Server error! ${res.data.error}`);
             }
             const token = res.data.token;
             localStorage.setItem('Token', token);
+            // if (role === "admin") {
+            //     console.log("Admin has logged In.")
+            // } else {
+            //     console.log("User has logged In.")
+            // }
             const { user } = res.data;
             setUser(user);
             setRedirect(true);
+            console.log("This is the Response:", res)
         } catch (error) {
+            console.log(error)
             const errorMessage = error.response?.data?.error;
             setError(errorMessage);
             setTimeout(() => {
@@ -75,7 +84,7 @@ export default function Login() {
 
                                 <div className="mb-4">
                                     <label htmlFor="email" className="mb-2 inline-block text-xs font-medium uppercase text-gray-700">Email</label>
-                                    <input type="text" className="block w-full cursor-text appearance-none rounded-md border border-gray-400 bg--100 py-2 px-3 text-sm outline-none focus:border-indigo-500 focus:bg-white focus:text-gray-600 focus:shadow" id="email" name="email" placeholder="Enter your email or username" onChange={handleChange} />
+                                    <input type="text" className="block w-full cursor-text appearance-none rounded-md border border-gray-400 bg--100 py-2 px-3 text-sm outline-none focus:border-indigo-500 focus:bg-white focus:text-gray-600 focus:shadow" id="email" name="email" value={loginData.email} placeholder="Enter your email or username" onChange={handleChange} />
                                 </div>
 
                                 <div className="mb-4">
@@ -87,7 +96,7 @@ export default function Login() {
                                     </div>
 
                                     <div className="relative flex w-full flex-wrap items-stretch">
-                                        <input type={shown ? "text" : "password"} id="password" className="relative block flex-auto cursor-text appearance-none rounded-md border border-gray-400 bg--100 py-2 px-3 text-sm outline-none focus:border-indigo-500 focus:bg-white focus:text-gray-600 focus:shadow" name="password" placeholder="············" onChange={handleChange} />
+                                        <input type={shown ? "text" : "password"} id="password" className="relative block flex-auto cursor-text appearance-none rounded-md border border-gray-400 bg--100 py-2 px-3 text-sm outline-none focus:border-indigo-500 focus:bg-white focus:text-gray-600 focus:shadow" value={loginData.password} name="password" placeholder="············" onChange={handleChange} />
                                     </div>
                                 </div>
 
@@ -97,6 +106,33 @@ export default function Login() {
                                     <button className='rounded-md border bg-zinc-300 text-zinc-700 px-4 flex-grow py-1 border-gray-600 hover:bg-gray-500 hover:text-white focus:bg-gray-500 focus:text-white transition-all'>Sub Admin</button>
                                     <button className='rounded-md border bg-zinc-300 text-zinc-700 hover:bg-gray-500 hover:text-white transition-all px-4 py-1 flex-grow border-gray-600 focus:bg-gray-500 focus:text-white'>User</button>
                                 </div> */}
+
+                                {/* <div className='flex items-center gap-4 my-2'>
+                                    <label htmlFor="user" className='cursor-pointer'>
+                                        <input type="radio" id='user' value="user" checked={role === "user"} onChange={(e) => setRole(e.target.value)} className='mr-1' />
+                                        login as user
+                                    </label>
+                                    <label htmlFor="admin" className='cursor-pointer'>
+                                        <input type="radio" id='admin' value="admin" checked={role === "admin"} onChange={(e) => setRole(e.target.value)} className='mr-1' />
+                                        login as admin
+                                    </label>
+                                </div> */}
+
+                                <div>
+                                    <label>
+                                        <input
+                                            type="radio"
+                                            name="role"
+                                            value="user"
+                                            checked={role === 'user'}
+                                            onChange={() => setRole('user')} />User</label>
+                                    <label>
+                                        <input
+                                            type="radio"
+                                            name="role"
+                                            value="admin"
+                                            onChange={() => setRole('admin')} />Admin</label>
+                                </div>
 
                                 <div className="mb-4">
                                     <button className="grid w-full cursor-pointer select-none rounded-md border border-indigo-500 bg-indigo-500 py-2 px-5 text-center align-middle text-sm text-white shadow hover:border-indigo-600 hover:bg-indigo-600 hover:text-white focus:border-indigo-600 focus:bg-indigo-600 focus:text-white focus:shadow-none" type="submit">Sign in</button>

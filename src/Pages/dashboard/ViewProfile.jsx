@@ -22,12 +22,16 @@ export default function ViewProfile({ navigate }) {
 
     return (
         <div>
-            <div className='mb-10'>
-                <Link to={navigate} className='text-3xl text-zinc-800 underline cursor-pointer hover:text-zinc-600 transition-all'>Go Back</Link>
-            </div>
-            <div>
-                <h1 className='text-gray-800 text-3xl font-semibold'>Name Title</h1>
-                <p className=''>example@gmail.com</p>
+            {/* <div className='mb-10'>
+            </div> */}
+            <div className='space-y-1 flex items-center gap-3 border-gray-300 border-b pb-4'>
+                <Link to={navigate} className='text-3xl text-zinc-800 -mb-2 underline cursor-pointer hover:text-zinc-600 transition-all'>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-6">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+                    </svg>
+                </Link>
+                <h1 className='text-zinc-700 text-3xl font-semibold'>User Data</h1>
+                {/* <p className=''>example@gmail.com</p> */}
             </div>
 
             <section className='w-full'>
