@@ -12,7 +12,7 @@ export const AuthProvider = ({ children }) => {
     useEffect(() => {
         const fetchUser = async () => {
             try {
-                const token = localStorage.getItem('Token');
+                const token = localStorage.getItem('Token');    
                 if (token) {
                     const res = await axios.get(`${process.env.REACT_APP_BACKEND_SERVER_PATH}/profile`, {
                         headers: {

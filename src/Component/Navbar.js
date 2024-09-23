@@ -6,7 +6,7 @@ import { AuthContext } from '../AuthContext';
 export default function Navbar() {
     const [scrolled, setScrolled] = useState(false);
     const [shown, setShown] = useState(false);
-    const [selectImage, setSelectImage] = useState('');
+    const [selectImage, setSelectImage] = useState('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQNvWDvQb_rCtRL-p_w329CtzHmfzfWP0FIw&s');
     const tabRef = useRef(null);
 
     useEffect(() => {
@@ -70,13 +70,14 @@ export default function Navbar() {
 
     useEffect(() => {
         if (user && userId.profileImage) {
-            if (userId.profileImage.startsWith('https://')) {
-                setSelectImage(`${userId.profileImage}`)
-            } else {
+            if (!userId.profileImage.startsWith('https://')) {
                 setSelectImage(`${serverApi}${userId.profileImage}`)
+            } else {
+                setSelectImage(`${userId?.profileImage}`)
             }
         }
-    }, [user, userId.profileImage, serverApi]);
+    }, [user, userId.profileImage, serverApi, redirect]);
+    // console.log("This is the selectImaghe", selectImage)
 
     return (
         <>

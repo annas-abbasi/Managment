@@ -33,7 +33,7 @@ export default function Member() {
         if (user.userEmail === 'admin@gmail.com' && user.userName === 'admin') {
           setIsAdmin(true);
         }
-        console.log('This is Admin', admin)
+        // console.log('This is Admin', admin)
 
       } catch (error) {
         console.log('This Error is from fetchUser:', error)
