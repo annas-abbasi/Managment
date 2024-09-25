@@ -1,21 +1,26 @@
 import React, { useContext, useEffect, useState } from 'react'
-import Img1 from '../../Images/user.png'
+// import Img1 from '../../Images/user.png'
 import axios from 'axios';
 import { Link, Outlet, useLocation, useParams } from 'react-router-dom';
 import { AuthContext } from '../../AuthContext';
 
 export default function ProjectReview() {
+    const serverApi = process.env.REACT_APP_BACKEND_SERVER_PATH;
     const { id } = useParams()
     const [tasks, setTasks] = useState([]);
     const [activeLink, setActiveLink] = useState('/dashboard/Profile/ViewProfile');
     const location = useLocation();
     const { userId } = useContext(AuthContext);
-    console.log("This is the AuthContext:", userId)
+    const [image, setImage] = useState('');
+
+    //     useEffect(() => {
+    // if(userId.profileImage.startsWith("/"){})
+    //     }, [image])
+
     useEffect(() => {
         setActiveLink(location.pathname);
     }, [location.pathname])
 
-    const serverApi = process.env.REACT_APP_BACKEND_SERVER_PATH;
     useEffect(() => {
         const fetchTasks = async () => {
             try {
@@ -41,22 +46,41 @@ export default function ProjectReview() {
         }
     }
 
+    useEffect(() => {
+        if (userId.profileImage) {
+            if (!userId.profileImage.startsWith('https://')) {
+                setImage(`${serverApi}${userId.profileImage}`)
+            } else {
+                setImage(`${userId?.profileImage}`)
+            }
+        }
+    }, [image, setImage, serverApi, userId.profileImage])
+    // console.log("This is image:", image)
+    const timeTaken = (e) => {
+        const date = new Date(e);
+        return date.toLocaleDateString('en-US', {
+            year: 'numeric',
+            day: 'numeric',
+            month: 'long',
+        })
+    }
+
     return (
         <>
             <main className='w-full'>
                 {activeLink === '/dashboard/ProjectReview' && (
                     <div className='w-full grid grid-cols-3 gap-5 mb-7 gap-y-10'>
                         {tasks.map((task, index) => (
-                            <div key={index} className='flex items-center flex-col gap-4 px-4 py-6 bg-white border shadow-md rounded-md'>
-                                <div className='border-b w-full flex items-center justify-between text-gray-800'>
+                            <div key={index} className='flex items-center flex-col gap-4 px-4 py-6 border border-gray-400 hover:shadow-md rounded-md bg-slate-100'>
+                                <div className='border-b w-full flex items-center justify-between text-gray-800 pb-2'>
                                     <p>21 Dec 2021</p>
                                     <p>Abdullah Hassan</p>
                                 </div>
                                 <div className='flex items-center self-stretch flex-col gap-2 border-b px-4 py-6  w-full'>
                                     <h2 className='font-semibold text-4xl text-gray-700 text-center h-20'>{task.title}</h2>
                                     <div className='flex items-center gap-2 mt-4 flex-col h-auto justify-end mb-4'>
-                                        <p className='text-gray-800 text-justify'>{task.task}</p>
-                                        <img src={Img1} alt="user" className='w-8 h-8 rounded-full' />
+                                        {/* <p className='text-gray-800 text-justify'>{task.task}</p> */}
+                                        <img src={image} alt="user" className='w-8 h-8 rounded-full' />
                                     </div>
                                     <div className='grid grid-cols-2 items-start justify-between w-full gap-y-6'>
                                         <div className='flex items-center gap-2'>
@@ -76,9 +100,17 @@ export default function ProjectReview() {
                                             <p className='text-gray-600'>{task.time}</p>
                                         </div>
                                     </div>
-                                    <button className={`rounded-md cursor-default px-4 py-1 text-white bg-orange-600 mt-4 ${task.status === 'ended' ? 'bg-sky-600' : ''} ${task.status === 'Not Approved' ? 'bg-red-600' : ''}  ${task.status === "Approved" ? '!bg-green-600' : ''}`}>{task.status}</button>
+                                    <div className='flex items-center gap-2 justify-self-end my-2'>
+                                        <h2 className='text-gray-600 font-semibold'>Created:</h2>
+                                        <p className='text-gray-600'>{timeTaken(task.createdAt)}</p>
+                                    </div>
+                                    <div className='flex items-center gap-2 justify-self-end'>
+                                        <h2 className='text-gray-600 font-semibold'>Last Edited:</h2>
+                                        <p className='text-gray-600'>{timeTaken(task.createdAt)}</p>
+                                    </div>
+                                    <button className={`rounded-md cursor-default px-4 py-1 text-white bg-orange-600 mt-4 ${task.status === 'ended' ? 'bg-sky-600' : ''} ${task.status === 'Not Approved' ? 'bg-red-600' : ''}  ${task.status === "Approved" ? '!bg-green-600' : ''}`}>{task.status}</button>   
                                 </div>
-                                {userId.userEmail === "admin@gmail.com" && userId.role === "user" ?
+                                {userId.userEmail === "admin@gmail.com" && userId.role === "admin" ?
                                     (
                                         <div className='w-full flex items-center justify-between mt-auto text-gray-700'>
                                             <Link to={`/dashboard/ProjectReview/SubProjectReview/${task._id}`} className='hover:text-gray-900 transition-all cursor-pointer'>
@@ -96,7 +128,6 @@ export default function ProjectReview() {
                                     (
                                         <div className='w-full flex items-center justify-between mt-auto text-gray-700 h-4'></div>
                                     )
-
                                 }
 
                             </div>

@@ -19,7 +19,7 @@ export default function SubProjectReview({ navigate }) {
     }
     const serverApi = process.env.REACT_APP_BACKEND_SERVER_PATH;
 
-    console.log("This is the formData", formData)
+    // console.log("This is the formData", formData)
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {

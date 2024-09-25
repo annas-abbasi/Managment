@@ -9,7 +9,6 @@ export default function EditProfile() {
     const [selectImage, setSelectImage] = useState('');
     const [selectedFile, setSelectedFile] = useState(null);
     const serverApi = process.env.REACT_APP_BACKEND_SERVER_PATH
-    console.log("This is the UserId", userId)
 
     const valuee = (value) => {
         return value.split(" ").map((e) => e.charAt(0).toUpperCase() + e.slice(1)).join(" ");
@@ -64,7 +63,7 @@ export default function EditProfile() {
             }
         }
     }, [user, userId.profileImage, serverApi]);
-    // console.log('This is the URLPAth', `${serverApi}${userId.profileImage}`)
+    console.log('This is the URLPAth', `${serverApi}${userId.profileImage}`)
 
     return (
         <div className='flex items-center justify-center flex-col space-y-10 mb-10 mt-4'>

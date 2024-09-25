@@ -57,8 +57,8 @@ const LoginUser = async (req, res) => {
         }
 
         // Log roles for debugging
-        console.log('Valid user role:', validUser.role);
-        console.log('Requested role:', role);
+        // console.log('Valid user role:', validUser.role);
+        // console.log('Requested role:', role);
 
         // Check if user's role matches requested role
 

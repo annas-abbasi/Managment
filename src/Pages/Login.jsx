@@ -118,7 +118,7 @@ export default function Login() {
                                     </label>
                                 </div> */}
 
-                                <div>
+                                <div className='space-x-4'>
                                     <label>
                                         <input
                                             type="radio"
