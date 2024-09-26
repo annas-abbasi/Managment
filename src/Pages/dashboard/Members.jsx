@@ -1,13 +1,35 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { LineChart, Line, CartesianGrid, XAxis, YAxis, ResponsiveContainer } from 'recharts';
+
 
 export default function Member() {
+
   const [tasks, setTasks] = useState([]);
   const [approvalStatus, setApprovalStatus] = useState('ended');
   const [crossvisibility, setCrossVisibility] = useState({});
   const [checkVisibility, setCheckVisibility] = useState({});
   const [admin, setIsAdmin] = useState(false);
   const serverApi = process.env.REACT_APP_BACKEND_SERVER_PATH;
+
+  // const data = [{ name: 'Page A', uv: 400, pv: 2400, amt: 2400 },];
+
+  const generateRandomData = () => {
+    const randomData = [];
+    const labels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+    for (let i = 0; i < labels.length; i++) {
+      randomData.push({
+        name: labels[i],
+        uv: Math.floor(Math.random() * 5000) + 1000, // random value between 1000 and 5000
+      });
+    }
+
+    return randomData;
+  };
+
+  const data = generateRandomData();
+
 
   useEffect(() => {
     const fetchTasks = async () => {
@@ -88,7 +110,7 @@ export default function Member() {
 
         <div className="mt-6 overflow-hidden rounded-md border shadow">
           <table className="min-w-full">
-            <thead className="hidden lg:table-header-group border-b border-gray-200 bg-zinc-800">
+            <thead className="hidden lg:table-header-group border-b border-gray-200 bg-dashboard">
               <tr className="py-10">
                 <td className="whitespace-normal py-4 text-base font-medium text-white sm:px-6">Name</td>
                 <td className="whitespace-normal py-4 text-base font-medium text-white sm:px-6">Title</td>
@@ -177,6 +199,19 @@ export default function Member() {
             </tbody>
           </table>
         </div>
+
+        <div style={{ width: '100%', height: 300 }}> {/* Adjust the height as needed */}
+          <ResponsiveContainer width="100%" height="100%">
+            <LineChart data={data} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
+              <Line type="monotone" dataKey="uv" stroke="#8884d8" />
+              <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
+              <XAxis dataKey="name" />
+              <YAxis />
+            </LineChart>
+          </ResponsiveContainer>
+        </div>
+
+
       </div >
     </>
   );
