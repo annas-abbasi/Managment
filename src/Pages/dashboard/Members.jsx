@@ -88,7 +88,7 @@ export default function Member() {
 
         <div className="mt-6 overflow-hidden rounded-md border shadow">
           <table className="min-w-full">
-            <thead className="hidden lg:table-header-group border-b border-gray-200 bg-zinc-600">
+            <thead className="hidden lg:table-header-group border-b border-gray-200 bg-zinc-800">
               <tr className="py-10">
                 <td className="whitespace-normal py-4 text-base font-medium text-white sm:px-6">Name</td>
                 <td className="whitespace-normal py-4 text-base font-medium text-white sm:px-6">Title</td>

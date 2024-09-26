@@ -82,7 +82,7 @@ export default function Navbar() {
     return (
         <>
             <div className='h-20'>
-                <nav className={`flex-no-wrap fixed z-10 flex w-full items-center justify-between bg-opacity-80 border-b transition-all backdrop-blur-md py-2 lg:flex-wrap lg:justify-start lg:py-4 ${scrolled ? "border-zinc-200 bg-gray-50" : "border-zinc-400 bg-zinc-900"}`}>
+                <nav className={`flex-no-wrap fixed z-10 flex w-full items-center justify-between bg-opacity-80 transition-all backdrop-blur-md py-2 lg:flex-wrap lg:justify-start lg:py-4 ${scrolled ? "border-zinc-200 bg-black" : "bg-black"}`}>
                     <div className="flex w-full flex-wrap items-center justify-between px-3">
                         {/* <!-- Hamburger button for mobile view --> */}
                         <button className="block border-0 bg-transparent px-2 text-black/50 hover:no-underline hover:shadow-none focus:no-underline focus:shadow-none focus:outline-none focus:ring-0 dark:text-neutral-200 lg:hidden">

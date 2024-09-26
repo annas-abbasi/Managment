@@ -53,3 +53,35 @@ input::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
 }
+
+.bg-navba {
+    /* background: #6A9113;
+    background: -webkit-linear-gradient(to right, #141517, #6A9113);
+    background: linear-gradient(to right, #141517, #6A9113); */
+
+    background: #BA8B02;
+    background: -webkit-linear-gradient(to right, #181818, #BA8B02);
+    background: linear-gradient(to right, #181818, #BA8B02);
+
+}
+
+.bg-table {
+    background: #CCCCB2;
+    /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #757519, #CCCCB2);
+    /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #757519, #CCCCB2);
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+}
+
+
+.bg-dashboard {
+    background: #6A9113;
+    /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #141517, #6A9113);
+    /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #141517, #6A9113);
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+}
